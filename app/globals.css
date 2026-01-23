@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer base {
+  button {
+    @apply cursor-pointer;
+  }
+}
+
 body {
   background-color: hsl(243, 96%, 9%);
   font-family: Arial, Helvetica, sans-serif;

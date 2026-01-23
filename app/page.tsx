@@ -126,114 +126,164 @@ export default function Home() {
     <>
       <Header />
 
-      <main className="flex flex-col w-full items-center px-4 mt-15">
-        {/* title */}
-        <h1 className="text-[54px] md:text-[3rem] font-bold text-center max-w-75 md:max-w-full leading-15">
-          How&apos;s the sky looking today?
-        </h1>
-        {/* search */}
-        <div className="flex flex-col md:mt-14 md:gap-4 md:flex-row justify-center w-full">
-          <div className="flex items-center w-full max-w-125 bg-[hsl(243,27%,20%)] mt-14 md:mt-0 rounded-xl">
-            <button className="pl-5">
-              <Image src={searchIcon} className="w-6" alt="Search Icon" />
-            </button>
-            <input
-              className="ml-2 py-3.25 w-full px-2 placeholder-white/80 text-xl"
-              placeholder="Search for a place..."
-            />
-          </div>
+      <main className="min-h-screen min-w-62.5 px-4 py-8 md:px-6 lg:px-8 mx-auto">
+        {/* title & search */}
+        <div className="mb-10">
+          <h1 className="text-5xl max-w-80 sm:max-w-full leading-tight justify-self-center sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-10">
+            How&apos;s the sky looking today?
+          </h1>
 
-          <button className="bg-[hsl(233,67%,56%)] py-3.25 px-6 mt-3 md:mt-0 tracking-wide text-xl md:text-lg rounded-xl">
-            Search
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+            <div className="flex items-center flex-1 bg-[hsl(243,27%,20%)] rounded-xl px-4 py-3">
+              <Image src={searchIcon} className="w-5 h-5 mr-3" alt="Search" />
+              <input
+                className="flex-1 bg-transparent placeholder-white/70 text-base sm:text-lg outline-none"
+                placeholder="Search for a place..."
+              />
+            </div>
+            <button className="bg-[hsl(233,67%,56%)] text-white font-medium py-3 px-6 rounded-xl text-base sm:text-lg whitespace-nowrap hover:opacity-90 transition-opacity">
+              Search
+            </button>
+          </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          <div className="flex flex-col self-start">
+        <div className="flex flex-col justify-center lg:flex-row gap-8">
+          <div className="lg:flex-1 max-w-200">
             {/* todays weather */}
-            <div className="relative flex w-full flex-col md:flex-row md:max-w-155 gap-2 items-center mt-8 md:mt-24">
-              <Image
-                src={bgTodayMobile}
-                className="absolute -z-1 inline-block md:hidden"
-                alt="Today"
-              />
-              <Image
-                src={bgTodayDesktop}
-                className="absolute -z-1 hidden md:inline-block"
-                alt="Today"
-              />
-              <div className="md:flex md:w-full md:items-center md:justify-between md:px-8">
-                <div className="flex flex-col md:gap-2 items-center md:items-start">
-                  <div className="text-3xl md:text-2xl font-semibold mt-12 md:mt-0 md:whitespace-nowrap">
-                    Berlin, Germany
+            <div className="relative rounded-2xl py-8 overflow-hidden mb-8">
+              <div className="absolute inset-0">
+                <Image
+                  src={bgTodayMobile}
+                  alt="Today background"
+                  className="w-full h-full object-contain scale-1000 md:hidden"
+                  fill
+                  priority
+                />
+                <Image
+                  src={bgTodayDesktop}
+                  alt="Today background"
+                  className="w-full h-full object-contain scale-1000 hidden md:block"
+                  fill
+                />
+              </div>
+
+              <div className="relative p-6 sm:p-8 md:p-10">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+                      Berlin, Germany
+                    </h2>
+                    <p className="text-white/70 text-lg sm:text-xl">
+                      Tuesday, Aug 5, 2025
+                    </p>
                   </div>
-                  <div className="text-white/70 text-[1.25rem] md:text-[1rem] md:whitespace-nowrap">
-                    Tuesday, Aug 5, 2025
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Image src={sunnyIcon} className="w-30 mr-2" alt="Sunny" />
-                  <div className="text-8xl font-bold flex gap-3">
-                    <span className="italic">20</span>
-                    <span>°</span>
+
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-20 h-20 sm:w-35 sm:h-35">
+                      <Image
+                        src={sunnyIcon}
+                        alt="Sunny"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="font-bold flex gap-3">
+                      <span className="text-5xl sm:text-6xl md:text-8xl italic">
+                        20
+                      </span>
+                      <span className="text-4xl sm:text-6xl">°</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
             {/* weather details */}
-            <div className="grid grid-cols-2 md:flex gap-x-5 md:gap-3.5 gap-y-5 mt-14 md:mt-20">
-              {weatherDetails.map(({ title, value }, index) => (
-                <div
-                  key={`${title}-${index}`}
-                  className="flex flex-col justify-between w-40 md:w-36.25 h-30 pl-5 py-4 bg-[hsl(243,27%,20%)] rounded-xl border border-[hsl(250,6%,84%)]/10"
-                >
-                  <span className="text-lg text-white/70">{title}</span>
-                  <span className="text-3xl">{value}</span>
-                </div>
-              ))}
-            </div>
-            {/* dayly forecast */}
-            <h1 className="self-start text-2xl mt-8">Daily forecast</h1>
-            <div className="grid grid-cols-3 gap-x-3 gap-y-5 mt-5 w-full">
-              {weekDailyForecast.map(
-                ({ day, image, temp, feelsLike }, index) => (
+            <div className="mb-10">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {weatherDetails.map(({ title, value }) => (
                   <div
-                    key={`${day}-${index}`}
-                    className="flex flex-col justify-between py-3 w-25 h-40 items-center bg-[hsl(243,27%,20%)] rounded-xl border border-[hsl(250,6%,84%)]/10"
+                    key={title}
+                    className="bg-[hsl(243,27%,20%)] p-4 sm:p-5 rounded-xl border border-white/10"
                   >
-                    <span>{day}</span>
-                    <Image src={image} className="w-15" alt="Weather Icon" />
-                    <div className="flex justify-between w-full px-3">
-                      <span>{temp}</span>
+                    <p className="text-white/70 text-sm sm:text mb-2">
+                      {title}
+                    </p>
+                    <p className="text-2xl sm:text-2xl font-semibold">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* daily forecast */}
+            <div className="mb-10">
+              <h3 className="text-xl sm:text-2xl font-bold mb-5">
+                Daily forecast
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3">
+                {weekDailyForecast.map(({ day, image, temp, feelsLike }) => (
+                  <div
+                    key={day}
+                    className="bg-[hsl(243,27%,20%)] p-4 rounded-xl border border-white/10 flex flex-col items-center"
+                  >
+                    <p className="font-medium mb-3">{day}</p>
+                    <div className="relative w-12 h-12 mb-3">
+                      <Image
+                        src={image}
+                        alt={`${day} weather`}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="flex justify-between w-full">
+                      <span className="font-bold">{temp}</span>
                       <span className="text-white/70">{feelsLike}</span>
                     </div>
                   </div>
-                ),
-              )}
+                ))}
+              </div>
             </div>
           </div>
+
           {/* hourly forecast */}
-          <div className="flex flex-col md:h-178 gap-4 w-full md:w-60 px-4 py-4 my-8 bg-[hsl(243,27%,20%)] rounded-2xl border border-[hsl(250,6%,84%)]/10">
-            <div className="flex justify-between items-center">
-              <div className="text-xl">Hourly forecast</div>
-              <button className="flex items-center px-4 py-1.5 gap-3 bg-[hsl(243,23%,30%)] rounded-lg border border-[hsl(250,6%,84%)]/10">
-                <span>Tuesday</span>
-                <Image src={dropdownIcon} alt="Dropdown" />
-              </button>
-            </div>
-            {/* map each hour */}
-            {hourlyForecast.map(({ image, hour, temp }, index) => (
-              <div
-                key={`${hour}-${index}`}
-                className="flex justify-between h-15 items-center px-2 bg-[hsl(243,23%,24%)]/90 rounded-lg border border-[hsl(250,6%,84%)]/10"
-              >
-                <div className="flex items-center gap-1">
-                  <Image src={image} className="w-10" alt="Weather Icon" />
-                  <span className="text-lg">{hour}</span>
-                </div>
-                <div className="mr-2">{temp}</div>
+          <div className="lg:w-96">
+            <div className="bg-[hsl(243,27%,20%)] p-5 sm:p-6 rounded-2xl border border-white/10 sticky top-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold">Hourly forecast</h3>
+                <button className="flex items-center gap-2 bg-[hsl(243,23%,30%)] px-4 py-2 rounded-lg border border-white/10 hover:opacity-70 transition-opacity">
+                  <span>Tuesday</span>
+                  <Image
+                    src={dropdownIcon}
+                    alt="Dropdown"
+                    className="w-4 h-4"
+                  />
+                </button>
               </div>
-            ))}
+
+              <div className="space-y-3">
+                {hourlyForecast.map(({ image, hour, temp }) => (
+                  <div
+                    key={hour}
+                    className="flex items-center justify-between bg-[hsl(243,23%,24%)] hover:opacity-75 transition duration-75 p-3 rounded-lg border border-white/10"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-8 h-8">
+                        <Image
+                          src={image}
+                          alt={`${hour} weather`}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                      <span className="font-medium">{hour}</span>
+                    </div>
+                    <span className="text-xl font-bold">{temp}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </main>
