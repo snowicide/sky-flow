@@ -4,19 +4,18 @@ import {
   formatHourOfDay,
   getHourNumber,
 } from "@/utils/formatDay";
-import type {
-  DailyForecast,
-  HourlyItem,
-  WeatherHourly,
-} from "@/types/WeatherHourly";
+import type { DailyForecast, HourlyItem } from "@/types/WeatherHourly";
 import Image from "next/image";
 import dropdownIcon from "@/public/icons/icon-dropdown.svg";
 import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 import { useState } from "react";
 import { getWeatherCode } from "@/utils/weatherCodes";
+import { useWeatherStore } from "@/store/useWeatherStore";
 
-export default function HourlyForecast({ data }: WeatherHourly) {
+export default function HourlyForecast() {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
+  const { weatherData } = useWeatherStore();
+  const data = weatherData.hourly;
 
   const groupByDay = (): DailyForecast[] => {
     const days: DailyForecast[] = [];

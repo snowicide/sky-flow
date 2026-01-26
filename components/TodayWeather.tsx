@@ -1,12 +1,52 @@
+"use client";
 import Image from "next/image";
 import bgTodayMobile from "@/public/images/bg-today-small.svg";
 import bgTodayDesktop from "@/public/images/bg-today-large.svg";
-import type { WeatherCurrent } from "@/types/WeatherCurrent";
 import dayjs from "dayjs";
 
 import sunnyIcon from "@/public/icons/icon-sunny.webp";
+import { useWeatherStore } from "@/store/useWeatherStore";
+import { getWeatherCode } from "@/utils/weatherCodes";
+import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 
-export default function TodayWeather({ data }: WeatherCurrent) {
+export default function TodayWeather() {
+  const { weatherData, isLoading, error } = useWeatherStore();
+
+  if (isLoading) {
+    return (
+      <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-gray-800 animate-pulse">
+        <div className="relative p-6 sm:p-8 md:p-10">
+          <div className="h-8 bg-gray-700 rounded w-1/3 mb-4"></div>
+          <div className="h-6 bg-gray-700 rounded w-1/4 mb-6"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-red-900/30">
+        <div className="relative p-6 sm:p-8 md:p-10">
+          <p className="text-red-300">Error: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!weatherData?.current) {
+    return (
+      <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-gray-800">
+        <div className="relative p-6 sm:p-8 md:p-10">
+          <p className="text-white/70">No weather data available</p>
+        </div>
+      </div>
+    );
+  }
+
+  const data = weatherData.current;
+  const code = getWeatherCode(data.weather_code);
+  const icon = getIconByWeatherCode[code];
+
   return (
     <div className="relative rounded-2xl py-8 overflow-hidden mb-8">
       <div className="absolute inset-0 w-full h-full">
@@ -36,7 +76,7 @@ export default function TodayWeather({ data }: WeatherCurrent) {
 
           <div className="flex items-center gap-4">
             <div className="relative w-20 h-20 sm:w-35 sm:h-35">
-              <Image src={sunnyIcon} alt="Sunny" className="object-contain" />
+              <Image src={icon} alt="Sunny" className="object-contain" />
             </div>
             <div className="font-bold flex gap-3">
               <span className="text-5xl sm:text-6xl md:text-8xl italic">

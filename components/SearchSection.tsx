@@ -3,23 +3,29 @@ import Image from "next/image";
 import searchIcon from "@/public/icons/icon-search.svg";
 import { searchWeather, type WeatherResponse } from "@/app/actions";
 import { useWeatherStore } from "@/store/useWeatherStore";
+import { useState } from "react";
 
 export default function SearchSection() {
-  const { setLoading, setError, setWeatherData, searchText, setSearchText } =
+  const [localSearch, setLocalSearch] = useState<string>("");
+  const { setLoading, setError, setWeatherData, isLoading, weatherData } =
     useWeatherStore();
 
   const handleSearchButton = async () => {
+    if (!localSearch.trim()) return;
     setLoading(true);
     setError(null);
-    const city =
-      searchText.charAt(0).toUpperCase() + searchText.slice(1).toLowerCase();
+    const city = localSearch
+      .trim()
+      .split(" ")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(" ");
 
     try {
       const result: WeatherResponse = await searchWeather(city);
 
       if (result.success) {
         setWeatherData(result.data);
-        console.log(result.data);
+        setLocalSearch("");
       } else {
         console.error("Search error: ", result.error);
       }
@@ -29,6 +35,10 @@ export default function SearchSection() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") handleSearchButton();
   };
 
   return (
@@ -42,7 +52,10 @@ export default function SearchSection() {
           <Image src={searchIcon} className="w-5 h-5 mr-3" alt="Search" />
           <input
             className="flex-1 bg-transparent placeholder-white/70 text-base sm:text-lg outline-none"
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e) => setLocalSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
+            value={localSearch}
+            disabled={isLoading}
             placeholder="Search for a place..."
           />
         </div>
