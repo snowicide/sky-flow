@@ -6,16 +6,25 @@ import DailyForecast from "@/components/DailyForecast";
 import HourlyForecast from "@/components/HourlyForecast";
 import { searchWeather } from "./actions";
 import StoreInitializer from "./providers/StoreInitializer";
+import { Metadata } from "next";
+import DynamicTitle from "./DynamicTitle";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const initialData = await searchWeather("Minsk");
+  const city = initialData.success && initialData.data.current.city;
+  if (!city) return { title: "Weather" };
+
+  return { title: `Weather - ${city}` };
+}
 
 export default async function Home() {
   const initialData = await searchWeather("Minsk");
   const weatherData = initialData.success ? initialData.data : null;
-
   return (
     <>
+      <DynamicTitle />
       <Header />
       {<StoreInitializer initialData={weatherData} city="Minsk" />}
-
       <main className="min-h-screen min-w-62.5 px-4 py-8 md:px-6 lg:px-8 mx-auto">
         <SearchSection />
 
