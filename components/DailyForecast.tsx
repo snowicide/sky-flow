@@ -6,9 +6,9 @@ import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 import { useWeatherStore } from "@/store/useWeatherStore";
 
 export default function DailyForecast() {
-  const { weatherData } = useWeatherStore();
+  const { weatherData, isLoading } = useWeatherStore();
 
-  if (!weatherData?.daily) {
+  if (!weatherData?.daily || isLoading) {
     return (
       <div className="mb-10">
         <h3 className="text-xl sm:text-2xl font-bold mb-5">Daily forecast</h3>

@@ -2,9 +2,9 @@
 import { useWeatherStore } from "@/store/useWeatherStore";
 
 export default function WeatherDetails() {
-  const { weatherData } = useWeatherStore();
+  const { weatherData, isLoading } = useWeatherStore();
 
-  if (!weatherData?.current) {
+  if (!weatherData?.current || isLoading) {
     return (
       <div className="mb-10">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

@@ -32,7 +32,7 @@ export default function TodayWeather() {
     );
   }
 
-  if (!weatherData?.current) {
+  if (!weatherData?.current || isLoading) {
     return (
       <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-gray-800">
         <div className="relative p-6 sm:p-8 md:p-10">
@@ -52,11 +52,15 @@ export default function TodayWeather() {
         <Image
           src={bgTodayMobile}
           alt="Today background"
+          loading="eager"
           className=" object-contain w-full h-full scale-1000 md:hidden"
         />
         <Image
           src={bgTodayDesktop}
           alt="Today background"
+          loading="eager"
+          width={800}
+          height={284}
           className="w-full h-full object-contain scale-1000 xl:scale-100 hidden md:block"
         />
       </div>

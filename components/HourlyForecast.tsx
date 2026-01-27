@@ -14,9 +14,9 @@ import { useWeatherStore } from "@/store/useWeatherStore";
 
 export default function HourlyForecast() {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
-  const { weatherData } = useWeatherStore();
+  const { weatherData, isLoading } = useWeatherStore();
 
-  if (!weatherData?.hourly) {
+  if (!weatherData?.hourly || isLoading) {
     return <div>123</div>;
   }
 
