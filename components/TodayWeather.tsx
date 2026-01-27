@@ -11,12 +11,12 @@ import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 export default function TodayWeather() {
   const { weatherData, isLoading, error } = useWeatherStore();
 
-  if (isLoading) {
+  if (!weatherData?.current || isLoading) {
     return (
-      <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-gray-800 animate-pulse">
-        <div className="relative p-6 sm:p-8 md:p-10">
-          <div className="h-8 bg-gray-700 rounded w-1/3 mb-4"></div>
-          <div className="h-6 bg-gray-700 rounded w-1/4 mb-6"></div>
+      <div className="rounded-2xl py-18 overflow-hidden mb-8 bg-[hsl(243,27%,20%)] border border-white/10 animate-pulse">
+        <div className="p-6 sm:p-8 md:p-10">
+          <div className="h-8 bg-[hsl(243,23%,30%)] rounded w-3/5 sm:w-1/2 mb-4"></div>
+          <div className="h-14 bg-[hsl(243,23%,30%)] rounded w-4/5 sm:w-2/3"></div>
         </div>
       </div>
     );
@@ -27,16 +27,6 @@ export default function TodayWeather() {
       <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-red-900/30">
         <div className="relative p-6 sm:p-8 md:p-10">
           <p className="text-red-300">Error: {error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!weatherData?.current || isLoading) {
-    return (
-      <div className="relative rounded-2xl py-8 overflow-hidden mb-8 bg-gray-800">
-        <div className="relative p-6 sm:p-8 md:p-10">
-          <p className="text-white/70">No weather data available</p>
         </div>
       </div>
     );
