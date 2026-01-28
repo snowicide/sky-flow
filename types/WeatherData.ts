@@ -6,7 +6,7 @@ export interface WeatherData {
 
 export interface WeatherDataCurrent {
   apparent_temperature: number;
-  city?: string | undefined;
+  city: string;
   country: string;
   interval: number;
   precipitation: number;

@@ -6,8 +6,9 @@ import {
 import type { DailyForecast, HourlyItem } from "@/types/WeatherHourly";
 import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 import { getWeatherCode } from "@/utils/weatherCodes";
+import { WeatherDataHourly } from "@/types/WeatherData";
 
-export default function groupByDay(data): DailyForecast[] {
+export default function groupByDay(data?: WeatherDataHourly): DailyForecast[] {
   const days: DailyForecast[] = [];
   if (!data?.time?.length) return days;
   let currentDay = "";
