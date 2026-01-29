@@ -8,13 +8,11 @@ interface WeatherState {
   weatherData: WeatherData | null;
   searchText: string;
   lastCity: string;
-  lastSuccessfulCity: string;
 
   setWeatherData: (data: WeatherData, city?: string) => void;
   setSearchText: (value: string) => void;
   setLoading: (value: boolean) => void;
   setError: (value: string | null) => void;
-  setLastSuccessfulCity: (city: string) => void;
 }
 
 export const useWeatherStore = create<WeatherState>()(
@@ -25,7 +23,6 @@ export const useWeatherStore = create<WeatherState>()(
       searchText: "",
       isLoading: false,
       error: null,
-      lastSuccessfulCity: "Minsk",
 
       setLoading: (value) => set({ isLoading: value }),
       setError: (value) => set({ error: value }),
@@ -36,7 +33,6 @@ export const useWeatherStore = create<WeatherState>()(
         }),
 
       setSearchText: (value) => set({ searchText: value }),
-      setLastSuccessfulCity: (city) => set({ lastSuccessfulCity: city }),
     }),
     {
       name: "weather-store",
@@ -47,7 +43,6 @@ export const useWeatherStore = create<WeatherState>()(
       partialize: (state) => ({
         weatherData: state.weatherData,
         lastCity: state.lastCity,
-        lastSuccessfulCity: state.lastSuccessfulCity,
       }),
     },
   ),

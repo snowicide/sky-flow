@@ -5,9 +5,7 @@ import { startTransition, useEffect, useState } from "react";
 export default function DynamicTitle() {
   const [isClient, setIsClient] = useState<boolean>(false);
   const weatherData = useWeatherStore((state) => state.weatherData);
-  const lastSuccessfulCity = useWeatherStore(
-    (state) => state.lastSuccessfulCity,
-  );
+  const lastCity = useWeatherStore((state) => state.lastCity);
 
   useEffect(() => {
     startTransition(() => setIsClient(true));
@@ -15,12 +13,12 @@ export default function DynamicTitle() {
 
   useEffect(() => {
     if (!isClient) return;
-    if (weatherData?.current.city === lastSuccessfulCity) {
+    if (weatherData?.current.city === lastCity) {
       const city = weatherData?.current?.city;
       document.title = `Weather - ${city}`;
     } else {
     }
-  }, [isClient, weatherData, lastSuccessfulCity]);
+  }, [isClient, weatherData, lastCity]);
 
   return null;
 }

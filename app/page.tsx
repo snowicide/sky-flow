@@ -9,18 +9,6 @@ import { Metadata } from "next";
 import DynamicTitle from "./DynamicTitle";
 import { fetchWeatherData } from "@/services/fetchWeatherData";
 
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: Promise<{ city?: string }>;
-}): Promise<Metadata> {
-  const { city } = await searchParams;
-  const initialData = await fetchWeatherData(city);
-  const cityName = initialData.success ? initialData.validatedCity : "Minsk";
-
-  return { title: `Weather - ${cityName}` };
-}
-
 export default async function WeatherPage({
   searchParams,
 }: {
@@ -55,4 +43,18 @@ export default async function WeatherPage({
       </main>
     </>
   );
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ city?: string }>;
+}): Promise<Metadata> {
+  const { city } = await searchParams;
+  const initialData = await fetchWeatherData(city || "Not found");
+  const cityName = initialData.success
+    ? initialData.validatedCity
+    : "Not found";
+
+  return { title: `Weather - ${cityName}` };
 }

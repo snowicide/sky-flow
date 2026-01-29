@@ -15,19 +15,18 @@ export default function SearchSection() {
       setLoading: state.setLoading,
       isLoading: state.isLoading,
       setError: state.setError,
-      lastSuccessfulCity: state.lastSuccessfulCity,
       setWeatherData: state.setWeatherData,
     })),
   );
   const [inputValue, setInputValue] = useState<string>("");
   const [status, setStatus] = useState<SearchStatus>("idle");
-  const [errorMsg, setErrorMsg] = useState<string>("");
   const lastSearchRef = useRef<string>("");
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // if have not /?city=
   useEffect(() => {
     const city = searchParams.get("city");
     if (!city) {
@@ -47,12 +46,10 @@ export default function SearchSection() {
             setTimeout(() => setStatus("idle"), 100);
           } else {
             setStatus("error");
-            setErrorMsg(result.error.message || "City not found");
             setError(result.error.message);
           }
         } catch {
           setStatus("error");
-          setErrorMsg("Network error");
           setError("Network error");
         } finally {
           setLoading(false);
@@ -67,14 +64,12 @@ export default function SearchSection() {
     if (!city) {
       setInputValue("");
       setStatus("error");
-      setErrorMsg("Please enter a city name!");
       return;
     }
     if (city === lastSearchRef.current && status !== "error") return;
 
     lastSearchRef.current = city;
     setStatus("searching");
-    setErrorMsg("");
     setLoading(true);
 
     try {
@@ -90,13 +85,14 @@ export default function SearchSection() {
         setStatus("success");
         setTimeout(() => setStatus("idle"), 500);
       } else {
+        const params = new URLSearchParams();
+        params.set("city", inputValue);
+        router.push(`${pathname}?${params.toString()}`);
         setStatus("error");
-        setErrorMsg(result.error.message || "City not found");
         setError(result.error.message);
       }
     } catch {
       setStatus("error");
-      setErrorMsg("Network error");
       setError("Network error");
     } finally {
       setLoading(false);
