@@ -3,37 +3,40 @@ import Image from "next/image";
 import { getWeatherCode } from "@/utils/weatherCodes";
 import { formatDayOfWeek } from "@/utils/formatDay";
 import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
-import { useWeatherStore } from "@/store/useWeatherStore";
 import DailyForecastSkeleton from "./skeletons/DailyForecast.skeleton";
+import { useSearchParams } from "next/navigation";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 
 export default function DailyForecast() {
-  const { weatherData, isLoading } = useWeatherStore();
+  const searchParams = useSearchParams();
+  const city = searchParams.get("city") || "Minsk";
+  const { data: result, isPending, isError } = useWeatherQuery(city);
 
-  if (!weatherData?.daily || isLoading) {
+  if (isPending || isError || !result?.success) {
     return <DailyForecastSkeleton />;
   }
 
-  const data = weatherData.daily;
+  const dailyData = result.data.daily;
 
   const calculateAverageTemps = (min: number, max: number) => {
     const averages = [];
-    for (let i = 0; i < data.temperature_2m_max.length; i++) {
+    for (let i = 0; i < dailyData.temperature_2m_max.length; i++) {
       const avg = Math.round((min + max) / 2);
       averages.push(avg);
     }
     return averages;
   };
 
-  const DailyForecast = data.time.map((dateStr: string, index: number) => {
+  const DailyForecast = dailyData.time.map((dateStr: string, index: number) => {
     const date = new Date(dateStr);
-    const code = getWeatherCode(data.weather_code[index]);
+    const code = getWeatherCode(dailyData.weather_code[index]);
     const image = getIconByWeatherCode[code];
 
     return {
       day: formatDayOfWeek(date),
-      weatherCode: data.weather_code?.[index] || 0,
-      temp: `${calculateAverageTemps(data.temperature_2m_min[index], data.temperature_2m_max[index])[index]}°`,
-      feelsLike: `${calculateAverageTemps(data.apparent_temperature_min[index], data.apparent_temperature_max[index])[index]}°`,
+      weatherCode: dailyData.weather_code?.[index] || 0,
+      temp: `${calculateAverageTemps(dailyData.temperature_2m_min[index], dailyData.temperature_2m_max[index])[index]}°`,
+      feelsLike: `${calculateAverageTemps(dailyData.apparent_temperature_min[index], dailyData.apparent_temperature_max[index])[index]}°`,
       date: dateStr,
       image,
     };

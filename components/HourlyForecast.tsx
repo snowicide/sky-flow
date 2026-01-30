@@ -1,21 +1,26 @@
 "use client";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
-import { useWeatherStore } from "@/store/useWeatherStore";
 import HourlyForecastSkeleton from "./skeletons/HourlyForecast.skeleton";
 import ChangeSelectedDay from "./ui/ChangeSelectedDay";
 import groupByDay from "@/utils/groupByDay";
+import { useSearchParams } from "next/navigation";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 
 export default function HourlyForecast() {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
-  const { weatherData, isLoading } = useWeatherStore();
   const hoursRef = useRef<HTMLDivElement>(null);
 
-  const days = useMemo(() => {
-    return groupByDay(weatherData?.hourly).slice(1);
-  }, [weatherData?.hourly]);
+  const searchParams = useSearchParams();
+  const city = searchParams.get("city") || "Minsk";
+  const { data: result, isPending, isError } = useWeatherQuery(city);
 
-  if (!weatherData?.hourly || isLoading) {
+  const days = useMemo(() => {
+    if (!result?.success) return [];
+    return groupByDay(result.data.hourly).slice(1);
+  }, [result]);
+
+  if (isPending || isError || !result?.success) {
     return <HourlyForecastSkeleton />;
   }
 

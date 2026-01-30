@@ -1,32 +1,35 @@
 "use client";
-import { useWeatherStore } from "@/store/useWeatherStore";
 import WeatherDetailsSkeleton from "./skeletons/WeatherDetails.skeleton";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
+import { useSearchParams } from "next/navigation";
 
 export default function WeatherDetails() {
-  const { weatherData, isLoading } = useWeatherStore();
+  const searchParams = useSearchParams();
+  const city = searchParams.get("city") || "Minsk";
+  const { data: result, isPending, isError } = useWeatherQuery(city);
 
-  if (!weatherData?.current || isLoading) {
+  if (isPending || isError || !result?.success) {
     return <WeatherDetailsSkeleton />;
   }
 
-  const data = weatherData.current;
+  const currentData = result.data.current;
 
   const weatherDetails = [
     {
       title: "Feels Like",
-      value: `${data.apparent_temperature.toFixed(1)}°`,
+      value: `${currentData.apparent_temperature.toFixed(1)}°`,
     },
     {
       title: "Humidity",
-      value: `${data.relative_humidity_2m}%`,
+      value: `${currentData.relative_humidity_2m}%`,
     },
     {
       title: "Wind",
-      value: `${data.wind_speed_10m} km/h`,
+      value: `${currentData.wind_speed_10m} km/h`,
     },
     {
       title: "Precipitation",
-      value: `${data.precipitation} mm`,
+      value: `${currentData.precipitation} mm`,
     },
   ];
 

@@ -1,105 +1,30 @@
 "use client";
 import Image from "next/image";
 import searchIcon from "@/public/icons/icon-search.svg";
-import { useWeatherStore } from "@/store/useWeatherStore";
-import { useState, KeyboardEvent, useRef, useEffect } from "react";
+import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useShallow } from "zustand/shallow";
-import { fetchWeatherData } from "@/services/fetchWeatherData";
-
-type SearchStatus = "idle" | "searching" | "success" | "error";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 
 export default function SearchSection() {
-  const { setLoading, setWeatherData, isLoading, setError } = useWeatherStore(
-    useShallow((state) => ({
-      setLoading: state.setLoading,
-      isLoading: state.isLoading,
-      setError: state.setError,
-      setWeatherData: state.setWeatherData,
-    })),
-  );
   const [inputValue, setInputValue] = useState<string>("");
-  const [status, setStatus] = useState<SearchStatus>("idle");
-  const lastSearchRef = useRef<string>("");
-
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // if have not /?city=
-  useEffect(() => {
-    const city = searchParams.get("city");
-    if (!city) {
-      setStatus("searching");
-      setLoading(true);
-      const initialFetch = async () => {
-        try {
-          const result = await fetchWeatherData("Minsk");
-          if (result.success) {
-            setWeatherData(result.data, result.validatedCity);
-            setError(null);
+  const cityFromUrl = searchParams.get("city") || "Minsk";
+  const { isPending, isError } = useWeatherQuery(cityFromUrl);
 
-            const params = new URLSearchParams();
-            params.set("city", "Minsk");
-            router.replace(`/?${params.toString()}`);
-            setStatus("success");
-            setTimeout(() => setStatus("idle"), 100);
-          } else {
-            setStatus("error");
-            setError(result.error.message);
-          }
-        } catch {
-          setStatus("error");
-          setError("Network error");
-        } finally {
-          setLoading(false);
-        }
-      };
-      initialFetch();
-    }
-  }, [searchParams, router, setWeatherData, setError, setLoading]);
-
-  const handleSearch = async () => {
+  const handleSearch = () => {
     const city = inputValue.trim();
-    if (!city) {
-      setInputValue("");
-      setStatus("error");
-      return;
-    }
-    if (city === lastSearchRef.current && status !== "error") return;
+    if (!city) return;
 
-    lastSearchRef.current = city;
-    setStatus("searching");
-    setLoading(true);
-
-    try {
-      const result = await fetchWeatherData(city);
-      if (result.success) {
-        setWeatherData(result.data, result.validatedCity);
-        setError(null);
-
-        const params = new URLSearchParams();
-        params.set("city", result.validatedCity);
-        router.push(`${pathname}?${params.toString()}`);
-        setInputValue("");
-        setStatus("success");
-        setTimeout(() => setStatus("idle"), 500);
-      } else {
-        const params = new URLSearchParams();
-        params.set("city", inputValue);
-        router.push(`${pathname}?${params.toString()}`);
-        setStatus("error");
-        setError(result.error.message);
-      }
-    } catch {
-      setStatus("error");
-      setError("Network error");
-    } finally {
-      setLoading(false);
-    }
+    const params = new URLSearchParams();
+    params.set("city", city);
+    router.push(`${pathname}?${params.toString()}`);
+    setInputValue("");
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleSearch();
     if (e.key === "Escape") e.currentTarget.blur();
   };
@@ -112,7 +37,7 @@ export default function SearchSection() {
 
       <div className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
         <div
-          className={`flex items-center flex-1 group bg-[hsl(243,27%,20%)] hover:bg-[hsl(243,27%,20%)]/80 focus-within:bg-[hsl(243,27%,20%)]/80 focus-within:ring-2 focus-within:ring-[hsl(233,67%,56%)] transition duration-75 rounded-xl px-4 py-3 ${status === "error" ? "ring-1 ring-red-500/80" : ""}`}
+          className={`flex items-center flex-1 group bg-[hsl(243,27%,20%)] hover:bg-[hsl(243,27%,20%)]/80 focus-within:bg-[hsl(243,27%,20%)]/80 focus-within:ring-2 focus-within:ring-[hsl(233,67%,56%)] transition duration-75 rounded-xl px-4 py-3 ${isError ? "ring-1 ring-red-500/80" : ""}`}
         >
           <Image
             src={searchIcon}
@@ -121,13 +46,10 @@ export default function SearchSection() {
           />
           <input
             className="flex-1 bg-transparent placeholder-white/70 text-base sm:text-lg outline-none"
-            onChange={(e) => {
-              setInputValue(e.target.value);
-              setStatus("searching");
-            }}
+            onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             value={inputValue}
-            disabled={isLoading}
+            disabled={isPending}
             placeholder="Search for a place..."
           />
         </div>

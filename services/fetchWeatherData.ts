@@ -80,7 +80,7 @@ export async function fetchWeatherData(city: string): Promise<WeatherResponse> {
       validatedCity: geoData.results[0].name,
     };
   } catch (error) {
-    console.error("Unknown error:", error);
+    console.error("Unknown error: ", error);
     return {
       success: false,
       error: {
