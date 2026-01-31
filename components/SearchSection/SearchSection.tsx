@@ -23,11 +23,6 @@ export default function SearchSection() {
     setInputValue("");
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") handleSearch();
-    if (e.key === "Escape") e.currentTarget.blur();
-  };
-
   return (
     <div className="mb-10">
       <h1 className="text-5xl max-w-80 sm:max-w-full leading-tight justify-self-center sm:text-4xl md:text-5xl font-bold text-center mb-8 sm:mb-15">
@@ -41,8 +36,6 @@ export default function SearchSection() {
           <SearchDropdown
             inputValue={inputValue}
             setInputValue={setInputValue}
-            handleKeyDown={handleKeyDown}
-            handleSearch={handleSearch}
           />
         </div>
         <button
