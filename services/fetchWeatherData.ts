@@ -5,12 +5,16 @@ import type {
 } from "@/types/WeatherData";
 import type { WeatherResponse } from "@/types/WeatherResponse";
 
-export async function fetchWeatherData(city: string): Promise<WeatherResponse> {
+export async function fetchWeatherData(
+  city: string,
+  signal?: AbortSignal,
+): Promise<WeatherResponse> {
   try {
     const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en`;
-    const geoRes = await fetch(geoUrl);
+    const geoRes = await fetch(geoUrl, { signal });
 
     if (!geoRes.ok) {
+      signal?.throwIfAborted();
       return {
         success: false,
         error: {
@@ -21,6 +25,8 @@ export async function fetchWeatherData(city: string): Promise<WeatherResponse> {
     }
 
     const geoData = await geoRes.json();
+
+    signal?.throwIfAborted();
     if (!geoData.results || geoData.results.length === 0) {
       return {
         success: false,
@@ -52,9 +58,10 @@ export async function fetchWeatherData(city: string): Promise<WeatherResponse> {
         precipitation_unit: "mm",
       }).toString();
 
-    const forecastRes = await fetch(forecastUrl);
+    const forecastRes = await fetch(forecastUrl, { signal });
 
     if (!forecastRes.ok) {
+      signal?.throwIfAborted();
       return {
         success: false,
         error: {
@@ -80,7 +87,11 @@ export async function fetchWeatherData(city: string): Promise<WeatherResponse> {
       validatedCity: geoData.results[0].name,
     };
   } catch (error) {
+    if (signal?.aborted) {
+      throw error;
+    }
     console.error("Unknown error: ", error);
+
     return {
       success: false,
       error: {
