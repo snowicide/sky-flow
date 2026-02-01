@@ -37,7 +37,7 @@ export default function ChangeSelectedDay({
           <ListboxOption
             key={`${dayName}-${index}`}
             value={dayName}
-            className="data-focus:bg-[hsl(243,23%,30%)] pl-5 py-3"
+            className="hover:bg-[hsl(243,23%,30%)] rounded-xl mx-2 px-3 my-2 py-3"
           >
             {dayName}
           </ListboxOption>
