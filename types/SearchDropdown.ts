@@ -3,11 +3,16 @@ export interface SearchDropdownProps {
   setInputValue: (value: string) => void;
 }
 
-export interface RecentTabProps {
+export interface SearchTabProps {
   handleOptionSelect: (value: string) => void;
+  index: number;
+  featuredSearches?: cityObject[];
+  city: cityObject;
+}
+
+interface cityObject {
   name: string;
   value: string;
-  index: number;
 }
 
 export type ActiveTab = "recent" | "featured";

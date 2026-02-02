@@ -5,10 +5,14 @@ export default function FeaturedIcon({
   className,
   allowFill = true,
   currentTab,
+  isFilled,
+  fillColor,
 }: {
   className?: string;
   allowFill?: boolean;
   currentTab?: ActiveTab;
+  isFilled?: boolean;
+  fillColor?: string;
 }) {
   const [isFeatured, setIsFeatured] = useState(false);
 
@@ -20,11 +24,17 @@ export default function FeaturedIcon({
       height="24"
       viewBox="0 0 24 24"
       fill={
-        (isFeatured && allowFill) || (!allowFill && currentTab === "featured")
-          ? "hsl(233,100%,70%)"
+        (isFeatured && allowFill) ||
+        (!allowFill && currentTab === "featured") ||
+        isFilled
+          ? `${fillColor ? fillColor : "hsl(233,100%,70%)"}`
           : "none"
       }
-      stroke={isFeatured && allowFill ? "hsl(233,100%,70%)" : "currentColor"}
+      stroke={
+        (isFeatured && allowFill) || isFilled
+          ? `${fillColor ? "" : "hsl(233,100%,70%)"}`
+          : "currentColor"
+      }
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

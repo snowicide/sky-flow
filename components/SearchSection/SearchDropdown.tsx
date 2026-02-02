@@ -5,14 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ActiveTab, SearchDropdownProps } from "@/types/SearchDropdown";
 import { FeaturedIcon, HistoryIcon } from "@/components/icons";
 import RecentSearch from "./RecentSearch";
-
-const lastSearches = [
-  { name: "Minsk, Belarus", value: "Minsk" },
-  { name: "Moscow, Russia", value: "Moscow" },
-  { name: "London, United Kingdom", value: "London" },
-  { name: "Alice, United States", value: "Alice" },
-  { name: "Berlin, Germany", value: "Berlin" },
-];
+import FeaturedSearch from "./FeaturedSearch";
 
 export default function SearchDropdown({
   inputValue,
@@ -24,6 +17,22 @@ export default function SearchDropdown({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const lastSearches = [
+    { name: "Minsk, Belarus", value: "Minsk" },
+    { name: "Moscow, Russia", value: "Moscow" },
+    { name: "London, United Kingdom", value: "London" },
+    { name: "Alice, United States", value: "Alice" },
+    { name: "Berlin, Germany", value: "Berlin" },
+    { name: "Paris, France", value: "Paris" },
+    { name: "Tokyo, Japan", value: "Tokyo" },
+    { name: "New York, United States", value: "New York" },
+  ];
+
+  const featuredSearches = [
+    { name: "Minsk, Belarus", value: "Minsk" },
+    { name: "Tokyo, Japan", value: "Tokyo" },
+  ];
 
   const handleChangeTab = (value: ActiveTab) => {
     setCurrentTab(value);
@@ -92,14 +101,14 @@ export default function SearchDropdown({
           className="absolute -left-5 top-6 -right-4 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-100 mt-1"
         >
           {/* recents/featured tabs */}
-          <div className="flex items-center border-b border-white/10 mx-6  py-5">
+          <div className="flex items-center border-b border-white/10 mx-6 py-5">
             <div className="flex-1">
               <div
-                className={`flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider hover:opacity-80 transition ${currentTab === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
+                className={`flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider ${currentTab === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
               >
                 <div
                   onClick={() => handleChangeTab("recent")}
-                  className="flex items-center gap-1.5 cursor-pointer"
+                  className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition"
                 >
                   <HistoryIcon className="w-4.25 h-4.25 sm:w-5 sm:h-5" />
                   <span className="text-sm sm:text-lg lg:text-xl">Recent</span>
@@ -108,11 +117,11 @@ export default function SearchDropdown({
             </div>
             <div className="flex-1 h-full">
               <div
-                className={`flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider hover:opacity-80 transition ${currentTab === "featured" ? "text-[hsl(233,100%,70%)]" : ""}`}
+                className={`flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider ${currentTab === "featured" ? "text-[hsl(233,100%,70%)]" : ""}`}
               >
                 <div
                   onClick={() => handleChangeTab("featured")}
-                  className="flex items-center cursor-pointer gap-1.5"
+                  className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition"
                 >
                   <div>
                     <FeaturedIcon
@@ -129,15 +138,26 @@ export default function SearchDropdown({
             </div>
           </div>
           <div className="max-h-auto overflow-y-auto">
-            {lastSearches.map(({ name, value }, index) => (
-              <RecentSearch
-                key={`${name}-${index}`}
-                name={name}
-                value={value}
-                index={index}
-                handleOptionSelect={handleOptionSelect}
-              />
-            ))}
+            {currentTab === "recent" &&
+              lastSearches.map((city, index) => (
+                <RecentSearch
+                  key={`${city.name}-${index}`}
+                  city={city}
+                  index={index}
+                  handleOptionSelect={handleOptionSelect}
+                />
+              ))}
+
+            {currentTab === "featured" &&
+              featuredSearches.map((city, index) => (
+                <FeaturedSearch
+                  key={`${city.name}-${index}`}
+                  featuredSearches={featuredSearches}
+                  city={city}
+                  index={index}
+                  handleOptionSelect={handleOptionSelect}
+                />
+              ))}
           </div>
         </div>
       )}
