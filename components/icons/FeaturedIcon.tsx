@@ -1,6 +1,15 @@
+import { ActiveTab } from "@/types/SearchDropdown";
 import { useState } from "react";
 
-export default function FeaturedIcon({ className }: { className?: string }) {
+export default function FeaturedIcon({
+  className,
+  allowFill = true,
+  currentTab,
+}: {
+  className?: string;
+  allowFill?: boolean;
+  currentTab?: ActiveTab;
+}) {
   const [isFeatured, setIsFeatured] = useState(false);
 
   return (
@@ -10,8 +19,12 @@ export default function FeaturedIcon({ className }: { className?: string }) {
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill={isFeatured ? "hsl(233,100%,70%)" : "none"}
-      stroke={isFeatured ? "hsl(233,100%,70%)" : "currentColor"}
+      fill={
+        (isFeatured && allowFill) || (!allowFill && currentTab === "featured")
+          ? "hsl(233,100%,70%)"
+          : "none"
+      }
+      stroke={isFeatured && allowFill ? "hsl(233,100%,70%)" : "currentColor"}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

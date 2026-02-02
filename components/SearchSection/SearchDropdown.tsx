@@ -18,7 +18,7 @@ export default function SearchDropdown({
   inputValue,
   setInputValue,
 }: SearchDropdownProps) {
-  const [isActive, setIsActive] = useState<ActiveTab>("recent");
+  const [currentTab, setCurrentTab] = useState<ActiveTab>("recent");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function SearchDropdown({
   const searchParams = useSearchParams();
 
   const handleChangeTab = (value: ActiveTab) => {
-    setIsActive(value);
+    setCurrentTab(value);
   };
 
   const handleOptionSelect = async (city: string) => {
@@ -95,28 +95,36 @@ export default function SearchDropdown({
           <div className="flex items-center border-b border-white/10 mx-6  py-5">
             <div className="flex-1">
               <div
-                className={`flex justify-center items-center gap-1.5 flex-1 mx-auto text-xl font-bold tracking-wider hover:opacity-80 transition ${isActive === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
+                className={`flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider hover:opacity-80 transition ${currentTab === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
               >
-                <HistoryIcon className="w-4.25 h-4.25 sm:w-5 sm:h-5 " />
-                <span
-                  className="cursor-pointer text-sm sm:text-lg lg:text-xl"
+                <div
                   onClick={() => handleChangeTab("recent")}
+                  className="flex items-center gap-1.5 cursor-pointer"
                 >
-                  Recent
-                </span>
+                  <HistoryIcon className="w-4.25 h-4.25 sm:w-5 sm:h-5" />
+                  <span className="text-sm sm:text-lg lg:text-xl">Recent</span>
+                </div>
               </div>
             </div>
             <div className="flex-1 h-full">
               <div
-                className={`flex items-center gap-1.5 h-full justify-center mx-auto text-xl font-bold tracking-wider hover:opacity-80 transition ${isActive === "featured" ? "text-[hsl(233,100%,70%)]" : ""}`}
+                className={`flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider hover:opacity-80 transition ${currentTab === "featured" ? "text-[hsl(233,100%,70%)]" : ""}`}
               >
-                <FeaturedIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span
-                  className="cursor-pointer text-sm sm:text-lg lg:text-xl"
+                <div
                   onClick={() => handleChangeTab("featured")}
+                  className="flex items-center cursor-pointer gap-1.5"
                 >
-                  Featured
-                </span>
+                  <div>
+                    <FeaturedIcon
+                      className="w-4 h-4 sm:w-5 sm:h-5"
+                      allowFill={false}
+                      currentTab={currentTab}
+                    />
+                  </div>
+                  <span className="text-sm sm:text-lg lg:text-xl">
+                    Featured
+                  </span>
+                </div>
               </div>
             </div>
           </div>
