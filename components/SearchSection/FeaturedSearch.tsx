@@ -1,28 +1,27 @@
 import { FeaturedIcon } from "@/components/icons";
-import { SearchTabProps } from "@/types/SearchDropdown";
+import { FeaturedTabProps } from "@/types/SearchDropdown";
 
 export default function FeaturedSearch({
-  city,
-  index,
-  handleOptionSelect,
-  featuredSearches,
-}: SearchTabProps) {
+  data,
+  searchSelectedCity,
+  removeFavorite,
+}: FeaturedTabProps) {
+  const city = data.city.charAt(0).toUpperCase() + data.city.slice(1);
+  const country = data.country.charAt(0).toUpperCase() + data.country.slice(1);
+
   return (
-    <div
-      key={`${city.name}-${index}`}
-      className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl"
-    >
+    <div className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl">
       <div
-        onClick={() => handleOptionSelect(city.value)}
+        onClick={() => searchSelectedCity(city)}
         className="flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer"
       >
         <span className="font-normal text-sm sm:text-base md:text-lg">
-          {city.name}
+          {`${city}, ${country}`}
         </span>
       </div>
 
       <div
-        onClick={() => featuredSearches?.splice(index, 1)}
+        onClick={() => removeFavorite(data.id)}
         className="flex items-center gap-1 sm:gap-3 opacity-70"
       >
         <FeaturedIcon

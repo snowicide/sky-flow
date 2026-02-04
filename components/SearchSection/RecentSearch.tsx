@@ -1,28 +1,43 @@
 import { FeaturedIcon, XIcon } from "@/components/icons";
-import { SearchTabProps } from "@/types/SearchDropdown";
+import { RecentTabProps } from "@/types/SearchDropdown";
+import { useState } from "react";
 
 export default function RecentSearch({
-  city,
-  index,
-  handleOptionSelect,
-}: SearchTabProps) {
+  data,
+  searchSelectedCity,
+  toggleFavorite,
+  removeCity,
+}: RecentTabProps) {
+  const [isFeatured, setIsFeatured] = useState<boolean>(false);
+  const city = data.city.charAt(0).toUpperCase() + data.city.slice(1);
+  const country = data.country.charAt(0).toUpperCase() + data.country.slice(1);
+
+  const handleFeaturedIcon = () => {
+    toggleFavorite(data.id, isFeatured);
+    setIsFeatured((prev) => !prev);
+  };
+
   return (
-    <div
-      key={`${city.name}-${index}`}
-      className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl"
-    >
+    <div className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl">
       <div
-        onClick={() => handleOptionSelect(city.value)}
+        onClick={() => searchSelectedCity(city)}
         className="flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer"
       >
         <span className="font-normal text-sm sm:text-base md:text-lg">
-          {city.name}
+          {`${city}, ${country}`}
         </span>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-3 opacity-70">
-        <FeaturedIcon className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer" />
-        <XIcon className="w-5.5 h-5.5 sm:w-6 sm:h-6 hover:text-red-400 cursor-pointer" />
+        <div onClick={handleFeaturedIcon}>
+          <FeaturedIcon
+            isFeatured={isFeatured}
+            className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
+          />
+        </div>
+        <div onClick={() => removeCity(data.id)}>
+          <XIcon className="w-5.5 h-5.5 sm:w-6 sm:h-6 hover:text-red-400 cursor-pointer" />
+        </div>
       </div>
     </div>
   );

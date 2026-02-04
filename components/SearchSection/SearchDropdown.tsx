@@ -1,48 +1,71 @@
 import Image from "next/image";
 import searchIcon from "@/public/icons/icon-search.svg";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ActiveTab, SearchDropdownProps } from "@/types/SearchDropdown";
 import { FeaturedIcon, HistoryIcon } from "@/components/icons";
 import RecentSearch from "./RecentSearch";
 import FeaturedSearch from "./FeaturedSearch";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
+import { useSearchHistoryStore } from "@/stores/useSearchStore";
+import { useShallow } from "zustand/shallow";
 
 export default function SearchDropdown({
   inputValue,
   setInputValue,
 }: SearchDropdownProps) {
-  const [currentTab, setCurrentTab] = useState<ActiveTab>("recent");
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { currentTab, setCurrentTab, isOpen, setIsOpen } =
+    useSearchHistoryStore(
+      useShallow((state) => ({
+        currentTab: state.currentTab,
+        setCurrentTab: state.setCurrentTab,
+        isOpen: state.isOpen,
+        setIsOpen: state.setIsOpen,
+      })),
+    );
   const inputRef = useRef<HTMLInputElement>(null);
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const cityFromUrl = searchParams.get("city") || "Minsk";
 
-  const lastSearches = [
-    { name: "Minsk, Belarus", value: "Minsk" },
-    { name: "Moscow, Russia", value: "Moscow" },
-    { name: "London, United Kingdom", value: "London" },
-    { name: "Alice, United States", value: "Alice" },
-    { name: "Berlin, Germany", value: "Berlin" },
-    { name: "Paris, France", value: "Paris" },
-    { name: "Tokyo, Japan", value: "Tokyo" },
-    { name: "New York, United States", value: "New York" },
-  ];
+  const { isError } = useWeatherQuery(cityFromUrl);
+  const {
+    recent,
+    favorites,
+    addCity,
+    toggleFavorite,
+    removeCity,
+    removeFavorite,
+  } = useSearchHistory();
 
-  const featuredSearches = [
-    { name: "Minsk, Belarus", value: "Minsk" },
-    { name: "Tokyo, Japan", value: "Tokyo" },
-  ];
+  if (isError) return;
 
   const handleChangeTab = (value: ActiveTab) => {
     setCurrentTab(value);
   };
 
-  const handleOptionSelect = async (city: string) => {
+  const searchSelectedCity = async (city: string) => {
     if (!city) return;
-    setIsOpen(false);
     if (inputRef.current) inputRef.current.blur();
+    setIsOpen(false);
     setInputValue("");
+
+    // get country
+    const geoRes = await fetch(
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`,
+    );
+    let country = "Unknown";
+    if (geoRes.ok) {
+      const geoData = await geoRes.json();
+      if (geoData.results?.[0]) {
+        country = geoData.results[0].country || "Unknown";
+      }
+    }
+
+    addCity(city, country);
 
     const params = new URLSearchParams(searchParams.toString());
     params.set("city", city);
@@ -54,7 +77,7 @@ export default function SearchDropdown({
       e.preventDefault();
       const city = inputValue.trim();
       if (city) {
-        handleOptionSelect(city);
+        searchSelectedCity(city);
       }
     }
 
@@ -75,7 +98,7 @@ export default function SearchDropdown({
           onClick={() => {
             const city = inputValue.trim();
             if (city) {
-              handleOptionSelect(city);
+              searchSelectedCity(city);
             }
           }}
         />
@@ -111,7 +134,9 @@ export default function SearchDropdown({
                   className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition"
                 >
                   <HistoryIcon className="w-4.25 h-4.25 sm:w-5 sm:h-5" />
-                  <span className="text-sm sm:text-lg lg:text-xl">Recent</span>
+                  <span className="text-sm sm:text-lg lg:text-xl">
+                    Recent ({recent.length})
+                  </span>
                 </div>
               </div>
             </div>
@@ -131,7 +156,7 @@ export default function SearchDropdown({
                     />
                   </div>
                   <span className="text-sm sm:text-lg lg:text-xl">
-                    Featured
+                    Featured ({favorites.length})
                   </span>
                 </div>
               </div>
@@ -139,23 +164,23 @@ export default function SearchDropdown({
           </div>
           <div className="max-h-auto overflow-y-auto">
             {currentTab === "recent" &&
-              lastSearches.map((city, index) => (
+              recent.map((data, index) => (
                 <RecentSearch
-                  key={`${city.name}-${index}`}
-                  city={city}
-                  index={index}
-                  handleOptionSelect={handleOptionSelect}
+                  key={`${data.city}-${index}`}
+                  data={data}
+                  searchSelectedCity={searchSelectedCity}
+                  toggleFavorite={toggleFavorite}
+                  removeCity={removeCity}
                 />
               ))}
 
             {currentTab === "featured" &&
-              featuredSearches.map((city, index) => (
+              favorites.map((data, index) => (
                 <FeaturedSearch
-                  key={`${city.name}-${index}`}
-                  featuredSearches={featuredSearches}
-                  city={city}
-                  index={index}
-                  handleOptionSelect={handleOptionSelect}
+                  key={`${data.city}-${index}`}
+                  data={data}
+                  removeFavorite={removeFavorite}
+                  searchSelectedCity={searchSelectedCity}
                 />
               ))}
           </div>

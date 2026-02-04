@@ -1,11 +1,17 @@
 "use client";
-import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 import SearchDropdown from "./SearchDropdown";
+import { useSearchHistoryStore } from "@/stores/useSearchStore";
+import { useShallow } from "zustand/shallow";
 
 export default function SearchSection() {
-  const [inputValue, setInputValue] = useState<string>("");
+  const { inputValue, setInputValue } = useSearchHistoryStore(
+    useShallow((state) => ({
+      inputValue: state.inputValue,
+      setInputValue: state.setInputValue,
+    })),
+  );
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

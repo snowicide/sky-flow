@@ -1,18 +1,23 @@
+import { HistoryItem } from "./SearchHistory";
+
 export interface SearchDropdownProps {
   inputValue: string;
   setInputValue: (value: string) => void;
 }
 
-export interface SearchTabProps {
-  handleOptionSelect: (value: string) => void;
-  index: number;
-  featuredSearches?: cityObject[];
-  city: cityObject;
+export interface RecentTabProps {
+  data: HistoryItem;
+
+  searchSelectedCity: (value: string) => void;
+  toggleFavorite: (id: string, isFeatured: boolean) => void;
+  removeCity: (id: string) => void;
 }
 
-interface cityObject {
-  name: string;
-  value: string;
+export interface FeaturedTabProps {
+  data: HistoryItem;
+
+  searchSelectedCity: (value: string) => void;
+  removeFavorite: (id: string) => void;
 }
 
 export type ActiveTab = "recent" | "featured";

@@ -1,5 +1,4 @@
 import { ActiveTab } from "@/types/SearchDropdown";
-import { useState } from "react";
 
 export default function FeaturedIcon({
   className,
@@ -7,18 +6,17 @@ export default function FeaturedIcon({
   currentTab,
   isFilled,
   fillColor,
+  isFeatured,
 }: {
   className?: string;
   allowFill?: boolean;
   currentTab?: ActiveTab;
   isFilled?: boolean;
   fillColor?: string;
+  isFeatured?: boolean;
 }) {
-  const [isFeatured, setIsFeatured] = useState(false);
-
   return (
     <svg
-      onClick={() => setIsFeatured((prev) => !prev)}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
