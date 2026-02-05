@@ -7,9 +7,9 @@ import { FeaturedIcon, HistoryIcon } from "@/components/icons";
 import RecentSearch from "./RecentSearch";
 import FeaturedSearch from "./FeaturedSearch";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
-import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 import { useSearchHistoryStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 
 export default function SearchDropdown({
   inputValue,
@@ -24,6 +24,7 @@ export default function SearchDropdown({
         setIsOpen: state.setIsOpen,
       })),
     );
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
@@ -31,7 +32,8 @@ export default function SearchDropdown({
   const searchParams = useSearchParams();
   const cityFromUrl = searchParams.get("city") || "Minsk";
 
-  const { isError } = useWeatherQuery(cityFromUrl);
+  const { error } = useWeatherQuery(cityFromUrl);
+
   const {
     recent,
     favorites,
@@ -40,8 +42,6 @@ export default function SearchDropdown({
     removeCity,
     removeFavorite,
   } = useSearchHistory();
-
-  if (isError) return;
 
   const handleChangeTab = (value: ActiveTab) => {
     setCurrentTab(value);
@@ -57,15 +57,14 @@ export default function SearchDropdown({
     const geoRes = await fetch(
       `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`,
     );
-    let country = "Unknown";
+
     if (geoRes.ok) {
       const geoData = await geoRes.json();
       if (geoData.results?.[0]) {
-        country = geoData.results[0].country || "Unknown";
+        const country = geoData.results[0].country || "Unknown";
+        addCity(city, country);
       }
     }
-
-    addCity(city, country);
 
     const params = new URLSearchParams(searchParams.toString());
     params.set("city", city);
@@ -114,7 +113,11 @@ export default function SearchDropdown({
           onFocus={() => setIsOpen(true)}
           onBlur={() => setIsOpen(false)}
           value={inputValue}
-          placeholder="Search for a place..."
+          placeholder={
+            error?.message === "GEOCODING_FAILED"
+              ? "City not found..."
+              : "Search for a place..."
+          }
         />
       </div>
       {/* dropdown */}

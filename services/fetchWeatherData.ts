@@ -15,26 +15,14 @@ export async function fetchWeatherData(
 
     if (!geoRes.ok) {
       signal?.throwIfAborted();
-      return {
-        success: false,
-        error: {
-          code: "GEOCODING_FAILED",
-          message: `City ${city} not found.`,
-        },
-      };
+      throw new Error("GEOCODING_FAILED");
     }
 
     const geoData = await geoRes.json();
 
     signal?.throwIfAborted();
     if (!geoData.results || geoData.results.length === 0) {
-      return {
-        success: false,
-        error: {
-          code: "GEOCODING_FAILED",
-          message: `City ${city} not found`,
-        },
-      };
+      throw new Error("GEOCODING_FAILED");
     }
 
     const { latitude, longitude, timezone } = geoData.results[0];
@@ -62,13 +50,7 @@ export async function fetchWeatherData(
 
     if (!forecastRes.ok) {
       signal?.throwIfAborted();
-      return {
-        success: false,
-        error: {
-          code: "FORECAST_FAILED",
-          message: "Weather App temporarily unavailable",
-        },
-      };
+      throw new Error("FORECAST_FAILED");
     }
 
     const forecastData = await forecastRes.json();
@@ -87,18 +69,10 @@ export async function fetchWeatherData(
       validatedCity: geoData.results[0].name,
     };
   } catch (error) {
-    if (signal?.aborted) {
-      throw error;
-    }
+    if (signal?.aborted) throw error;
+
     console.error("Unknown error: ", error);
 
-    return {
-      success: false,
-      error: {
-        code: "UNKNOWN_ERROR",
-        message: error instanceof Error ? error.message : "Unknown error",
-        details: error,
-      },
-    };
+    throw error instanceof Error ? error : new Error("UNKNOWN_ERROR");
   }
 }
