@@ -29,7 +29,7 @@ export default function WeatherContent({
         <div className="flex-1 w-full xl:max-w-200">
           <TodayWeather currentData={current} />
           <WeatherDetails currentData={current} />
-          <DailyForecast />
+          <DailyForecast dailyData={daily} />
         </div>
         <HourlyForecast />
       </div>

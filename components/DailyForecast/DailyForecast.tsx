@@ -3,16 +3,13 @@ import Image from "next/image";
 import { getWeatherCode } from "@/utils/weatherCodes";
 import { formatDayOfWeek } from "@/utils/formatDay";
 import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
-import { useSearchParams } from "next/navigation";
-import { useWeatherQuery } from "@/hooks/useWeatherQuery";
+import { WeatherDataDaily } from "@/types/WeatherData";
 
-export default function DailyForecast() {
-  const searchParams = useSearchParams();
-  const city = searchParams.get("city") || "Minsk";
-  const { data: result } = useWeatherQuery(city);
+export interface DailyForecastProps {
+  dailyData: WeatherDataDaily;
+}
 
-  const dailyData = result.data.daily;
-
+export default function DailyForecast({ dailyData }: DailyForecastProps) {
   const calculateAverageTemps = (min: number, max: number) => {
     const averages = [];
     for (let i = 0; i < dailyData.temperature_2m_max.length; i++) {
