@@ -1,5 +1,5 @@
 {
-  "name": "weather-app",
+  "name": "sky-flow",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,7 @@
     "@tanstack/react-query-devtools": "^5.91.3",
     "axios": "^1.13.2",
     "dayjs": "^1.11.19",
-    "next": "16.1.4",
+    "next": "^16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "use-debounce": "^10.1.0",
