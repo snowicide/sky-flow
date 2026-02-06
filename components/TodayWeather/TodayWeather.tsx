@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import bgTodayMobile from "@/public/images/bg-today-small.svg";
-import bgTodayDesktop from "@/public/images/bg-today-large.svg";
+import bgTodayMobile from "@/public/images/bg-today-small.webp";
+import bgTodayDesktop from "@/public/images/bg-today-large.webp";
 import dayjs from "dayjs";
 import { getWeatherCode } from "@/utils/weatherCodes";
 import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
@@ -17,20 +17,20 @@ export default function TodayWeather({ currentData }: TodayWeatherProps) {
 
   return (
     <div className="relative rounded-2xl py-8 overflow-hidden mb-8">
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 -z-100 w-full h-full">
         <Image
           src={bgTodayMobile}
           alt="Today background"
           priority
-          className=" object-contain w-full h-full scale-1000 md:hidden"
+          fill
+          className=" object-cover w-full h-full md:hidden"
         />
         <Image
           src={bgTodayDesktop}
           alt="Today background"
           priority
-          width={800}
-          height={284}
-          className="w-full h-full object-contain scale-1000 xl:scale-100 hidden md:block"
+          fill
+          className="w-full h-full object-cover hidden md:block"
         />
       </div>
 
