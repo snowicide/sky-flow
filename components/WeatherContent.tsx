@@ -31,7 +31,7 @@ export default function WeatherContent({
           <WeatherDetails currentData={current} />
           <DailyForecast dailyData={daily} />
         </div>
-        <HourlyForecast />
+        <HourlyForecast hourlyData={hourly} />
       </div>
     </>
   );

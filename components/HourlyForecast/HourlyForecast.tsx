@@ -3,21 +3,19 @@ import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 import ChangeSelectedDay from "./ChangeSelectedDay";
 import groupByDay from "@/utils/groupByDay";
-import { useSearchParams } from "next/navigation";
-import { useWeatherQuery } from "@/hooks/useWeatherQuery";
+import { WeatherDataHourly } from "@/types/WeatherData";
 
-export default function HourlyForecast() {
+export interface HourlyForecastProps {
+  hourlyData: WeatherDataHourly;
+}
+
+export default function HourlyForecast({ hourlyData }: HourlyForecastProps) {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
   const hoursRef = useRef<HTMLDivElement>(null);
 
-  const searchParams = useSearchParams();
-  const city = searchParams.get("city") || "Minsk";
-  const { data: result } = useWeatherQuery(city);
-
   const days = useMemo(() => {
-    if (!result?.success) return [];
-    return groupByDay(result.data.hourly).slice(1);
-  }, [result]);
+    return groupByDay(hourlyData).slice(1);
+  }, [hourlyData]);
 
   const selectedDay = days[selectedDayIndex] || {
     date: "",
