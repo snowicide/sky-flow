@@ -23,14 +23,21 @@ export default function ChangeSelectedDay({
 
   return (
     <Listbox value={selectedDay} onChange={handleChange}>
-      <ListboxButton className="flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,30%)] px-5 py-2 rounded-lg border border-white/10 hover:opacity-70 transition-opacity">
-        <span>{selectedDay}</span>
-        <Image src={dropdownIcon} className="w-4 h-4" alt="Dropdown" />
-      </ListboxButton>
+      <div className="border border-white/0 active:border-white/20 rounded-lg">
+        <ListboxButton className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,30%)] border border-white/10 hover:opacity-80 px-5 py-2 rounded-lg transition-opacity">
+          <span>{selectedDay}</span>
+          <Image
+            src={dropdownIcon}
+            className="w-4 h-4 group-data-open:rotate-180 transition-transform duration-200"
+            alt="Dropdown"
+          />
+        </ListboxButton>
+      </div>
 
       <ListboxOptions
-        className="bg-[hsl(243,27%,20%)] [--anchor-gap:10px] focus:outline-none border border-white/10 rounded-xl w-55 justify-self-center shadow-[0_10px_12px_black]/25"
+        className="bg-[hsl(243,27%,20%)] [--anchor-gap:10px] focus:outline-none border border-white/10 rounded-xl w-55 justify-self-center shadow-[0_10px_12px_black]/25 transition-transform duration-150  data-closed:opacity-0 data-closed:scale-95 data-closed:-translate-y-2"
         modal={false}
+        transition
         anchor="bottom end"
       >
         {days.map(({ dayName }, index) => (
