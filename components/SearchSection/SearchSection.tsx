@@ -16,7 +16,7 @@ export default function SearchSection() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const cityFromUrl = searchParams.get("city") || "Minsk";
+  const cityFromUrl = searchParams.get("city") || "minsk";
   const { isError } = useWeatherQuery(cityFromUrl);
 
   const handleSearch = () => {
@@ -25,7 +25,7 @@ export default function SearchSection() {
 
     const params = new URLSearchParams();
     params.set("city", city);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString().toLowerCase()}`);
     setInputValue("");
   };
 

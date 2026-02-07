@@ -11,7 +11,7 @@ interface WeatherPageProps {
 
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const params = await searchParams;
-  if (!params.city) redirect("/?city=Minsk");
+  if (!params.city) redirect("/?city=minsk");
 
   return (
     <>

@@ -13,7 +13,7 @@ export default function WeatherContent({
   params: { city?: string };
 }) {
   const { data, isPending, isError, error } = useWeatherQuery(
-    params.city || "Minsk",
+    params.city?.toLowerCase() || "minsk",
   );
 
   if (isPending) return <WeatherContentSkeleton />;

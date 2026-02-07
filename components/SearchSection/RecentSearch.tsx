@@ -9,8 +9,10 @@ export default function RecentSearch({
   removeCity,
 }: RecentTabProps) {
   const [isFeatured, setIsFeatured] = useState<boolean>(false);
-  const city = data.city.charAt(0).toUpperCase() + data.city.slice(1);
-  const country = data.country.charAt(0).toUpperCase() + data.country.slice(1);
+  const city =
+    data.city.charAt(0).toUpperCase() + data.city.slice(1).toLocaleLowerCase();
+  const country =
+    data.country.charAt(0).toUpperCase() + data.country.slice(1).toLowerCase();
 
   const handleFeaturedIcon = () => {
     toggleFavorite(data.id, isFeatured);

@@ -30,7 +30,7 @@ export default function SearchDropdown({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const cityFromUrl = searchParams.get("city") || "Minsk";
+  const cityFromUrl = searchParams.get("city") || "minsk";
 
   const { error } = useWeatherQuery(cityFromUrl);
 
@@ -68,7 +68,7 @@ export default function SearchDropdown({
 
     const params = new URLSearchParams(searchParams.toString());
     params.set("city", city);
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString().toLowerCase()}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
