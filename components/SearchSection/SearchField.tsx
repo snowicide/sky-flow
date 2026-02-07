@@ -3,15 +3,15 @@ import searchIcon from "@/public/icons/icon-search.svg";
 import { useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FeaturedIcon, HistoryIcon } from "@/components/icons";
-import RecentSearch from "./RecentSearch";
-import FeaturedSearch from "./FeaturedSearch";
+import { RecentSearch } from "./RecentSearch";
+import { FeaturedSearch } from "./FeaturedSearch";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { useSearchHistoryStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import type { ActiveTab, SearchDropdownProps } from "./SearchDropdown.types";
+import type { ActiveTab, SearchDropdownProps } from "./SearchField.types";
 
-export default function SearchDropdown({
+export function SearchField({
   inputValue,
   setInputValue,
 }: SearchDropdownProps) {

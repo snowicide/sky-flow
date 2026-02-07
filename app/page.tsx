@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import { SearchSection } from "@/components/SearchSection";
 import { Metadata } from "next";
 import { fetchWeatherData } from "@/services/fetchWeatherData";
-import WeatherContent from "@/components/WeatherContent";
+import { WeatherContent } from "@/components/WeatherContent";
 import { redirect } from "next/navigation";
 
 interface WeatherPageProps {

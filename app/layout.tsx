@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import { HydrationStore } from "./providers/HydrationStore";
+import { QueryProvider } from "./providers/QueryProvider";
 import "./globals.css";
-import HydrationStore from "./providers/HydrationStore";
-import QueryProvider from "./providers/QueryProvider";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",

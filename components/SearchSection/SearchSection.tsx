@@ -1,7 +1,7 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import SearchDropdown from "./SearchDropdown";
+import { SearchField } from "./SearchField";
 import { useSearchHistoryStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 
@@ -39,10 +39,7 @@ export default function SearchSection() {
         <div
           className={`flex items-center flex-1 group bg-[hsl(243,27%,20%)] hover:bg-[hsl(243,27%,20%)]/80 focus-within:bg-[hsl(243,27%,20%)]/80 focus-within:ring-2 focus-within:ring-[hsl(233,67%,56%)] transition duration-75 rounded-xl px-4 py-3 ${isError ? "ring-1 ring-red-500/50" : ""}`}
         >
-          <SearchDropdown
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-          />
+          <SearchField inputValue={inputValue} setInputValue={setInputValue} />
         </div>
         <button
           onClick={handleSearch}

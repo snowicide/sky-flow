@@ -1,8 +1,8 @@
 import { FeaturedIcon, XIcon } from "@/components/icons";
 import { useState } from "react";
-import type { RecentTabProps } from "./SearchDropdown.types";
+import type { RecentTabProps } from "./SearchField.types";
 
-export default function RecentSearch({
+export function RecentSearch({
   data,
   searchSelectedCity,
   toggleFavorite,

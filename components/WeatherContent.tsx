@@ -7,11 +7,7 @@ import { HourlyForecast } from "./HourlyForecast";
 import { StatusSection } from "./StatusSection";
 import { WeatherContentSkeleton } from "./WeatherSkeleton";
 
-export default function WeatherContent({
-  params,
-}: {
-  params: { city?: string };
-}) {
+export function WeatherContent({ params }: { params: { city?: string } }) {
   const { data, isPending, isError, error } = useWeatherQuery(
     params.city?.toLowerCase() || "minsk",
   );
