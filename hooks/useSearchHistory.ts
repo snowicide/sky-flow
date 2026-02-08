@@ -99,18 +99,19 @@ class WeatherFavoriteStore {
 
 const recentStore = new WeatherRecentStore();
 const favoriteStore = new WeatherFavoriteStore();
+const EMPTY_ARRAY: [] = [];
 
 export function useSearchHistory() {
   const recent = useSyncExternalStore(
     (listener) => recentStore.subscribe(listener),
     () => recentStore.getSnapshot(),
-    () => recentStore.getSnapshot(),
+    () => EMPTY_ARRAY,
   );
 
   const favorites = useSyncExternalStore(
     (listener) => favoriteStore.subscribe(listener),
     () => favoriteStore.getSnapshot(),
-    () => favoriteStore.getSnapshot(),
+    () => EMPTY_ARRAY,
   );
 
   const addCity = useCallback(

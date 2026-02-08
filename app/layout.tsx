@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import { HydrationStore } from "./providers/HydrationStore";
 import { QueryProvider } from "./providers/QueryProvider";
 import "./globals.css";
 
@@ -25,9 +24,7 @@ export default function RootLayout({
         className={`${dmSans.className} antialiased`}
         suppressHydrationWarning
       >
-        <QueryProvider>
-          <HydrationStore>{children}</HydrationStore>
-        </QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );

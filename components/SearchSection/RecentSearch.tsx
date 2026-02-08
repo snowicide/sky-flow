@@ -34,7 +34,7 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
       <div className="flex items-center gap-1 sm:gap-3 opacity-70">
         <div onClick={handleFeaturedIcon}>
           <FeaturedIcon
-            isFeatured={currentRecent.isFavorite}
+            isFeatured={currentRecent?.isFavorite}
             className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
           />
         </div>
