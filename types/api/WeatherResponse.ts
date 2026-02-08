@@ -17,7 +17,6 @@ export type WeatherResponse =
         hourly: WeatherDataHourly;
         daily: WeatherDataDaily;
       };
-      validatedCity: string;
     }
   | {
       success: false;

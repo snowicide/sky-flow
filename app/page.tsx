@@ -35,7 +35,7 @@ export async function generateMetadata({
     if (!city) return { title: "SkyFlow" };
     const initialData = await fetchWeatherData(city);
     const cityName = initialData.success
-      ? initialData.validatedCity
+      ? initialData.data.current.city
       : "Not found";
 
     return { title: `SkyFlow - ${cityName}` };

@@ -31,7 +31,7 @@ export function useSearchActions() {
   ) => {
     // if not clicked recent - using input value
     const targetCity = city || inputValue.trim();
-    if (!targetCity || targetCity.length <= 1) return;
+    if (!targetCity) return;
 
     inputRef?.current?.blur();
     setIsOpen(false);

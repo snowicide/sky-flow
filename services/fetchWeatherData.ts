@@ -37,7 +37,7 @@ export async function fetchWeatherData(
       };
     }
 
-    const { latitude, longitude, timezone } = geoData.results[0];
+    const { latitude, longitude, timezone, name, country } = geoData.results[0];
     const forecastUrl =
       `https://api.open-meteo.com/v1/forecast?` +
       new URLSearchParams({
@@ -72,13 +72,12 @@ export async function fetchWeatherData(
       data: {
         current: {
           ...forecastData.current,
-          city: geoData.results[0].name,
-          country: geoData.results[0].country,
+          city: name,
+          country,
         } as WeatherDataCurrent,
         hourly: forecastData.hourly as WeatherDataHourly,
         daily: forecastData.daily as WeatherDataDaily,
       },
-      validatedCity: geoData.results[0].name,
     };
   } catch (error) {
     if (signal?.aborted) throw error;

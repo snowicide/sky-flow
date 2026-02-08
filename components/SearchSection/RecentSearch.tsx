@@ -1,15 +1,13 @@
 import { FeaturedIcon, XIcon } from "@/components/icons";
-import { useState } from "react";
 import type { RecentTabProps } from "./SearchField.types";
 import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { HistoryItem } from "./SearchHistory.types";
 
 export function RecentSearch({ data, inputRef }: RecentTabProps) {
-  const [isFeatured, setIsFeatured] = useState<boolean>(false);
-
   const { searchSelectedCity } = useSearchActions();
 
-  const { toggleFavorite, removeCity } = useSearchHistory();
+  const { toggleFavorite, removeCity, recent } = useSearchHistory();
 
   const city =
     data.city.charAt(0).toUpperCase() + data.city.slice(1).toLocaleLowerCase();
@@ -18,8 +16,11 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
 
   const handleFeaturedIcon = () => {
     toggleFavorite(data.id);
-    setIsFeatured((prev) => !prev);
   };
+
+  const currentRecent = recent.filter(
+    (item: HistoryItem) => item.id === data.id,
+  )[0];
 
   return (
     <li className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl">
@@ -33,7 +34,7 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
       <div className="flex items-center gap-1 sm:gap-3 opacity-70">
         <div onClick={handleFeaturedIcon}>
           <FeaturedIcon
-            isFeatured={isFeatured}
+            isFeatured={currentRecent.isFavorite}
             className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
           />
         </div>
