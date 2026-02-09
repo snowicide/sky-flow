@@ -14,7 +14,12 @@ class WeatherStore {
   private loadFromStorage() {
     try {
       const saved = localStorage.getItem(this.storageKey);
-      this.data = saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      if (Array.isArray(parsed)) {
+        this.data = parsed;
+      } else {
+        this.data = [];
+      }
     } catch {
       this.data = [];
     }
@@ -36,8 +41,7 @@ class WeatherStore {
   }
 
   reset() {
-    const saved = localStorage.getItem(this.storageKey);
-    this.data = saved ? JSON.parse(saved) : [];
+    this.loadFromStorage();
     this.listeners.forEach((listener) => listener());
   }
 }
