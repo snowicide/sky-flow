@@ -108,16 +108,13 @@ export function useSearchHistory() {
 
   const removeFavorite = useCallback(
     (id: string) => {
-      const newData = favorites.filter((item) => item.id !== id);
-      const currentRecentCity = recent.find((item) => item.id === id);
+      const newFavorites = favorites.filter((item) => item.id !== id);
+      favoriteStore.update(newFavorites);
 
-      if (currentRecentCity) {
-        recentStore.update([
-          { ...currentRecentCity, isFavorite: false },
-          ...recent.filter((item) => item.id !== id),
-        ]);
-      }
-      favoriteStore.update(newData);
+      const newRecent = recent.map((item) =>
+        item.id === id ? { ...item, isFavorite: false } : item,
+      );
+      recentStore.update(newRecent);
     },
     [recent, favorites],
   );
