@@ -1,21 +1,27 @@
 import type { HistoryItem } from "@/components/SearchSection/SearchHistory.types";
 import { useCallback, useSyncExternalStore } from "react";
 
-class WeatherRecentStore {
-  private recentData: HistoryItem[] = [];
+class WeatherStore {
+  private data: HistoryItem[] = [];
   private listeners = new Set<() => void>();
+  private storageKey: string;
 
-  constructor() {
+  constructor(storageKey: string) {
+    this.storageKey = storageKey;
+    this.loadFromStorage();
+  }
+
+  private loadFromStorage() {
     try {
-      const saved = localStorage.getItem("weather-recent");
-      this.recentData = saved ? JSON.parse(saved) : [];
+      const saved = localStorage.getItem(this.storageKey);
+      this.data = saved ? JSON.parse(saved) : [];
     } catch {
-      this.recentData = [];
+      this.data = [];
     }
   }
 
   getSnapshot() {
-    return this.recentData;
+    return this.data;
   }
 
   subscribe(listener: () => void) {
@@ -24,81 +30,20 @@ class WeatherRecentStore {
   }
 
   update(newData: HistoryItem[]) {
-    this.recentData = newData;
-    localStorage.setItem("weather-recent", JSON.stringify(newData));
+    this.data = newData;
+    localStorage.setItem(this.storageKey, JSON.stringify(newData));
     this.listeners.forEach((listener) => listener());
   }
 
-  addCity(city: string, country: string) {
-    const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
-
-    const newItem = {
-      id,
-      city: city.trim(),
-      country: country.trim(),
-      isFavorite: false,
-      timestamp: Date.now(),
-    };
-
-    const newData = [
-      newItem,
-      ...this.recentData.filter((item) => item.id !== id),
-    ].slice(0, 8);
-
-    this.update(newData);
-  }
-}
-
-class WeatherFavoriteStore {
-  private favoriteData: HistoryItem[] = [];
-  private listeners = new Set<() => void>();
-
-  constructor() {
-    try {
-      const saved = localStorage.getItem("weather-favorite");
-      this.favoriteData = saved ? JSON.parse(saved) : [];
-    } catch {
-      this.favoriteData = [];
-    }
-  }
-
-  getSnapshot() {
-    return this.favoriteData;
-  }
-
-  subscribe(listener: () => void) {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
-  }
-
-  update(newData: HistoryItem[]) {
-    this.favoriteData = newData;
-    localStorage.setItem("weather-favorite", JSON.stringify(newData));
+  reset() {
+    const saved = localStorage.getItem(this.storageKey);
+    this.data = saved ? JSON.parse(saved) : [];
     this.listeners.forEach((listener) => listener());
   }
-
-  addCity(city: string, country: string) {
-    const id = `${city.trim()}-${country.trim()}`;
-
-    const newItem = {
-      id,
-      city: city.trim(),
-      country: country.trim(),
-      isFavorite: true,
-      timestamp: Date.now(),
-    };
-
-    const newData = [
-      newItem,
-      ...this.favoriteData.filter((item) => item.id !== id),
-    ];
-
-    this.update(newData);
-  }
 }
 
-const recentStore = new WeatherRecentStore();
-const favoriteStore = new WeatherFavoriteStore();
+export const recentStore = new WeatherStore("weather-recent");
+export const favoriteStore = new WeatherStore("weather-favorite");
 const EMPTY_ARRAY: [] = [];
 
 export function useSearchHistory() {
@@ -115,8 +60,25 @@ export function useSearchHistory() {
   );
 
   const addCity = useCallback(
-    (city: string, country: string) => recentStore.addCity(city, country),
-    [],
+    (city: string, country: string) => {
+      const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
+
+      const newItem = {
+        id,
+        city: city.trim(),
+        country: country.trim(),
+        isFavorite: false,
+        timestamp: Date.now(),
+      };
+
+      const newData = [
+        newItem,
+        ...recent.filter((item) => item.id !== id),
+      ].slice(0, 8);
+
+      recentStore.update(newData);
+    },
+    [recent],
   );
 
   const toggleFavorite = useCallback(
