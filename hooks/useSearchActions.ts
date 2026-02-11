@@ -3,6 +3,7 @@ import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { fetchWeatherData } from "@/services/fetchWeatherData";
 
 export function useSearchActions() {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =
@@ -29,30 +30,24 @@ export function useSearchActions() {
     city?: string,
     inputRef?: React.RefObject<HTMLInputElement | null>,
   ) => {
-    // if not clicked recent - using input value
-    const targetCity = city || inputValue.trim();
+    const targetCity = (city || inputValue.trim()).toLowerCase();
     if (!targetCity) return;
 
     inputRef?.current?.blur();
     setIsOpen(false);
     setInputValue("");
 
-    // get country
-    const geoRes = await fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(targetCity)}&count=1`,
-    );
+    const data = await fetchWeatherData(targetCity);
 
-    if (geoRes.ok) {
-      const geoData = await geoRes.json();
-      if (geoData.results?.[0]) {
-        const country = geoData.results[0].country || "Unknown";
-        addCity(targetCity, country);
-      }
+    if (data?.success) {
+      const country = data.data.current.country || "Unknown";
+      // always lowercase
+      addCity(targetCity, country?.toLowerCase());
     }
 
     const params = new URLSearchParams(searchParams.toString());
     params.set("city", targetCity);
-    router.push(`${pathname}?${params.toString().toLowerCase()}`);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleKeydown = (

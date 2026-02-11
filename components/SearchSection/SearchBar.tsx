@@ -9,20 +9,11 @@ import { ComponentPropsWithoutRef, forwardRef } from "react";
 import type { SearchBarProps } from "./SearchBar.types";
 
 export function SearchBar({ inputRef }: SearchBarProps) {
-  const { setIsOpen, inputValue } = useSearchStore(
-    useShallow((state) => ({
-      setIsOpen: state.setIsOpen,
-      inputValue: state.inputValue,
-      setInputValue: state.setInputValue,
-    })),
-  );
-
   const searchParams = useSearchParams();
   const cityFromUrl = searchParams.get("city") || "minsk";
   const { error } = useWeatherQuery(cityFromUrl);
 
-  const { searchSelectedCity, handleKeydown, handleChangeInput } =
-    useSearchActions();
+  const { searchSelectedCity } = useSearchActions();
 
   return (
     <div className="col-start-1 row-start-1 flex items-center w-full group">
@@ -34,12 +25,6 @@ export function SearchBar({ inputRef }: SearchBarProps) {
       />
       <SearchInput
         ref={inputRef}
-        aria-label="Search"
-        onKeyDown={(e) => handleKeydown(e, inputRef)}
-        onChange={(e) => handleChangeInput(e)}
-        value={inputValue}
-        onFocus={() => setIsOpen(true)}
-        onBlur={() => setIsOpen(false)}
         placeholder={
           error?.message === "GEOCODING_FAILED"
             ? "City not found..."
@@ -54,10 +39,28 @@ export const SearchInput = forwardRef<
   HTMLInputElement,
   ComponentPropsWithoutRef<"input">
 >((props, ref) => {
+  const { setIsOpen, inputValue } = useSearchStore(
+    useShallow((state) => ({
+      setIsOpen: state.setIsOpen,
+      inputValue: state.inputValue,
+      setInputValue: state.setInputValue,
+    })),
+  );
+
+  const { handleKeydown, handleChangeInput } = useSearchActions();
+
   return (
     <input
-      ref={ref}
       {...props}
+      ref={ref}
+      aria-label="Search"
+      value={inputValue}
+      onKeyDown={(e) =>
+        handleKeydown(e, ref as React.RefObject<HTMLInputElement>)
+      }
+      onChange={(e) => handleChangeInput(e)}
+      onFocus={() => setIsOpen(true)}
+      onBlur={() => setTimeout(() => setIsOpen(false), 1)}
       className="flex-1 min-w-0 bg-transparent placeholder-white/70 text-base sm:text-lg outline-none"
     />
   );

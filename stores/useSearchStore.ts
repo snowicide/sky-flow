@@ -14,6 +14,8 @@ export interface SearchStore {
   setInputValue: (value: string) => void;
   setCurrentTab: (tab: ActiveTab) => void;
   setIsOpen: (value: boolean) => void;
+
+  reset: () => void;
 }
 
 export const useSearchStore = create<SearchStore>((set) => ({
@@ -28,4 +30,13 @@ export const useSearchStore = create<SearchStore>((set) => ({
   setInputValue: (value: string) => set({ inputValue: value }),
   setCurrentTab: (tab: ActiveTab) => set({ currentTab: tab }),
   setIsOpen: (value: boolean) => set({ isOpen: value }),
+
+  reset: () =>
+    set({
+      recent: [],
+      favorites: [],
+      inputValue: "",
+      currentTab: "recent",
+      isOpen: false,
+    }),
 }));
