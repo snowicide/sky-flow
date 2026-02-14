@@ -12,7 +12,6 @@ import { SearchInput } from "@/components/SearchSection/SearchBar";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type { WeatherData } from "@/types/api/WeatherData";
 
 const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -128,109 +127,33 @@ describe("useSearchActions", () => {
     expect(useSearchStore.getState().inputValue).toBe("");
     expect(document.activeElement).not.toBe(inputElement);
   });
-});
 
-describe("API calls", () => {
-  let mockWeatherData: WeatherData;
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockFetchWeatherData.mockClear();
-    mockAddCity.mockClear();
-
-    mockWeatherData = {
-      current: {
-        time: "2026-02-11T14:15",
-        temperature_2m: -2.6,
-        weather_code: 3,
-        city: "Minsk",
-        country: "Belarus",
-      },
-      daily: {
-        time: ["2026-02-11"],
-        temperature_2m_max: [-0.4],
-        weather_code: [71],
-      },
-      hourly: {
-        time: ["2026-02-11T00:00"],
-        temperature_2m: [-7.5],
-        weather_code: [71],
-      },
-    } as WeatherData;
-  });
-
-  it("should fetch weather data, add to history and change URL", async () => {
+  it("should change URL", () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
-    mockFetchWeatherData.mockResolvedValue({
-      success: true,
-      data: mockWeatherData,
-    });
+    act(() => result.current.searchSelectedCity("Berlin"));
 
-    await act(async () => await result.current.searchSelectedCity("Minsk"));
-
-    expect(mockFetchWeatherData).toHaveBeenCalledTimes(1);
-    expect(mockFetchWeatherData).toHaveBeenCalledWith("minsk");
-
-    expect(mockAddCity).toHaveBeenCalledTimes(1);
-    expect(mockAddCity).toHaveBeenCalledWith("minsk", "belarus");
-
-    expect(mockPush).toHaveBeenLastCalledWith(
-      expect.stringContaining("city=minsk"),
-    );
-  });
-
-  it("should handle city not found", async () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
-
-    mockFetchWeatherData.mockResolvedValue({
-      success: false,
-      error: {
-        code: "GEOCODING_FAILED",
-        message: "City not found",
-      },
-    });
-
-    await act(
-      async () => await result.current.searchSelectedCity("NonExist123"),
+    expect(mockPush).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledWith(
+      expect.stringContaining("city=berlin"),
     );
 
-    expect(mockFetchWeatherData).toHaveBeenCalledTimes(1);
-    expect(mockFetchWeatherData).toHaveBeenCalledWith("nonexist123");
-    expect(mockAddCity).not.toHaveBeenCalled();
-  });
+    act(() => result.current.searchSelectedCity("NonExist123"));
 
-  it("should handle fetchWeatherData throwing an error", async () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
-
-    mockFetchWeatherData.mockRejectedValue(new Error("NETWORK_ERROR"));
-
-    await act(async () => {
-      try {
-        await result.current.searchSelectedCity("Minsk");
-      } catch (error) {
-        if (error instanceof Error) {
-          expect(error.message).toBe("NETWORK_ERROR");
-        } else {
-          throw new Error("UNKNOWN_ERROR");
-        }
-      }
-    });
-
-    expect(mockAddCity).not.toHaveBeenCalled();
-  });
-
-  it("shouldn't fetch when empty input", async () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
-
-    act(() => useSearchStore.getState().setInputValue(""));
-    await act(
-      async () =>
-        await result.current.searchSelectedCity(
-          useSearchStore.getState().inputValue,
-        ),
+    expect(mockPush).toHaveBeenCalledTimes(2);
+    expect(mockPush).toHaveBeenCalledWith(
+      expect.stringContaining("city=nonexist123"),
     );
 
     expect(mockFetchWeatherData).not.toHaveBeenCalled();
+    expect(mockAddCity).not.toHaveBeenCalled();
+    expect(useSearchStore.getState().inputValue).toBe("");
+  });
+
+  it("shouldn't navigate when input is empty", () => {
+    const { result } = renderHookWithClient(() => useSearchActions());
+
+    act(() => result.current.searchSelectedCity(""));
+    expect(mockPush).not.toHaveBeenCalled();
   });
 });
