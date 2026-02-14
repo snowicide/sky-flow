@@ -1,24 +1,30 @@
 import { fetchWeatherData } from "@/services/fetchWeatherData";
+import { AppError } from "@/types/errors";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchHistory } from "./useSearchHistory";
 
 export function useWeatherQuery(city: string) {
+  const { addCity } = useSearchHistory();
+
   return useQuery({
     queryKey: ["weather", city],
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      return fetchWeatherData(city, combinedSignal);
+      const data = await fetchWeatherData(city, combinedSignal);
+      if (data) {
+        const { city, country } = data.current;
+        addCity(city.toLowerCase(), country.toLowerCase());
+      }
+      return data;
     },
+
     enabled: !!city && city.trim().length > 0,
 
     retry: (failureCount, error) => {
-      if (
-        error?.message?.includes("404") ||
-        error?.message === "GEOCODING_FAILED" ||
-        error?.name === "AbortError"
-      )
-        return false;
-
+      if (error instanceof AppError) {
+        if (error.code === "GEOCODING_FAILED") return false;
+      }
       return failureCount < 3;
     },
 

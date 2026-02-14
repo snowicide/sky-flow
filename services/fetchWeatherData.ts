@@ -4,6 +4,7 @@ import type {
   WeatherDataDaily,
 } from "@/types/api/WeatherData";
 import type { WeatherResponse } from "@/types/api/WeatherResponse";
+import { AppError } from "@/types/errors";
 
 export async function fetchWeatherData(
   city: string,
@@ -15,27 +16,17 @@ export async function fetchWeatherData(
 
     if (!geoRes.ok) {
       signal?.throwIfAborted();
-      return {
-        success: false,
-        error: {
-          code: "GEOCODING_FAILED",
-          message: `City ${city} not found...`,
-        },
-      };
+      throw new AppError(
+        "GEOCODING_FAILED",
+        `Check your network connection...`,
+      );
     }
 
     const geoData = await geoRes.json();
 
     signal?.throwIfAborted();
-    if (!geoData.results || geoData.results.length === 0) {
-      return {
-        success: false,
-        error: {
-          code: "GEOCODING_FAILED",
-          message: `City ${city} not found...`,
-        },
-      };
-    }
+    if (!geoData.results || geoData.results.length === 0)
+      throw new AppError("GEOCODING_FAILED", `City ${city} not found...`);
 
     const { latitude, longitude, timezone, name, country } = geoData.results[0];
     const forecastUrl =
@@ -62,28 +53,28 @@ export async function fetchWeatherData(
 
     if (!forecastRes.ok) {
       signal?.throwIfAborted();
-      throw new Error("FORECAST_FAILED");
+      throw new AppError(
+        "FORECAST_FAILED",
+        "Server is temporarily unavailable...",
+      );
     }
 
     const forecastData = await forecastRes.json();
 
     return {
-      success: true,
-      data: {
-        current: {
-          ...forecastData.current,
-          city: name,
-          country,
-        } as WeatherDataCurrent,
-        hourly: forecastData.hourly as WeatherDataHourly,
-        daily: forecastData.daily as WeatherDataDaily,
-      },
+      current: {
+        ...forecastData.current,
+        city: name,
+        country,
+      } as WeatherDataCurrent,
+      hourly: forecastData.hourly as WeatherDataHourly,
+      daily: forecastData.daily as WeatherDataDaily,
     };
   } catch (error) {
     if (signal?.aborted) throw error;
-
-    console.error("Unknown error: ", error);
-
-    throw error instanceof Error ? error : new Error("UNKNOWN_ERROR");
+    if (error instanceof AppError) throw error;
+    const message =
+      error instanceof Error ? error.message : "Unexpected error...";
+    throw new AppError("UNKNOWN_ERROR", message);
   }
 }

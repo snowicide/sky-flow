@@ -34,9 +34,13 @@ class WeatherStore {
     return () => this.listeners.delete(listener);
   }
 
-  update(newData: HistoryItem[]) {
-    this.data = newData;
-    localStorage.setItem(this.storageKey, JSON.stringify(newData));
+  update(newData: HistoryItem[] | ((prev: HistoryItem[]) => HistoryItem[])) {
+    if (typeof newData === "function") {
+      this.data = newData(this.data);
+    } else {
+      this.data = newData;
+    }
+    localStorage.setItem(this.storageKey, JSON.stringify(this.data));
     this.listeners.forEach((listener) => listener());
   }
 
@@ -63,11 +67,11 @@ export function useSearchHistory() {
     () => EMPTY_ARRAY,
   );
 
-  const addCity = useCallback(
-    (city: string, country: string) => {
+  const addCity = useCallback((city: string, country: string) => {
+    recentStore.update((prev: HistoryItem[]) => {
       const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
 
-      const newItem = {
+      const newItem: HistoryItem = {
         id,
         city: city.trim(),
         country: country.trim(),
@@ -75,15 +79,14 @@ export function useSearchHistory() {
         timestamp: Date.now(),
       };
 
-      const newData = [
+      const newData: HistoryItem[] = [
         newItem,
-        ...recent.filter((item) => item.id !== id),
+        ...prev.filter((item) => item.id !== id),
       ].slice(0, 8);
 
-      recentStore.update(newData);
-    },
-    [recent],
-  );
+      return newData;
+    });
+  }, []);
 
   const toggleFavorite = useCallback(
     (id: string) => {

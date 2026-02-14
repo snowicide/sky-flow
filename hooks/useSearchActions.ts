@@ -1,9 +1,7 @@
-import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { fetchWeatherData } from "@/services/fetchWeatherData";
 
 export function useSearchActions() {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =
@@ -20,13 +18,11 @@ export function useSearchActions() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { addCity } = useSearchHistory();
-
   const handleChangeTab = (value: ActiveTab) => {
     setCurrentTab(value);
   };
 
-  const searchSelectedCity = async (
+  const searchSelectedCity = (
     city?: string,
     inputRef?: React.RefObject<HTMLInputElement | null>,
   ) => {
@@ -36,14 +32,6 @@ export function useSearchActions() {
     inputRef?.current?.blur();
     setIsOpen(false);
     setInputValue("");
-
-    const data = await fetchWeatherData(targetCity);
-
-    if (data?.success) {
-      const country = data.data.current.country || "Unknown";
-      // always lowercase
-      addCity(targetCity, country?.toLowerCase());
-    }
 
     const params = new URLSearchParams(searchParams.toString());
     params.set("city", targetCity);

@@ -9,16 +9,8 @@ export type WeatherError = {
   message: string;
   details?: unknown;
 };
-export type WeatherResponse =
-  | {
-      success: true;
-      data: {
-        current: WeatherDataCurrent;
-        hourly: WeatherDataHourly;
-        daily: WeatherDataDaily;
-      };
-    }
-  | {
-      success: false;
-      error: WeatherError;
-    };
+export type WeatherResponse = {
+  current: WeatherDataCurrent;
+  hourly: WeatherDataHourly;
+  daily: WeatherDataDaily;
+};

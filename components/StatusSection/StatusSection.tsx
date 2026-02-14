@@ -1,21 +1,22 @@
 import Image from "next/image";
 import retryIcon from "@/public/icons/icon-retry.svg";
 import type { StatusSectionProps } from "./StatusSection.types";
+import { AppError } from "@/types/errors";
 
-export default function StatusSection({
-  isError,
-  error,
-  data,
-}: StatusSectionProps) {
+export default function StatusSection({ error }: StatusSectionProps) {
   const getErrorMessage = () => {
-    if (isError) {
-      if (error?.message === "FORECAST_FAILED")
-        return "Server is temporarily unavailable...";
-      if (error?.message === "UNKNOWN-ERROR")
-        return "Check your network connection.";
-      return "Unexpected error.";
+    if (error instanceof AppError) {
+      switch (error.code) {
+        case "GEOCODING_FAILED":
+          return error.message;
+        case "FORECAST_FAILED":
+          return "Server is temporarily unavailable...";
+        case "UNKNOWN_ERROR":
+          return "Check your network connection...";
+        default:
+          return "Unexpected error...";
+      }
     }
-    if (!data?.success) return data?.error.message || "City not found...";
   };
 
   return (

@@ -13,10 +13,10 @@ export function WeatherContent({ params }: { params: { city?: string } }) {
   );
 
   if (isPending) return <WeatherContentSkeleton />;
-  if (isError || !data.success)
+  if (isError || !data)
     return <StatusSection isError={isError} data={data} error={error} />;
 
-  const { current, daily, hourly } = data.data;
+  const { current, daily, hourly } = data;
 
   return (
     <>
