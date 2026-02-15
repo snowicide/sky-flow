@@ -11,15 +11,18 @@ export default function SearchSection() {
         How&apos;s the sky looking today?
       </h1>
 
-      <div className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          searchSelectedCity();
+        }}
+        className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto"
+      >
         <SearchField />
-        <button
-          onClick={() => searchSelectedCity()}
-          className="bg-[hsl(233,67%,56%)] text-white font-medium py-3 px-6 rounded-xl text-base sm:text-lg whitespace-nowrap hover:opacity-90 transition-opacity"
-        >
+        <button className="bg-[hsl(233,67%,56%)] text-white font-medium py-3 px-6 rounded-xl text-base sm:text-lg whitespace-nowrap hover:opacity-90 transition-opacity">
           Search
         </button>
-      </div>
+      </form>
     </section>
   );
 }
