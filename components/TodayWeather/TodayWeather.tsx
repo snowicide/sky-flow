@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import bgTodayMobile from "@/public/images/bg-today-small.webp";
 import bgTodayDesktop from "@/public/images/bg-today-large.webp";
 import dayjs from "dayjs";
 import { getWeatherCode } from "@/utils/weatherCodes";
@@ -18,18 +17,13 @@ export default function TodayWeather({ currentData }: TodayWeatherProps) {
     >
       <div className="absolute inset-0 -z-100 w-full h-full">
         <Image
-          src={bgTodayMobile}
-          alt="Today background"
-          priority
-          fill
-          className=" object-cover w-full h-full md:hidden"
-        />
-        <Image
           src={bgTodayDesktop}
           alt="Today background"
-          priority
+          loading="eager"
+          fetchPriority="high"
           fill
-          className="w-full h-full object-cover hidden md:block"
+          sizes="(max-width: 800px) 100vw, 800px"
+          className="object-cover object-[center_top] md:object-center"
         />
       </div>
 
