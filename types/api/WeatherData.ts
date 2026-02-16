@@ -2,6 +2,13 @@ export interface WeatherData {
   current: WeatherDataCurrent;
   hourly: WeatherDataHourly;
   daily: WeatherDataDaily;
+  forecastUnits: WeatherDataUnits;
+}
+
+export interface WeatherDataUnits {
+  temperature: string;
+  speed: string;
+  precipitation: string;
 }
 
 export interface WeatherDataCurrent {

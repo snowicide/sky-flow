@@ -1,7 +1,8 @@
-import {
+import type {
   WeatherDataCurrent,
   WeatherDataHourly,
   WeatherDataDaily,
+  WeatherDataUnits,
 } from "@/types/api/WeatherData";
 
 export type WeatherError = {
@@ -13,4 +14,5 @@ export type WeatherResponse = {
   current: WeatherDataCurrent;
   hourly: WeatherDataHourly;
   daily: WeatherDataDaily;
+  forecastUnits: WeatherDataUnits;
 };

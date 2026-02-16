@@ -2,16 +2,18 @@ import { fetchWeatherData } from "@/services/fetchWeatherData";
 import { AppError } from "@/types/errors";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchHistory } from "./useSearchHistory";
+import { useSettingsStore } from "@/stores/useSettingsStore";
 
 export function useWeatherQuery(city: string) {
   const { addCity } = useSearchHistory();
+  const units = useSettingsStore((state) => state.units);
 
   return useQuery({
-    queryKey: ["weather", city],
+    queryKey: ["weather", city, units],
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      const data = await fetchWeatherData(city, combinedSignal);
+      const data = await fetchWeatherData(city, units, combinedSignal);
       if (data) {
         const { city, country } = data.current;
         addCity(city.toLowerCase(), country.toLowerCase());

@@ -1,13 +1,16 @@
+import type { Units } from "@/stores/useSettingsStore";
 import type {
   WeatherDataCurrent,
   WeatherDataHourly,
   WeatherDataDaily,
+  WeatherDataUnits,
 } from "@/types/api/WeatherData";
 import type { WeatherResponse } from "@/types/api/WeatherResponse";
 import { AppError } from "@/types/errors";
 
 export async function fetchWeatherData(
   city: string,
+  units: Units,
   signal?: AbortSignal,
 ): Promise<WeatherResponse> {
   try {
@@ -23,7 +26,6 @@ export async function fetchWeatherData(
     }
 
     const geoData = await geoRes.json();
-
     signal?.throwIfAborted();
     if (!geoData.results || geoData.results.length === 0)
       throw new AppError("GEOCODING_FAILED", `City ${city} not found...`);
@@ -44,9 +46,9 @@ export async function fetchWeatherData(
 
         timezone,
         forecast_days: "7",
-        temperature_unit: "celsius",
-        wind_speed_unit: "kmh",
-        precipitation_unit: "mm",
+        temperature_unit: units.temp,
+        wind_speed_unit: units.speed,
+        precipitation_unit: units.precipitation,
       }).toString();
 
     const forecastRes = await fetch(forecastUrl, { signal });
@@ -60,6 +62,11 @@ export async function fetchWeatherData(
     }
 
     const forecastData = await forecastRes.json();
+    const {
+      apparent_temperature: temperature,
+      wind_speed_10m,
+      precipitation,
+    } = forecastData.current_units;
 
     return {
       current: {
@@ -69,6 +76,11 @@ export async function fetchWeatherData(
       } as WeatherDataCurrent,
       hourly: forecastData.hourly as WeatherDataHourly,
       daily: forecastData.daily as WeatherDataDaily,
+      forecastUnits: {
+        temperature: temperature,
+        speed: wind_speed_10m,
+        precipitation,
+      } as WeatherDataUnits,
     };
   } catch (error) {
     if (signal?.aborted) throw error;
