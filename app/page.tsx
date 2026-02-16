@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import { Header } from "@/components/Header";
 import { SearchSection } from "@/components/SearchSection";
 import { Metadata } from "next";
 import { fetchWeatherData } from "@/services/fetchWeatherData";
