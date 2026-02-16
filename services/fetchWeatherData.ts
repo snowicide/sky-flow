@@ -1,3 +1,4 @@
+import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
 import type { Units } from "@/stores/useSettingsStore";
 import type {
   WeatherDataCurrent,
@@ -10,7 +11,7 @@ import { AppError } from "@/types/errors";
 
 export async function fetchWeatherData(
   city: string,
-  units: Units,
+  units: Units = DEFAULT_UNITS,
   signal?: AbortSignal,
 ): Promise<WeatherResponse> {
   try {

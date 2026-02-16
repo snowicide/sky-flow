@@ -6,25 +6,34 @@ import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 import type { DailyForecastProps } from "./DailyForecastProps.types";
 
 export default function DailyForecast({ dailyData }: DailyForecastProps) {
+  const {
+    temperature_2m_min: tempMin,
+    temperature_2m_max: tempMax,
+    time,
+    weather_code: weatherCode,
+    apparent_temperature_min: apparentTempMin,
+    apparent_temperature_max: apparentTempMax,
+  } = dailyData;
+
   const calculateAverageTemps = (min: number, max: number) => {
     const averages = [];
-    for (let i = 0; i < dailyData.temperature_2m_max.length; i++) {
+    for (let i = 0; i < tempMax.length; i++) {
       const avg = Math.round((min + max) / 2);
       averages.push(avg);
     }
     return averages;
   };
 
-  const DailyForecast = dailyData.time.map((dateStr: string, index: number) => {
+  const DailyForecast = time.map((dateStr: string, index: number) => {
     const date = new Date(dateStr);
-    const code = getWeatherCode(dailyData.weather_code[index]);
+    const code = getWeatherCode(weatherCode[index]);
     const image = getIconByWeatherCode[code];
 
     return {
       day: formatDayOfWeek(date),
-      weatherCode: dailyData.weather_code?.[index] || 0,
-      temp: `${calculateAverageTemps(dailyData.temperature_2m_min[index], dailyData.temperature_2m_max[index])[index]}°`,
-      feelsLike: `${calculateAverageTemps(dailyData.apparent_temperature_min[index], dailyData.apparent_temperature_max[index])[index]}°`,
+      weatherCode: weatherCode?.[index] || 0,
+      temp: `${calculateAverageTemps(tempMin[index], tempMax[index])[index]}°`,
+      feelsLike: `${calculateAverageTemps(apparentTempMin[index], apparentTempMax[index])[index]}°`,
       date: dateStr,
       image,
     };

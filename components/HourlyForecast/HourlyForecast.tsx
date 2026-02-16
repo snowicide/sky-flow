@@ -5,7 +5,10 @@ import ChangeSelectedDay from "./ChangeSelectedDay";
 import groupByDay from "@/utils/groupByDay";
 import type { HourlyForecastProps } from "./HourlyForecast.types";
 
-export default function HourlyForecast({ hourlyData }: HourlyForecastProps) {
+export default function HourlyForecast({
+  hourlyData,
+  forecastUnits,
+}: HourlyForecastProps) {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
   const hoursRef = useRef<HTMLUListElement>(null);
 
@@ -56,7 +59,12 @@ export default function HourlyForecast({ hourlyData }: HourlyForecastProps) {
                 />
                 <span className="font-medium">{hour}</span>
               </div>
-              <span className="text-xl font-bold">{temp.toFixed(1)}°</span>
+              <span className="text-xl font-bold">
+                {temp.toFixed(1)}{" "}
+                <span className="text-white/70 text-lg">
+                  {forecastUnits.temperature}
+                </span>
+              </span>
             </li>
           ))}
         </ul>

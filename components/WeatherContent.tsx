@@ -16,17 +16,17 @@ export function WeatherContent({ params }: { params: { city?: string } }) {
   if (isError || !data)
     return <StatusSection isError={isError} data={data} error={error} />;
 
-  const { current, daily, hourly } = data;
+  const { current, daily, hourly, forecastUnits } = data;
 
   return (
     <>
       <div className="flex flex-col items-center lg:items-start justify-center lg:flex-row gap-8">
         <div className="flex-1 w-full xl:max-w-200">
-          <TodayWeather currentData={current} />
-          <WeatherDetails currentData={current} />
+          <TodayWeather currentData={current} forecastUnits={forecastUnits} />
+          <WeatherDetails currentData={current} forecastUnits={forecastUnits} />
           <DailyForecast dailyData={daily} />
         </div>
-        <HourlyForecast hourlyData={hourly} />
+        <HourlyForecast hourlyData={hourly} forecastUnits={forecastUnits} />
       </div>
     </>
   );

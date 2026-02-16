@@ -6,7 +6,10 @@ import { getWeatherCode } from "@/utils/weatherCodes";
 import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
 import type { TodayWeatherProps } from "./TodayWeather.types";
 
-export default function TodayWeather({ currentData }: TodayWeatherProps) {
+export default function TodayWeather({
+  currentData,
+  forecastUnits,
+}: TodayWeatherProps) {
   const code = getWeatherCode(currentData.weather_code);
   const icon = getIconByWeatherCode[code];
 
@@ -43,11 +46,13 @@ export default function TodayWeather({ currentData }: TodayWeatherProps) {
             <div className="relative w-20 h-20 sm:w-35 sm:h-35">
               <Image src={icon} alt="Sunny" className="object-contain" />
             </div>
-            <div className="font-bold flex gap-3">
+            <div className="font-bold flex gap-5">
               <span className="text-5xl sm:text-6xl md:text-8xl italic">
                 {currentData.temperature_2m.toFixed(1)}
               </span>
-              <span className="text-4xl sm:text-6xl">°</span>
+              <span className="text-4xl sm:text-5xl">
+                {forecastUnits.temperature}
+              </span>
             </div>
           </div>
         </div>
