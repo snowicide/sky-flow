@@ -70,20 +70,30 @@ export default function UnitsSettings() {
       >
         <MenuItem>
           <div
-            onClick={reset}
-            className="hover:bg-[hsl(243,23%,30%)] rounded-xl mx-2 px-3 my-2 py-3 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              reset();
+            }}
+            className="hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)] transition-colors rounded-xl mx-2 px-3 mt-2 -mb-2 py-3 cursor-pointer"
           >
             Switch to Imperial
           </div>
         </MenuItem>
 
         {menuOptions.map((option) => (
-          <div key={option.id}>
-            <h2 className="text-sm text-white/70 ml-5">{option.title}</h2>
+          <div
+            key={option.id}
+            className="mt-4 mx-2 border-b border-white/10 last:border-b-0"
+          >
+            <h2 className="text-sm text-white/70 ml-3">{option.title}</h2>
             <MenuItem>
               <div
-                onClick={() => setUnits({ [option.unit]: option.value1 })}
-                className="flex justify-between items-center hover:bg-[hsl(243,23%,30%)] rounded-xl mx-2 px-3 my-2 py-3 cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setUnits({ [option.unit]: option.value1 });
+                }}
+                className="flex justify-between items-center hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)] transition-colors rounded-xl px-3 my-2 py-3 cursor-pointer"
               >
                 <span>{option.option1}</span>
                 {units[option.unit] === option.value1 && (
@@ -94,8 +104,12 @@ export default function UnitsSettings() {
 
             <MenuItem>
               <div
-                onClick={() => setUnits({ [option.unit]: option.value2 })}
-                className="flex justify-between items-center hover:bg-[hsl(243,23%,30%)] rounded-xl mx-2 px-3 my-2 py-3 cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setUnits({ [option.unit]: option.value2 });
+                }}
+                className="flex justify-between items-center hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)] transition-colors rounded-xl px-3 my-2 py-3 cursor-pointer"
               >
                 <span>{option.option2}</span>
                 {units[option.unit] === option.value2 && (
