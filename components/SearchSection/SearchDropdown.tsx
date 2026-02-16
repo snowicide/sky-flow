@@ -35,6 +35,9 @@ export function SearchDropdown({
           className="flex items-center border-b border-white/10 mx-6 py-5"
         >
           <li
+            role="tab"
+            aria-selected={currentTab === "recent"}
+            aria-label="Recent searches"
             onClick={() => handleChangeTab("recent")}
             className={` gap-1.5 cursor-pointer hover:opacity-80 transition flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider ${currentTab === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
           >
@@ -44,6 +47,9 @@ export function SearchDropdown({
             </span>
           </li>
           <li
+            role="tab"
+            aria-selected={currentTab === "featured"}
+            aria-label="Featured searches"
             onClick={() => handleChangeTab("featured")}
             className={`flex-1 gap-1.5 cursor-pointer hover:opacity-80 transition flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider ${currentTab === "featured" ? "text-[hsl(233,100%,70%)]" : ""}`}
           >

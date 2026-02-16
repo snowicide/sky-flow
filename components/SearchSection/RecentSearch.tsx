@@ -23,8 +23,15 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
   )[0];
 
   return (
-    <li className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl">
+    <li
+      role="option"
+      aria-selected="false"
+      aria-label={`${city}, ${country}`}
+      className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl"
+    >
       <div
+        role="button"
+        aria-label={`Select ${city}`}
         onClick={() => searchSelectedCity(city, inputRef)}
         className="font-normal text-sm sm:text-base md:text-lg flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer"
       >
@@ -32,15 +39,23 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
       </div>
 
       <div className="flex items-center gap-1 sm:gap-3 opacity-70">
-        <div onClick={handleFeaturedIcon}>
+        <button
+          role="button"
+          aria-label="Toggle favorite"
+          onClick={handleFeaturedIcon}
+        >
           <FeaturedIcon
             isFeatured={currentRecent?.isFavorite}
             className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
           />
-        </div>
-        <div onClick={() => removeCity(data.id)}>
+        </button>
+        <button
+          role="button"
+          aria-label="Remove from history"
+          onClick={() => removeCity(data.id)}
+        >
           <XIcon className="w-5.5 h-5.5 sm:w-6 sm:h-6 hover:text-red-400 cursor-pointer" />
-        </div>
+        </button>
       </div>
     </li>
   );
