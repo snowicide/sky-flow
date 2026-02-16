@@ -1,6 +1,7 @@
 import { AppError } from "@/types/errors";
 import { fetchWeatherData } from "./fetchWeatherData";
 import { vi } from "vitest";
+import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
 
 describe("fetchWeatherData", () => {
   let city: string;
@@ -17,6 +18,7 @@ describe("fetchWeatherData", () => {
     current: object;
     daily: object;
     hourly: object;
+    current_units: object;
   };
 
   beforeEach(() => {
@@ -39,6 +41,7 @@ describe("fetchWeatherData", () => {
       current: { city: "Berlin", country: "Germany" },
       daily: {},
       hourly: {},
+      current_units: {},
     };
   });
 
@@ -55,7 +58,7 @@ describe("fetchWeatherData", () => {
       json: async () => forecastData,
     } as Response);
 
-    const data = await fetchWeatherData(city, undefined);
+    const data = await fetchWeatherData(city, DEFAULT_UNITS, undefined);
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
 
@@ -120,7 +123,7 @@ describe("fetchWeatherData", () => {
     });
 
     await expect(
-      fetchWeatherData(city, abortController.signal),
+      fetchWeatherData(city, DEFAULT_UNITS, abortController.signal),
     ).rejects.toThrow();
   });
 });
