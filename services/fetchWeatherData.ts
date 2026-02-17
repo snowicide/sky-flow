@@ -1,5 +1,4 @@
 import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
-import type { Units } from "@/stores/useSettingsStore";
 import type {
   WeatherDataCurrent,
   WeatherDataHourly,
@@ -11,7 +10,7 @@ import { AppError } from "@/types/errors";
 
 export async function fetchWeatherData(
   city: string,
-  units: Units = DEFAULT_UNITS,
+  units: WeatherDataUnits = DEFAULT_UNITS,
   signal?: AbortSignal,
 ): Promise<WeatherResponse> {
   try {
@@ -47,7 +46,7 @@ export async function fetchWeatherData(
 
         timezone,
         forecast_days: "7",
-        temperature_unit: units.temp,
+        temperature_unit: units.temperature,
         wind_speed_unit: units.speed,
         precipitation_unit: units.precipitation,
       }).toString();

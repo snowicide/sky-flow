@@ -1,15 +1,15 @@
+import type { WeatherDataUnits } from "@/types/api/WeatherData";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface Units {
-  temp: "celsius" | "fahrenheit";
-  speed: "kmh" | "mph";
-  precipitation: "mm" | "inch";
-}
 export interface SettingsStore {
-  units: Units;
+  units: WeatherDataUnits;
 
-  setUnits: (update: Partial<Units> | ((prev: Units) => Units)) => void;
+  setUnits: (
+    update:
+      | Partial<WeatherDataUnits>
+      | ((prev: WeatherDataUnits) => WeatherDataUnits),
+  ) => void;
   reset: () => void;
 }
 
@@ -17,12 +17,16 @@ export const useSettingsStore = create<SettingsStore>()(
   persist(
     (set) => ({
       units: {
-        temp: "celsius",
+        temperature: "celsius",
         speed: "kmh",
         precipitation: "mm",
       },
 
-      setUnits: (update: Partial<Units> | ((prev: Units) => Units)) =>
+      setUnits: (
+        update:
+          | Partial<WeatherDataUnits>
+          | ((prev: WeatherDataUnits) => WeatherDataUnits),
+      ) =>
         set((state) => ({
           units:
             typeof update === "function"
@@ -33,7 +37,7 @@ export const useSettingsStore = create<SettingsStore>()(
       reset: () =>
         set({
           units: {
-            temp: "celsius",
+            temperature: "celsius",
             speed: "kmh",
             precipitation: "mm",
           },

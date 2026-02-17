@@ -4,11 +4,12 @@ import Image from "next/image";
 import dropdownIcon from "@/public/icons/icon-dropdown.svg";
 import unitsIcon from "@/public/icons/icon-units.svg";
 import checkmarkIcon from "@/public/icons/icon-checkmark.svg";
-import { useSettingsStore, type Units } from "@/stores/useSettingsStore";
+import { useSettingsStore } from "@/stores/useSettingsStore";
 import { useShallow } from "zustand/shallow";
+import type { WeatherDataUnits } from "@/types/api/WeatherData";
 
-export const DEFAULT_UNITS: Units = {
-  temp: "celsius",
+export const DEFAULT_UNITS: WeatherDataUnits = {
+  temperature: "celsius",
   speed: "kmh",
   precipitation: "mm",
 };
@@ -26,7 +27,7 @@ export default function UnitsSettings() {
     {
       id: 1,
       title: "Temperature",
-      unit: "temp" as keyof Units,
+      unit: "temperature" as keyof WeatherDataUnits,
       option1: "Celsius (°C)",
       value1: "celsius",
       option2: "Fahrenheit (°F)",
@@ -35,7 +36,7 @@ export default function UnitsSettings() {
     {
       id: 2,
       title: "Wind Speed",
-      unit: "speed" as keyof Units,
+      unit: "speed" as keyof WeatherDataUnits,
       option1: "Kilometers (km)",
       value1: "kmh",
       option2: "Miles (mi)",
@@ -44,7 +45,7 @@ export default function UnitsSettings() {
     {
       id: 3,
       title: "Precipitation",
-      unit: "precipitation" as keyof Units,
+      unit: "precipitation" as keyof WeatherDataUnits,
       option1: "Millimeters (mm)",
       value1: "mm",
       option2: "Inches (in)",
