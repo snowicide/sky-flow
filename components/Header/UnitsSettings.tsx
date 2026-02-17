@@ -55,7 +55,10 @@ export default function UnitsSettings() {
 
   return (
     <Menu>
-      <div className="border border-white/0 active:border-white/20 rounded-lg">
+      <div
+        aria-label="Units"
+        className="border border-white/0 active:border-white/20 rounded-lg"
+      >
         <MenuButton className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,24%)] border border-white/10 hover:opacity-80 px-3 py-2 rounded-lg transition-opacity">
           <Image src={unitsIcon} className="w-3.5" alt="Units Icon" />
           <span className="text-[14px]">Units</span>
@@ -71,6 +74,8 @@ export default function UnitsSettings() {
       >
         <MenuItem>
           <div
+            aria-label="default option"
+            aria-selected="false"
             onClick={(e) => {
               e.stopPropagation();
               reset();
@@ -89,6 +94,8 @@ export default function UnitsSettings() {
             <h2 className="text-sm text-white/70 ml-3">{option.title}</h2>
             <MenuItem>
               <div
+                aria-label={`${option.value1} option`}
+                aria-selected="false"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -105,6 +112,8 @@ export default function UnitsSettings() {
 
             <MenuItem>
               <div
+                aria-label={`${option.value2} option`}
+                aria-selected="false"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
