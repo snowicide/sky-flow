@@ -2,6 +2,8 @@ import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebounce } from "use-debounce";
+import { useSearchQuery } from "./useSearchQuery";
 
 export function useSearchActions() {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =
@@ -13,6 +15,10 @@ export function useSearchActions() {
         setIsOpen: state.setIsOpen,
       })),
     );
+
+  const [delayValue] = useDebounce(inputValue, 1000);
+  const { data: resultData, isPending: isResultPending } =
+    useSearchQuery(delayValue);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -63,5 +69,7 @@ export function useSearchActions() {
     searchSelectedCity,
     handleKeydown,
     handleChangeInput,
+    resultData,
+    isResultPending,
   };
 }
