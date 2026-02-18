@@ -1,6 +1,6 @@
 import type { ActiveTab } from "../SearchSection/SearchField.types";
 
-export default function FeaturedIcon({
+export function FeaturedIcon({
   className,
   allowFill = true,
   currentTab,

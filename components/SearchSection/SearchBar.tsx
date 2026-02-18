@@ -43,7 +43,6 @@ export const SearchInput = forwardRef<
     useShallow((state) => ({
       setIsOpen: state.setIsOpen,
       inputValue: state.inputValue,
-      setInputValue: state.setInputValue,
     })),
   );
 
