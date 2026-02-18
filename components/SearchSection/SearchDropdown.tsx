@@ -4,7 +4,12 @@ import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import { RecentSearch } from "./RecentSearch";
 import { FeaturedSearch } from "./FeaturedSearch";
-import { FeaturedIcon, HistoryIcon, RecentAlertIcon } from "../icons";
+import {
+  FeaturedIcon,
+  HistoryIcon,
+  RecentAlertIcon,
+  UnfavoriteIcon,
+} from "../icons";
 
 export function SearchDropdown({
   inputRef,
@@ -65,29 +70,40 @@ export function SearchDropdown({
         </ul>
         {/* current tab */}
         <ul className="max-h-auto overflow-y-auto">
-          {currentTab === "recent" && recent.length >= 1 ? (
-            recent.map((data, index) => (
-              <RecentSearch
-                key={`${data.id}-${index}`}
-                data={data}
-                inputRef={inputRef}
-              />
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-items-center my-30 gap-2">
-              <RecentAlertIcon className="text-white/70 w-8 h-8" />
-              <span className="text-lg font-bold tracking-wider text-white/90">
-                There is no city you seen recently!
-              </span>
-            </div>
-          )}
+          {currentTab === "recent" &&
+            (recent.length >= 1 ? (
+              recent.map((data, index) => (
+                <RecentSearch
+                  key={`${data.id}-${index}`}
+                  data={data}
+                  inputRef={inputRef}
+                />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-items-center my-30 gap-2">
+                <RecentAlertIcon className="w-8 h-8" />
+                <span className="text-lg font-bold tracking-wider text-white/90">
+                  There is no city you seen recently!
+                </span>
+              </div>
+            ))}
+
           {currentTab === "featured" &&
-            favorites.map((data, index) => (
-              <FeaturedSearch
-                key={`${data.id}-${index}`}
-                data={data}
-                inputRef={inputRef}
-              />
+            (favorites.length >= 1 ? (
+              favorites.map((data, index) => (
+                <FeaturedSearch
+                  key={`${data.id}-${index}`}
+                  data={data}
+                  inputRef={inputRef}
+                />
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-items-center my-30 gap-2">
+                <UnfavoriteIcon className="w-8 h-8" />
+                <span className="text-lg font-bold tracking-wider text-white/90">
+                  There is no city you have in favorites!
+                </span>
+              </div>
             ))}
         </ul>
       </div>

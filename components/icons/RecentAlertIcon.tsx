@@ -6,7 +6,7 @@ export function RecentAlertIcon({ className }: { className?: string }) {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke="#b0b0b0"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
