@@ -2,9 +2,9 @@ import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
-import { FeaturedIcon, HistoryIcon } from "../icons";
 import { RecentSearch } from "./RecentSearch";
 import { FeaturedSearch } from "./FeaturedSearch";
+import { FeaturedIcon, HistoryIcon, RecentAlertIcon } from "../icons";
 
 export function SearchDropdown({
   inputRef,
@@ -65,14 +65,22 @@ export function SearchDropdown({
         </ul>
         {/* current tab */}
         <ul className="max-h-auto overflow-y-auto">
-          {currentTab === "recent" &&
+          {currentTab === "recent" && recent.length >= 1 ? (
             recent.map((data, index) => (
               <RecentSearch
                 key={`${data.id}-${index}`}
                 data={data}
                 inputRef={inputRef}
               />
-            ))}
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-items-center my-30 gap-2">
+              <RecentAlertIcon className="text-white/70 w-8 h-8" />
+              <span className="text-lg font-bold tracking-wider text-white/90">
+                There is no city you seen recently!
+              </span>
+            </div>
+          )}
           {currentTab === "featured" &&
             favorites.map((data, index) => (
               <FeaturedSearch
