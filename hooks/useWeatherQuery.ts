@@ -7,13 +7,20 @@ import { useSettingsStore } from "@/stores/useSettingsStore";
 export function useWeatherQuery(city: string) {
   const { addCity } = useSearchHistory();
   const units = useSettingsStore((state) => state.units);
+  const queryValue = city.trim().toLowerCase();
 
   return useQuery({
-    queryKey: ["weather", city, units],
+    queryKey: [
+      "weather",
+      queryValue,
+      units.temperature,
+      units.speed,
+      units.precipitation,
+    ],
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      const data = await fetchWeatherData(city, units, combinedSignal);
+      const data = await fetchWeatherData(queryValue, units, combinedSignal);
       if (data) {
         const { city, country } = data.current;
         addCity(city.toLowerCase(), country.toLowerCase());
@@ -21,7 +28,7 @@ export function useWeatherQuery(city: string) {
       return data;
     },
 
-    enabled: !!city && city.trim().length > 0,
+    enabled: !!queryValue && queryValue.trim().length > 0,
 
     retry: (failureCount, error) => {
       if (error instanceof AppError) {
@@ -34,6 +41,7 @@ export function useWeatherQuery(city: string) {
 
     refetchOnWindowFocus: false,
 
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }
