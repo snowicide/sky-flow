@@ -1,8 +1,7 @@
-export interface SearchDataItem {
+export interface SearchResultCityProps {
   city: string;
   country: string;
-  weatherCode: number;
   temperature: number;
   temperatureUnit: string;
-  id: number;
+  weatherCode: number;
 }

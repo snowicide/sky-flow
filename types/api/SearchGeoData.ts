@@ -8,4 +8,5 @@ export interface SearchGeoDataItem {
   timezone: string;
   name: string;
   country: string;
+  id: number;
 }

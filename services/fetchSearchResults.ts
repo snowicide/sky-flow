@@ -71,6 +71,7 @@ export async function fetchSearchResults(
         ...filteredData[index],
         city: item.name,
         country: item.country,
+        id: item.id,
       };
     });
 
