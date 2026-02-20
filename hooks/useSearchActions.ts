@@ -4,6 +4,8 @@ import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useSearchQuery } from "./useSearchQuery";
+import { fetchGeoData } from "@/services/fetchGeoData";
+import { useSearchHistory } from "./useSearchHistory";
 
 export function useSearchActions() {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =
@@ -20,6 +22,8 @@ export function useSearchActions() {
   const { data: resultData, isPending: isResultPending } =
     useSearchQuery(delayValue);
 
+  const { addCity } = useSearchHistory();
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -29,19 +33,53 @@ export function useSearchActions() {
   };
 
   const searchSelectedCity = (
-    city?: string,
+    cityData: {
+      city: string;
+      country: string;
+      lat: number;
+      lon: number;
+    },
     inputRef?: React.RefObject<HTMLInputElement | null>,
   ) => {
-    const targetCity = (city || inputValue.trim()).toLowerCase();
-    if (!targetCity) return;
-
     inputRef?.current?.blur();
     setIsOpen(false);
     setInputValue("");
 
+    if (cityData) {
+      const { lat, lon, city, country } = cityData;
+      addCity(
+        city.toLowerCase(),
+        country.toLowerCase(),
+        Number(lat),
+        Number(lon),
+      );
+    }
+
+    const latStr = cityData.lat.toString();
+    const lonStr = cityData.lon.toString();
+
     const params = new URLSearchParams(searchParams.toString());
-    params.set("city", targetCity);
+    params.set("city", cityData.city);
+    params.set("country", cityData.country);
+    params.set("lat", latStr);
+    params.set("lon", lonStr);
     router.push(`${pathname}?${params.toString()}`);
+  };
+
+  const searchCityWithName = async (city: string) => {
+    const targetCity = city.trim().toLowerCase();
+    if (!targetCity) return;
+
+    const geoData = await fetchGeoData(targetCity);
+
+    const cityData = {
+      city: geoData.results[0].name,
+      country: geoData.results[0].country,
+      lat: geoData.results[0].latitude,
+      lon: geoData.results[0].longitude,
+    };
+
+    searchSelectedCity(cityData);
   };
 
   const handleKeydown = (
@@ -50,7 +88,10 @@ export function useSearchActions() {
   ) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      searchSelectedCity(undefined, inputRef);
+      searchCityWithName(inputValue);
+      inputRef?.current?.blur();
+      setIsOpen(false);
+      setInputValue("");
     }
 
     if (e.key === "Escape") {
@@ -71,5 +112,6 @@ export function useSearchActions() {
     handleChangeInput,
     resultData,
     isResultPending,
+    searchCityWithName,
   };
 }

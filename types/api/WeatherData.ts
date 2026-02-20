@@ -22,6 +22,8 @@ export interface WeatherDataCurrent {
   time: string;
   weather_code: number;
   wind_speed_10m: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface WeatherDataHourly {

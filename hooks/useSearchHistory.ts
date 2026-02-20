@@ -67,26 +67,31 @@ export function useSearchHistory() {
     () => EMPTY_ARRAY,
   );
 
-  const addCity = useCallback((city: string, country: string) => {
-    recentStore.update((prev: HistoryItem[]) => {
-      const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
+  const addCity = useCallback(
+    (city: string, country: string, lat: number, lon: number) => {
+      recentStore.update((prev: HistoryItem[]) => {
+        const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
 
-      const newItem: HistoryItem = {
-        id,
-        city: city.trim(),
-        country: country.trim(),
-        isFavorite: false,
-        timestamp: Date.now(),
-      };
+        const newItem: HistoryItem = {
+          id,
+          city: city.trim(),
+          country: country.trim(),
+          isFavorite: false,
+          timestamp: Date.now(),
+          latitude: lat,
+          longitude: lon,
+        };
 
-      const newData: HistoryItem[] = [
-        newItem,
-        ...prev.filter((item) => item.id !== id),
-      ].slice(0, 8);
+        const newData: HistoryItem[] = [
+          newItem,
+          ...prev.filter((item) => item.id !== id),
+        ].slice(0, 8);
 
-      return newData;
-    });
-  }, []);
+        return newData;
+      });
+    },
+    [],
+  );
 
   const toggleFavorite = useCallback(
     (id: string) => {

@@ -15,7 +15,11 @@ export function useSearchQuery(searchResult: string) {
       units.speed,
       units.precipitation,
     ],
-    queryFn: () => fetchSearchResults(queryValue, units),
+    queryFn: async ({ signal }) => {
+      const timeoutSignal = AbortSignal.timeout(5000);
+      const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
+      return fetchSearchResults(queryValue, units, combinedSignal);
+    },
 
     enabled: !!queryValue && queryValue.trim().length > 0,
 

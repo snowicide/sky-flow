@@ -1,9 +1,9 @@
 import { Header } from "@/components/Header";
 import { SearchSection } from "@/components/SearchSection";
 import { Metadata } from "next";
-import { fetchWeatherData } from "@/services/fetchWeatherData";
 import { WeatherContent } from "@/components/WeatherContent";
 import { redirect } from "next/navigation";
+import { fetchGeoData } from "@/services/fetchGeoData";
 
 interface WeatherPageProps {
   searchParams: Promise<{ city?: string }>;
@@ -11,7 +11,8 @@ interface WeatherPageProps {
 
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const params = await searchParams;
-  if (!params.city) redirect("/?city=minsk");
+  if (!params.city)
+    redirect("/?city=Minsk&lat=53.9&lon=27.56667&country=Belarus");
 
   return (
     <>
@@ -28,13 +29,16 @@ export default async function WeatherPage({ searchParams }: WeatherPageProps) {
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ city?: string }>;
+  searchParams: Promise<{ city?: string; lat?: string; lon?: string }>;
 }): Promise<Metadata> {
   try {
-    const { city } = await searchParams;
+    const { city, lat, lon } = await searchParams;
     if (!city) return { title: "SkyFlow" };
-    const initialData = await fetchWeatherData(city);
-    const cityName = initialData ? initialData.current.city : "Not found";
+    const data = await fetchGeoData(city);
+    const targetCity = data.results.find(
+      (item) => item.latitude === Number(lat) && item.longitude === Number(lon),
+    );
+    const cityName = targetCity ? targetCity.name : "Not found";
 
     return { title: `SkyFlow - ${cityName}` };
   } catch {

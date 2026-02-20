@@ -1,9 +1,8 @@
 import Image from "next/image";
 import retryIcon from "@/public/icons/icon-retry.svg";
-import type { StatusSectionProps } from "./StatusSection.types";
 import { AppError } from "@/types/errors";
 
-export default function StatusSection({ error }: StatusSectionProps) {
+export default function StatusSection({ error }: { error: Error | null }) {
   const getErrorMessage = () => {
     if (error instanceof AppError) {
       switch (error.code) {

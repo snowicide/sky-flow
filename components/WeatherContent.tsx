@@ -7,14 +7,25 @@ import { HourlyForecast } from "./HourlyForecast";
 import { StatusSection } from "./StatusSection";
 import { WeatherContentSkeleton } from "./WeatherSkeleton";
 
-export function WeatherContent({ params }: { params: { city?: string } }) {
+export function WeatherContent({
+  params,
+}: {
+  params: { city?: string; lat?: string; lon?: string; country?: string };
+}) {
+  const lat = params.lat;
+  const lon = params.lon;
+  const city = params.city;
+  const country = params.country;
+
   const { data, isPending, isError, error } = useWeatherQuery(
-    params.city?.toLowerCase() || "minsk",
+    Number(lat) || 53.9,
+    Number(lon) || 27.56667,
+    city || "Minsk",
+    country || "Belarus",
   );
 
   if (isPending) return <WeatherContentSkeleton />;
-  if (isError || !data)
-    return <StatusSection isError={isError} data={data} error={error} />;
+  if (isError || !data) return <StatusSection error={error} />;
 
   const { current, daily, hourly, forecastUnits } = data;
 

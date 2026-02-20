@@ -4,4 +4,6 @@ export interface HistoryItem {
   country: string;
   isFavorite: boolean;
   timestamp: number;
+  latitude: number;
+  longitude: number;
 }

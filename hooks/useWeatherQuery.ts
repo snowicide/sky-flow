@@ -1,18 +1,21 @@
-import { fetchWeatherData } from "@/services/fetchWeatherData";
 import { AppError } from "@/types/errors";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchHistory } from "./useSearchHistory";
 import { useSettingsStore } from "@/stores/useSettingsStore";
+import { fetchForecastData } from "@/services/fetchForecastData";
 
-export function useWeatherQuery(city: string) {
-  const { addCity } = useSearchHistory();
+export function useWeatherQuery(
+  lat: number,
+  lon: number,
+  city: string,
+  country: string,
+) {
   const units = useSettingsStore((state) => state.units);
-  const queryValue = city.trim().toLowerCase();
 
   return useQuery({
     queryKey: [
       "weather",
-      queryValue,
+      lat,
+      lon,
       units.temperature,
       units.speed,
       units.precipitation,
@@ -20,15 +23,19 @@ export function useWeatherQuery(city: string) {
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      const data = await fetchWeatherData(queryValue, units, combinedSignal);
-      if (data) {
-        const { city, country } = data.current;
-        addCity(city.toLowerCase(), country.toLowerCase());
-      }
+      const data = await fetchForecastData(
+        Number(lat),
+        Number(lon),
+        city,
+        country,
+        units,
+        combinedSignal,
+      );
+
       return data;
     },
 
-    enabled: !!queryValue && queryValue.trim().length > 0,
+    enabled: !!(lat && lon),
 
     retry: (failureCount, error) => {
       if (error instanceof AppError) {

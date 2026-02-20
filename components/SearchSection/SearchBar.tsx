@@ -10,10 +10,18 @@ import type { SearchBarProps } from "./SearchBar.types";
 
 export function SearchBar({ inputRef }: SearchBarProps) {
   const searchParams = useSearchParams();
-  const cityFromUrl = searchParams.get("city") || "minsk";
-  const { error } = useWeatherQuery(cityFromUrl);
-
-  const { searchSelectedCity } = useSearchActions();
+  const cityFromUrl = searchParams.get("city");
+  const countryFromUrl = searchParams.get("country");
+  const latFromUrl = searchParams.get("lat");
+  const lonFromUrl = searchParams.get("lon");
+  const { error } = useWeatherQuery(
+    Number(latFromUrl),
+    Number(lonFromUrl),
+    cityFromUrl || "Minsk",
+    countryFromUrl || "Belarus",
+  );
+  const { searchCityWithName } = useSearchActions();
+  const inputValue = useSearchStore((state) => state.inputValue);
 
   return (
     <div className="col-start-1 row-start-1 flex items-center w-full group">
@@ -21,7 +29,7 @@ export function SearchBar({ inputRef }: SearchBarProps) {
         src={searchIcon}
         className="w-5 h-5 mr-3 cursor-pointer shrink-0"
         alt="Search"
-        onClick={() => searchSelectedCity()}
+        onClick={() => searchCityWithName(inputValue)}
       />
       <SearchInput
         ref={inputRef}

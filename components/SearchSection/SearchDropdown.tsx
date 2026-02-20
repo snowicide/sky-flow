@@ -127,11 +127,13 @@ export function SearchDropdown({
               }) => (
                 <SearchResultCity
                   key={id}
+                  id={id}
                   city={city}
                   country={country}
                   temperature={temperature}
                   temperatureUnit={temperatureUnit}
                   weatherCode={weatherCode}
+                  resultData={resultData}
                 />
               ),
             )}

@@ -10,6 +10,16 @@ export function FeaturedSearch({ data, inputRef }: FeaturedTabProps) {
   const city = data.city.charAt(0).toUpperCase() + data.city.slice(1);
   const country = data.country.charAt(0).toUpperCase() + data.country.slice(1);
 
+  const handleClick = async () => {
+    const cityData = {
+      lat: data.latitude,
+      lon: data.longitude,
+      city: data.city,
+      country: data.country,
+    };
+    searchSelectedCity(cityData, inputRef);
+  };
+
   return (
     <li
       role="option"
@@ -20,7 +30,7 @@ export function FeaturedSearch({ data, inputRef }: FeaturedTabProps) {
       <div
         role="button"
         aria-label={`Select ${city}`}
-        onClick={() => searchSelectedCity(city, inputRef)}
+        onClick={handleClick}
         className="flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer font-normal text-sm sm:text-base md:text-lg"
       >
         {`${city}, ${country}`}

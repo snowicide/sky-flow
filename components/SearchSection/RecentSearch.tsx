@@ -18,6 +18,16 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
     toggleFavorite(data.id);
   };
 
+  const handleClick = async () => {
+    const cityData = {
+      lat: data.latitude,
+      lon: data.longitude,
+      city: data.city,
+      country: data.country,
+    };
+    searchSelectedCity(cityData, inputRef);
+  };
+
   const currentRecent = recent.filter(
     (item: HistoryItem) => item.id === data.id,
   )[0];
@@ -32,7 +42,7 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
       <div
         role="button"
         aria-label={`Select ${city}`}
-        onClick={() => searchSelectedCity(city, inputRef)}
+        onClick={handleClick}
         className="font-normal text-sm sm:text-base md:text-lg flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer"
       >
         {`${city}, ${country}`}

@@ -5,4 +5,6 @@ export interface SearchDataItem {
   temperature: number;
   temperatureUnit: string;
   id: number;
+  latitude: number;
+  longitude: number;
 }

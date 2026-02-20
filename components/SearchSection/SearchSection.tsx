@@ -1,9 +1,11 @@
 "use client";
+import { useSearchStore } from "@/stores/useSearchStore";
 import { SearchField } from "./SearchField";
 import { useSearchActions } from "@/hooks/useSearchActions";
 
 export default function SearchSection() {
-  const { searchSelectedCity } = useSearchActions();
+  const { searchCityWithName } = useSearchActions();
+  const inputValue = useSearchStore((state) => state.inputValue);
 
   return (
     <section className="mb-10">
@@ -14,7 +16,7 @@ export default function SearchSection() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          searchSelectedCity();
+          searchCityWithName(inputValue);
         }}
         className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto"
       >
