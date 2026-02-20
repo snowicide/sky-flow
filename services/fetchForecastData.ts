@@ -43,7 +43,13 @@ export async function fetchForecastData(
     const forecastData = await forecastRes.json();
 
     return {
-      current: { ...forecastData.current, city, country },
+      current: {
+        ...forecastData.current,
+        city,
+        country,
+        latitude: lat,
+        longitude: lon,
+      },
       hourly: forecastData.hourly,
       daily: forecastData.daily,
       forecastUnits: {
