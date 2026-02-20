@@ -1,19 +1,19 @@
 import type { ActiveTab } from "../SearchSection/SearchField.types";
 
-export function FeaturedIcon({
+export function FavoriteIcon({
   className,
   allowFill = true,
   currentTab,
   isFilled,
   fillColor,
-  isFeatured,
+  isFavorite,
 }: {
   className?: string;
   allowFill?: boolean;
   currentTab?: ActiveTab;
   isFilled?: boolean;
   fillColor?: string;
-  isFeatured?: boolean;
+  isFavorite?: boolean;
 }) {
   return (
     <svg
@@ -22,14 +22,14 @@ export function FeaturedIcon({
       height="24"
       viewBox="0 0 24 24"
       fill={
-        (isFeatured && allowFill) ||
-        (!allowFill && currentTab === "featured") ||
+        (isFavorite && allowFill) ||
+        (!allowFill && currentTab === "favorites") ||
         isFilled
           ? `${fillColor ? fillColor : "hsl(233,100%,70%)"}`
           : "none"
       }
       stroke={
-        (isFeatured && allowFill) || isFilled
+        (isFavorite && allowFill) || isFilled
           ? `${fillColor ? "" : "hsl(233,100%,70%)"}`
           : "currentColor"
       }

@@ -3,13 +3,12 @@ import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import { RecentSearch } from "./RecentSearch";
-import { FeaturedSearch } from "./FeaturedSearch";
-
+import { FavoritesSearch } from "./FavoritesSearch";
 import { SearchResultCity } from "./SearchResultCity";
 import { SearchDropdownSkeleton } from "./SearchDropdown.skeleton";
 import {
   FailedSearchIcon,
-  FeaturedIcon,
+  FavoriteIcon,
   HistoryIcon,
   RecentAlertIcon,
   UnfavoriteIcon,
@@ -44,7 +43,7 @@ export function SearchDropdown({
       >
         {inputValue.trim().length === 0 ? (
           <>
-            {/* recents/featured tabs */}
+            {/* recents/favorites tabs */}
             <ul
               role="tablist"
               className="flex items-center border-b border-white/10 mx-6 py-5"
@@ -63,18 +62,18 @@ export function SearchDropdown({
               </li>
               <li
                 role="tab"
-                aria-selected={currentTab === "featured"}
-                aria-label="Featured searches"
-                onClick={() => handleChangeTab("featured")}
-                className={`flex-1 gap-1.5 cursor-pointer hover:opacity-80 transition flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider ${currentTab === "featured" ? "text-[hsl(233,100%,70%)]" : ""}`}
+                aria-selected={currentTab === "favorites"}
+                aria-label="Favorites searches"
+                onClick={() => handleChangeTab("favorites")}
+                className={`flex-1 gap-1.5 cursor-pointer hover:opacity-80 transition flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider ${currentTab === "favorites" ? "text-[hsl(233,100%,70%)]" : ""}`}
               >
-                <FeaturedIcon
+                <FavoriteIcon
                   className="w-4 h-4 sm:w-5 sm:h-5"
                   allowFill={false}
                   currentTab={currentTab}
                 />
                 <span className="text-sm sm:text-lg lg:text-xl">
-                  Featured ({favorites.length})
+                  Favorites ({favorites.length})
                 </span>
               </li>
             </ul>
@@ -98,10 +97,10 @@ export function SearchDropdown({
                   </div>
                 ))}
 
-              {currentTab === "featured" &&
+              {currentTab === "favorites" &&
                 (favorites.length >= 1 ? (
                   favorites.map((data, index) => (
-                    <FeaturedSearch
+                    <FavoritesSearch
                       key={`${data.id}-${index}`}
                       data={data}
                       inputRef={inputRef}

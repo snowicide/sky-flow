@@ -92,8 +92,8 @@ describe("useSearchActions", () => {
   it("should change active tab", () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
-    act(() => result.current.handleChangeTab("featured"));
-    expect(useSearchStore.getState().currentTab).toBe("featured");
+    act(() => result.current.handleChangeTab("favorites"));
+    expect(useSearchStore.getState().currentTab).toBe("favorites");
 
     act(() => result.current.handleChangeTab("recent"));
     expect(useSearchStore.getState().currentTab).toBe("recent");

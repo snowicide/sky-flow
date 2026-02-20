@@ -1,4 +1,4 @@
-export * from "./FeaturedIcon";
+export * from "./FavoriteIcon";
 export * from "./HistoryIcon";
 export * from "./XIcon";
 export * from "./RecentAlertIcon";

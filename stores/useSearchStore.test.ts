@@ -17,8 +17,8 @@ describe("useSearchStore", () => {
   });
 
   it("should toggle current tab", () => {
-    act(() => useSearchStore.getState().setCurrentTab("featured"));
-    expect(useSearchStore.getState().currentTab).toBe("featured");
+    act(() => useSearchStore.getState().setCurrentTab("favorites"));
+    expect(useSearchStore.getState().currentTab).toBe("favorites");
     act(() => useSearchStore.getState().setCurrentTab("recent"));
     expect(useSearchStore.getState().currentTab).toBe("recent");
   });

@@ -1,4 +1,5 @@
-import { FeaturedIcon, XIcon } from "@/components/icons";
+import { XIcon } from "@/components/icons";
+import { FavoriteIcon } from "../icons/FavoriteIcon";
 import type { RecentTabProps } from "./SearchField.types";
 import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
@@ -14,7 +15,7 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
   const country =
     data.country.charAt(0).toUpperCase() + data.country.slice(1).toLowerCase();
 
-  const handleFeaturedIcon = () => {
+  const handleFavoriteIcon = () => {
     toggleFavorite(data.id);
   };
 
@@ -52,10 +53,10 @@ export function RecentSearch({ data, inputRef }: RecentTabProps) {
         <button
           role="button"
           aria-label="Toggle favorite"
-          onClick={handleFeaturedIcon}
+          onClick={handleFavoriteIcon}
         >
-          <FeaturedIcon
-            isFeatured={currentRecent?.isFavorite}
+          <FavoriteIcon
+            isFavorite={currentRecent?.isFavorite}
             className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
           />
         </button>

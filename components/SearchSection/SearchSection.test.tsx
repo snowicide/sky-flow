@@ -149,7 +149,7 @@ describe("SearchSection integration", () => {
     );
   });
 
-  it("should navigate from featured list", async () => {
+  it("should navigate from favorites list", async () => {
     window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
     act(() => {
       favoriteStore.reset();
@@ -158,11 +158,11 @@ describe("SearchSection integration", () => {
     renderWithClient(<SearchSection />);
     await waitFor(() => useSearchStore.setState({ isOpen: true }));
 
-    const featuredTab = await screen.findByRole("tab", {
-      name: /featured searches/i,
+    const favoritesTab = await screen.findByRole("tab", {
+      name: /favorites searches/i,
     });
-    await user.click(featuredTab);
-    expect(useSearchStore.getState().currentTab).toBe("featured");
+    await user.click(favoritesTab);
+    expect(useSearchStore.getState().currentTab).toBe("favorites");
 
     const cityOption = await screen.findByRole("option", {
       name: "Berlin, Germany",
@@ -233,7 +233,7 @@ describe("SearchSection integration", () => {
     });
   });
 
-  it("should remove city from featured", async () => {
+  it("should remove city from favorites", async () => {
     window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
     act(() => {
       favoriteStore.reset();
@@ -241,12 +241,13 @@ describe("SearchSection integration", () => {
     });
     renderWithClient(<SearchSection />);
     await waitFor(() =>
-      useSearchStore.setState({ isOpen: true, currentTab: "featured" }),
+      useSearchStore.setState({ isOpen: true, currentTab: "favorites" }),
     );
 
     const cityOption = screen.getByRole("option", { name: "Berlin, Germany" });
-    const favoriteIcon =
-      within(cityOption).getByLabelText(/remove from featured/i);
+    const favoriteIcon = within(cityOption).getByLabelText(
+      /remove from favorites/i,
+    );
 
     await user.click(favoriteIcon);
     await waitFor(() => {

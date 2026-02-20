@@ -1,9 +1,9 @@
-import { FeaturedIcon } from "@/components/icons";
-import type { FeaturedTabProps } from "./SearchField.types";
+import type { FavoritesTabProps } from "./SearchField.types";
 import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { FavoriteIcon } from "../icons/FavoriteIcon";
 
-export function FeaturedSearch({ data, inputRef }: FeaturedTabProps) {
+export function FavoritesSearch({ data, inputRef }: FavoritesTabProps) {
   const { searchSelectedCity } = useSearchActions();
   const { removeFavorite } = useSearchHistory();
 
@@ -38,11 +38,11 @@ export function FeaturedSearch({ data, inputRef }: FeaturedTabProps) {
 
       <button
         role="button"
-        aria-label="Remove from featured"
+        aria-label="Remove from favorites"
         onClick={() => removeFavorite(data.id)}
         className="flex items-center gap-1 sm:gap-3 opacity-70"
       >
-        <FeaturedIcon
+        <FavoriteIcon
           isFilled={true}
           className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
         />

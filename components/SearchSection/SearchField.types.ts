@@ -10,9 +10,9 @@ export interface RecentTabProps {
   inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
-export interface FeaturedTabProps {
+export interface FavoritesTabProps {
   data: HistoryItem;
   inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
-export type ActiveTab = "recent" | "featured";
+export type ActiveTab = "recent" | "favorites";
