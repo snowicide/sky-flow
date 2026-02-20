@@ -3,8 +3,8 @@ export interface SearchGeoData {
 }
 
 export interface SearchGeoDataItem {
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   timezone: string;
   name: string;
   country: string;

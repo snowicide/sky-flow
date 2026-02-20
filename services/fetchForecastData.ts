@@ -1,0 +1,61 @@
+import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
+import type { WeatherDataUnits } from "@/types/api/WeatherData";
+import { AppError } from "@/types/errors";
+
+export async function fetchForecastData(
+  lat: number,
+  lon: number,
+  city: string,
+  country: string,
+  units: WeatherDataUnits = DEFAULT_UNITS,
+  signal?: AbortSignal,
+) {
+  try {
+    const url =
+      "https://api.open-meteo.com/v1/forecast?" +
+      new URLSearchParams({
+        latitude: lat.toString(),
+        longitude: lon.toString(),
+
+        current:
+          "temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation,weather_code",
+
+        hourly: "temperature_2m,weather_code",
+        daily:
+          "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min",
+
+        forecast_days: "7",
+        temperature_unit: units.temperature,
+        wind_speed_unit: units.speed,
+        precipitation_unit: units.precipitation,
+      });
+
+    const forecastRes = await fetch(url, { signal });
+
+    if (!forecastRes.ok) {
+      signal?.throwIfAborted();
+      throw new AppError(
+        "FORECAST_FAILED",
+        "Server is temporarily unavailable...",
+      );
+    }
+
+    const forecastData = await forecastRes.json();
+
+    return {
+      current: { ...forecastData.current, city, country },
+      hourly: forecastData.hourly,
+      daily: forecastData.daily,
+      forecastUnits: {
+        temperature: forecastData.current_units.apparent_temperature,
+        speed: forecastData.current_units.wind_speed_10m,
+        precipitation: forecastData.current_units.precipitation,
+      },
+    };
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    const message =
+      error instanceof Error ? error.message : "Unexpected error...";
+    throw new AppError("UNKNOWN_ERROR", message);
+  }
+}
