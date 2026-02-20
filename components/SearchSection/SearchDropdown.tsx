@@ -39,7 +39,7 @@ export function SearchDropdown({
       <div
         role="listbox"
         onMouseDown={(e) => e.preventDefault()}
-        className={`absolute -left-5 top-6 right-0 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-100 mt-1 ${isOpen ? "visible" : "invisible"}`}
+        className={`absolute -left-5 top-5 sm:top-6 right-0 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-100 mt-1 ${isOpen ? "visible" : "invisible"}`}
       >
         {inputValue.trim().length === 0 ? (
           <>
@@ -56,7 +56,7 @@ export function SearchDropdown({
                 className={` gap-1.5 cursor-pointer hover:opacity-80 transition flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider ${currentTab === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
               >
                 <HistoryIcon className="w-4.25 h-4.25 sm:w-5 sm:h-5" />
-                <span className="text-sm sm:text-lg lg:text-xl">
+                <span className="text-sm sm:text-lg lg:text-xl whitespace-nowrap">
                   Recent ({recent.length})
                 </span>
               </li>
@@ -72,7 +72,7 @@ export function SearchDropdown({
                   allowFill={false}
                   currentTab={currentTab}
                 />
-                <span className="text-sm sm:text-lg lg:text-xl">
+                <span className="text-sm sm:text-lg lg:text-xl whitespace-nowrap">
                   Favorites ({favorites.length})
                 </span>
               </li>
@@ -89,9 +89,9 @@ export function SearchDropdown({
                     />
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-items-center my-30 gap-2">
+                  <div className="flex flex-col items-center justify-items-center my-20 sm:my-30 gap-2">
                     <RecentAlertIcon className="w-8 h-8" />
-                    <span className="text-lg font-bold tracking-wider text-white/90">
+                    <span className="text-base sm:text-lg font-bold tracking-wider text-white/90 text-center">
                       There is no city you seen recently!
                     </span>
                   </div>
@@ -107,9 +107,9 @@ export function SearchDropdown({
                     />
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-items-center my-30 gap-2">
+                  <div className="flex flex-col items-center justify-items-center my-20 sm:my-30 gap-2">
                     <UnfavoriteIcon className="w-8 h-8" />
-                    <span className="text-lg font-bold tracking-wider text-white/90">
+                    <span className="text-base sm:text-lg font-bold tracking-wider text-white/90 text-center">
                       There is no city you have in favorites!
                     </span>
                   </div>
@@ -118,7 +118,7 @@ export function SearchDropdown({
           </>
         ) : // search results
         resultData ? (
-          <ul>
+          <ul className="h-112 lg:h-128 xl:h-148.25">
             {resultData.map(
               ({
                 id,

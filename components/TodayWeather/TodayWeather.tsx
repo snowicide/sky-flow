@@ -33,7 +33,7 @@ export default function TodayWeather({
       <div className="relative p-6 sm:p-8 md:p-10">
         <div className="flex items-center flex-col sm:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start">
-            <h2 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-2 capitalize">
+            <h2 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-2 capitalize text-center sm:text-start">
               <span>{currentData.city}, </span>
               <span>{currentData.country}</span>
             </h2>
