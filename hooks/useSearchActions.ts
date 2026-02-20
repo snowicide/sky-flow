@@ -18,9 +18,14 @@ export function useSearchActions() {
       })),
     );
 
-  const [delayValue] = useDebounce(inputValue, 1000);
-  const { data: resultData, isPending: isResultPending } =
+  const [delayValue, { isPending }] = useDebounce(inputValue, 500);
+  const isDebouncing = isPending();
+
+  const { data: resultData, isFetching: isDelayFetching } =
     useSearchQuery(delayValue);
+
+  const shouldSearchSkeleton =
+    (isDebouncing || isDelayFetching) && !!inputValue.trim();
 
   const { addCity } = useSearchHistory();
 
@@ -111,7 +116,7 @@ export function useSearchActions() {
     handleKeydown,
     handleChangeInput,
     resultData,
-    isResultPending,
     searchCityWithName,
+    shouldSearchSkeleton,
   };
 }

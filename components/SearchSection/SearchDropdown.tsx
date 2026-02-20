@@ -4,13 +4,17 @@ import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
 import { RecentSearch } from "./RecentSearch";
 import { FeaturedSearch } from "./FeaturedSearch";
+
+import { SearchResultCity } from "./SearchResultCity";
+import { SearchDropdownSkeleton } from "./SearchDropdown.skeleton";
 import {
+  FailedSearchIcon,
   FeaturedIcon,
   HistoryIcon,
   RecentAlertIcon,
   UnfavoriteIcon,
 } from "../icons";
-import { SearchResultCity } from "./SearchResultCity";
+import { SearchIcon } from "../icons/SearchIcon";
 
 export function SearchDropdown({
   inputRef,
@@ -25,12 +29,12 @@ export function SearchDropdown({
     })),
   );
 
-  const { handleChangeTab } = useSearchActions();
-
   const { recent, favorites } = useSearchHistory();
 
-  const { resultData } = useSearchActions();
+  const { resultData, shouldSearchSkeleton, handleChangeTab } =
+    useSearchActions();
 
+  const isNotEnoughChars = inputValue.length > 0 && inputValue.length < 2;
   return (
     <>
       <div
@@ -138,8 +142,26 @@ export function SearchDropdown({
               ),
             )}
           </ul>
+        ) : shouldSearchSkeleton ? (
+          <SearchDropdownSkeleton />
         ) : (
-          <div>123</div>
+          !resultData && (
+            <div className="h-75 flex flex-col items-center justify-center mb-5 gap-5">
+              {isNotEnoughChars ? (
+                <SearchIcon className="w-22 h-22 opacity-50" stroke="#60A5FA" />
+              ) : (
+                <FailedSearchIcon
+                  className="w-22 h-22 opacity-50"
+                  stroke="#60A5FA"
+                />
+              )}
+              <span className="text-[#BFDBFE] opacity-75 text-base font-medium tracking-wide">
+                {isNotEnoughChars
+                  ? `Type at least 2 characters to search...`
+                  : `City ${inputValue} not found!`}
+              </span>
+            </div>
+          )
         )}
       </div>
     </>

@@ -1,7 +1,7 @@
 import { fetchSearchResults } from "@/services/fetchSearchResults";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { AppError } from "@/types/errors";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export function useSearchQuery(searchResult: string) {
   const units = useSettingsStore((state) => state.units);
@@ -31,7 +31,6 @@ export function useSearchQuery(searchResult: string) {
     },
 
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData,
 
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
