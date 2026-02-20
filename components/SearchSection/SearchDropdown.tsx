@@ -155,10 +155,12 @@ export function SearchDropdown({
                   stroke="#60A5FA"
                 />
               )}
-              <span className="text-[#BFDBFE] opacity-75 text-base font-medium tracking-wide">
+              <span className="text-[#BFDBFE] opacity-75 text-base font-medium tracking-wide text-center">
                 {isNotEnoughChars
                   ? `Type at least 2 characters to search...`
-                  : `City ${inputValue} not found!`}
+                  : inputValue.length <= 50
+                    ? `City ${inputValue} not found!`
+                    : "City not found!"}
               </span>
             </div>
           )
