@@ -10,16 +10,14 @@ import type { SearchBarProps } from "./SearchBar.types";
 
 export function SearchBar({ inputRef }: SearchBarProps) {
   const searchParams = useSearchParams();
-  const cityFromUrl = searchParams.get("city");
-  const countryFromUrl = searchParams.get("country");
-  const latFromUrl = searchParams.get("lat");
-  const lonFromUrl = searchParams.get("lon");
-  const { error } = useWeatherQuery(
-    Number(latFromUrl),
-    Number(lonFromUrl),
-    cityFromUrl || "Minsk",
-    countryFromUrl || "Belarus",
-  );
+
+  const lat = Number(searchParams.get("lat")) || 53.9;
+  const lon = Number(searchParams.get("lon")) || 27.56667;
+  const city = searchParams.get("city") || "Minsk";
+  const country = searchParams.get("country") || "Belarus";
+  const cityData = { lat, lon, city, country };
+
+  const { error } = useWeatherQuery(cityData);
   const { searchCityWithName } = useSearchActions();
   const inputValue = useSearchStore((state) => state.inputValue);
 

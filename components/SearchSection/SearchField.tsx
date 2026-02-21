@@ -8,16 +8,13 @@ export function SearchField() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const searchParams = useSearchParams();
-  const cityFromUrl = searchParams.get("city") || "Minsk";
-  const countryFromUrl = searchParams.get("country") || "Belarus";
-  const latFromUrl = searchParams.get("lat") || "53.9";
-  const lonFromUrl = searchParams.get("lon") || "27.56667";
-  const { isError } = useWeatherQuery(
-    Number(latFromUrl),
-    Number(lonFromUrl),
-    cityFromUrl,
-    countryFromUrl,
-  );
+  const lat = Number(searchParams.get("lat")) || 53.9;
+  const lon = Number(searchParams.get("lon")) || 27.56667;
+  const city = searchParams.get("city") || "Minsk";
+  const country = searchParams.get("country") || "Belarus";
+  const cityData = { lat, lon, city, country };
+
+  const { isError } = useWeatherQuery(cityData);
 
   return (
     <div

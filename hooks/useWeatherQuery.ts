@@ -2,14 +2,11 @@ import { AppError } from "@/types/errors";
 import { useQuery } from "@tanstack/react-query";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { fetchForecastData } from "@/services/fetchForecastData";
+import type { CityData } from "@/types/api/CityData";
 
-export function useWeatherQuery(
-  lat: number,
-  lon: number,
-  city: string,
-  country: string,
-) {
+export function useWeatherQuery(cityData: CityData) {
   const units = useSettingsStore((state) => state.units);
+  const { city, country, lat, lon } = cityData;
 
   return useQuery({
     queryKey: [
