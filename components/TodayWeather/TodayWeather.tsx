@@ -2,8 +2,10 @@
 import Image from "next/image";
 import bgTodayDesktop from "@/public/images/bg-today-large.webp";
 import dayjs from "dayjs";
-import { getWeatherCode } from "@/utils/weatherCodes";
-import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
+import {
+  getIconByWeatherCode,
+  getWeatherCode,
+} from "@/utils/getIconByWeatherCode";
 import type { TodayWeatherProps } from "./TodayWeather.types";
 
 export default function TodayWeather({

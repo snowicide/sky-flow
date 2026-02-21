@@ -4,8 +4,10 @@ import {
   getHourNumber,
 } from "@/utils/formatDay";
 import type { DailyForecast, HourlyItem } from "@/types/api/WeatherHourly";
-import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
-import { getWeatherCode } from "@/utils/weatherCodes";
+import {
+  getIconByWeatherCode,
+  getWeatherCode,
+} from "@/utils/getIconByWeatherCode";
 import { WeatherDataHourly } from "@/types/api/WeatherData";
 
 export default function groupByDay(data?: WeatherDataHourly): DailyForecast[] {

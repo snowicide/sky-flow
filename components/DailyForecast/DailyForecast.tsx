@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
-import { getWeatherCode } from "@/utils/weatherCodes";
 import { formatDayOfWeek } from "@/utils/formatDay";
-import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
+import {
+  getIconByWeatherCode,
+  getWeatherCode,
+} from "@/utils/getIconByWeatherCode";
 import type { DailyForecastProps } from "./DailyForecastProps.types";
 
 export default function DailyForecast({ dailyData }: DailyForecastProps) {

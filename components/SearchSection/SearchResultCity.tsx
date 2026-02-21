@@ -1,6 +1,8 @@
-import { getWeatherCode } from "@/utils/weatherCodes";
 import type { SearchResultCityProps } from "./SearchResultCity.props";
-import { getIconByWeatherCode } from "@/utils/getIconByWeatherCode";
+import {
+  getIconByWeatherCode,
+  getWeatherCode,
+} from "@/utils/getIconByWeatherCode";
 import Image from "next/image";
 import { useSearchActions } from "@/hooks/useSearchActions";
 

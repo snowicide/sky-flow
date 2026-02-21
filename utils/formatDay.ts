@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 export function formatDayOfWeek(date: Date) {
   return dayjs(date).format("dddd");
