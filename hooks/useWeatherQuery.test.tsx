@@ -3,6 +3,7 @@ import { useWeatherQuery } from "./useWeatherQuery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppError } from "@/types/errors";
 import type { WeatherData } from "@/types/api/WeatherData";
+import type { CityData } from "@/types/api/CityData";
 
 const mockFetchForecastData = vi.hoisted(() => vi.fn());
 vi.mock("@/services/fetchForecastData", () => ({
@@ -30,10 +31,7 @@ function renderHookWithClient<T>(hook: () => T) {
 }
 
 describe("useWeatherQuery", () => {
-  let lat: number;
-  let lon: number;
-  let city: string;
-  let country: string;
+  let cityData: CityData;
 
   let mockWeatherData: WeatherData;
 
@@ -42,10 +40,12 @@ describe("useWeatherQuery", () => {
     testQueryClient.clear();
     mockFetchForecastData.mockClear();
 
-    lat = 53.9;
-    lon = 27.56667;
-    city = "Minsk";
-    country = "Belarus";
+    cityData = {
+      lat: 53.9,
+      lon: 27.56667,
+      city: "Minsk",
+      country: "Belarus",
+    };
 
     mockWeatherData = {
       current: {
@@ -66,9 +66,7 @@ describe("useWeatherQuery", () => {
 
   it("should fetch data", async () => {
     mockFetchForecastData.mockResolvedValue(mockWeatherData);
-    const { result } = renderHookWithClient(() =>
-      useWeatherQuery(lat, lon, city, country),
-    );
+    const { result } = renderHookWithClient(() => useWeatherQuery(cityData));
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(mockWeatherData);
@@ -77,13 +75,11 @@ describe("useWeatherQuery", () => {
   it("shouldn't retry when not found or aborted", async () => {
     const notFoundError = new AppError(
       "GEOCODING_FAILED",
-      `City ${city} not found...`,
+      `City ${cityData.city} not found...`,
     );
     mockFetchForecastData.mockRejectedValue(notFoundError);
 
-    const { result } = renderHookWithClient(() =>
-      useWeatherQuery(lat, lon, city, country),
-    );
+    const { result } = renderHookWithClient(() => useWeatherQuery(cityData));
 
     await waitFor(() => expect(result.current.isError).toBe(true));
 
