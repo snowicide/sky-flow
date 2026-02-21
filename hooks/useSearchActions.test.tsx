@@ -35,9 +35,9 @@ vi.mock("@/hooks/useSearchHistory", () => ({
   }),
 }));
 
-const mockFetchWeatherData = vi.hoisted(() => vi.fn());
-vi.mock("@/services/fetchWeatherData", () => ({
-  fetchWeatherData: mockFetchWeatherData,
+const mockFetchGeoData = vi.hoisted(() => vi.fn());
+vi.mock("@/services/fetchGeoData", () => ({
+  fetchGeoData: mockFetchGeoData,
 }));
 
 const testQueryClient = () =>
@@ -70,6 +70,18 @@ describe("useSearchActions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockAddCity.mockClear();
+    mockFetchGeoData.mockClear();
+
+    mockFetchGeoData.mockResolvedValue({
+      results: [
+        {
+          name: "Berlin",
+          country: "Germany",
+          latitude: 52.52437,
+          longitude: 13.41053,
+        },
+      ],
+    });
 
     renderWithClient(<SearchInput />);
     inputElement = screen.getByRole("textbox", { name: /search/i });
@@ -131,29 +143,44 @@ describe("useSearchActions", () => {
   it("should change URL", () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
-    act(() => result.current.searchSelectedCity("Berlin"));
+    const cityData = {
+      city: "Berlin",
+      country: "Germany",
+      lat: 52.52437,
+      lon: 13.41053,
+    };
+
+    act(() => result.current.searchSelectedCity(cityData));
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining("city=berlin"),
+      expect.stringContaining(
+        "city=Berlin&country=Germany&lat=52.52437&lon=13.41053",
+      ),
     );
 
-    act(() => result.current.searchSelectedCity("NonExist123"));
+    expect(mockPush).toHaveBeenCalledTimes(1);
 
-    expect(mockPush).toHaveBeenCalledTimes(2);
-    expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining("city=nonexist123"),
-    );
+    expect(mockAddCity).toHaveBeenCalledTimes(1);
+    expect(mockAddCity).toHaveBeenCalledWith(cityData);
 
-    expect(mockFetchWeatherData).not.toHaveBeenCalled();
-    expect(mockAddCity).not.toHaveBeenCalled();
     expect(useSearchStore.getState().inputValue).toBe("");
+  });
+
+  it("should find first city from input", async () => {
+    const { result } = renderHookWithClient(() => useSearchActions());
+
+    await act(async () => await result.current.searchCityWithName("Berlin"));
+
+    expect(mockFetchGeoData).toHaveBeenCalledTimes(1);
+    expect(mockFetchGeoData).toHaveBeenCalledWith("berlin");
   });
 
   it("shouldn't navigate when input is empty", () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
-    act(() => result.current.searchSelectedCity(""));
+    act(() => result.current.searchCityWithName(""));
+    expect(mockFetchGeoData).not.toHaveBeenCalled();
     expect(mockPush).not.toHaveBeenCalled();
   });
 });
