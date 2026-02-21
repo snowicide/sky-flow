@@ -6,6 +6,7 @@ import {
   getWeatherCode,
 } from "@/utils/getIconByWeatherCode";
 import type { DailyForecastProps } from "./DailyForecastProps.types";
+import { calculateAverageTemps } from "@/utils/calculateAverageTemps";
 
 export default function DailyForecast({ dailyData }: DailyForecastProps) {
   const {
@@ -17,15 +18,6 @@ export default function DailyForecast({ dailyData }: DailyForecastProps) {
     apparent_temperature_max: apparentTempMax,
   } = dailyData;
 
-  const calculateAverageTemps = (min: number, max: number) => {
-    const averages = [];
-    for (let i = 0; i < tempMax.length; i++) {
-      const avg = Math.round((min + max) / 2);
-      averages.push(avg);
-    }
-    return averages;
-  };
-
   const DailyForecast = time.map((dateStr: string, index: number) => {
     const date = new Date(dateStr);
     const code = getWeatherCode(weatherCode[index]);
@@ -34,8 +26,8 @@ export default function DailyForecast({ dailyData }: DailyForecastProps) {
     return {
       day: formatDayOfWeek(date),
       weatherCode: weatherCode?.[index] || 0,
-      temp: `${calculateAverageTemps(tempMin[index], tempMax[index])[index]}°`,
-      feelsLike: `${calculateAverageTemps(apparentTempMin[index], apparentTempMax[index])[index]}°`,
+      temp: `${calculateAverageTemps(tempMin[index], tempMax[index], tempMax)[index]}°`,
+      feelsLike: `${calculateAverageTemps(apparentTempMin[index], apparentTempMax[index], tempMax)[index]}°`,
       date: dateStr,
       image,
     };
