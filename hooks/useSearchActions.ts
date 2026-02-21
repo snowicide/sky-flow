@@ -51,13 +51,7 @@ export function useSearchActions() {
     setInputValue("");
 
     if (cityData) {
-      const { lat, lon, city, country } = cityData;
-      addCity(
-        city.toLowerCase(),
-        country.toLowerCase(),
-        Number(lat),
-        Number(lon),
-      );
+      addCity(cityData);
     }
 
     const latStr = cityData.lat.toString();

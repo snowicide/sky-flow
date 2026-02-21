@@ -69,22 +69,21 @@ export function useSearchHistory() {
 
   const addCity = useCallback(
     (
-      city: string,
-      country: string,
-      lat: number,
-      lon: number,
+      cityData: { city: string; country: string; lat: number; lon: number },
       favorited?: boolean,
     ) => {
+      const { lat, lon } = cityData;
       const isFavorited = favorites.some(
         (item) => item.latitude === lat && item.longitude === lon,
       );
       recentStore.update((prev: HistoryItem[]) => {
+        const { city, country } = cityData;
         const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
 
         const newItem: HistoryItem = {
           id,
-          city: city.trim(),
-          country: country.trim(),
+          city: city.trim().toLowerCase(),
+          country: country.trim().toLowerCase(),
           isFavorite: isFavorited || (!!favorited && favorited),
           timestamp: Date.now(),
           latitude: lat,

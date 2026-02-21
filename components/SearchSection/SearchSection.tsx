@@ -31,7 +31,7 @@ export default function SearchSection() {
 
     if (lat && lon && city && country) {
       setIsOpen(false);
-      addCity(city, country, +lat, +lon);
+      addCity({ city, country, lat: +lat, lon: +lon });
     }
     isSync.current = true;
   }, [addCity, searchParams, _hasHydrated, setIsOpen]);
