@@ -1,4 +1,5 @@
 import type { HistoryItem } from "@/components/SearchSection/SearchHistory.types";
+import type { CityData } from "@/types/api/CityData";
 import { useCallback, useSyncExternalStore } from "react";
 
 class WeatherStore {
@@ -68,10 +69,7 @@ export function useSearchHistory() {
   );
 
   const addCity = useCallback(
-    (
-      cityData: { city: string; country: string; lat: number; lon: number },
-      favorited?: boolean,
-    ) => {
+    (cityData: CityData, favorited?: boolean) => {
       const { lat, lon } = cityData;
       const isFavorited = favorites.some(
         (item) => item.latitude === lat && item.longitude === lon,

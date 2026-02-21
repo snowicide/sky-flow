@@ -5,13 +5,7 @@ import {
   recentStore,
   useSearchHistory,
 } from "./useSearchHistory";
-
-export interface CityData {
-  city: string;
-  country: string;
-  lat: number;
-  lon: number;
-}
+import type { CityData } from "@/types/api/CityData";
 
 describe("useSearchHistory", () => {
   let minskData: CityData;
