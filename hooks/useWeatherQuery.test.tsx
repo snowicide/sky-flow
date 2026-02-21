@@ -32,7 +32,6 @@ function renderHookWithClient<T>(hook: () => T) {
 
 describe("useWeatherQuery", () => {
   let cityData: CityData;
-
   let mockWeatherData: WeatherData;
 
   beforeEach(() => {
