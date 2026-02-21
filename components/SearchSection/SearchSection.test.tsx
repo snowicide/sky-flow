@@ -34,9 +34,9 @@ vi.mock("next/image", () => ({
   ),
 }));
 
-const mockFetchWeatherData = vi.hoisted(() => vi.fn());
-vi.mock("@/services/fetchWeatherData", () => ({
-  fetchWeatherData: mockFetchWeatherData,
+const mockFetchForecastData = vi.hoisted(() => vi.fn());
+vi.mock("@/services/fetchforecastData", () => ({
+  fetchforecastData: mockFetchForecastData,
 }));
 
 const testQueryClient = new QueryClient({
@@ -66,19 +66,24 @@ describe("SearchSection integration", () => {
 
     testQueryClient.clear();
     vi.clearAllMocks();
-    mockFetchWeatherData.mockClear();
+    mockFetchForecastData.mockClear();
     mockPush.mockClear();
 
-    mockFetchWeatherData.mockResolvedValue({
+    mockFetchForecastData.mockResolvedValue({
       current: {
         city: "Berlin",
         country: "Germany",
+        latitude: 52.52437,
+        longitude: 13.41053,
       },
       daily: {
         temperature_2m_max: [-2],
       },
       hourly: {
         temperature_2m: [-2],
+      },
+      forecastUnits: {
+        temperature: "celsius",
       },
     });
 
@@ -91,6 +96,8 @@ describe("SearchSection integration", () => {
         country: "Poland",
         isFavorite: false,
         timestamp: 1,
+        latitude: 52.22977,
+        longitude: 21.01178,
       },
       {
         id: "berlin-germany",
@@ -98,6 +105,8 @@ describe("SearchSection integration", () => {
         country: "Germany",
         isFavorite: false,
         timestamp: 2,
+        latitude: 52.52437,
+        longitude: 13.41053,
       },
       {
         id: "minsk-belarus",
@@ -105,6 +114,8 @@ describe("SearchSection integration", () => {
         country: "Belarus",
         isFavorite: false,
         timestamp: 3,
+        latitude: 53.9,
+        longitude: 27.56667,
       },
     ];
   });
@@ -119,7 +130,9 @@ describe("SearchSection integration", () => {
     await user.type(input, "Berlin{enter}");
     await waitFor(() =>
       expect(mockPush).toHaveBeenCalledWith(
-        expect.stringContaining("city=berlin"),
+        expect.stringContaining(
+          "city=Berlin&country=Germany&lat=52.52437&lon=13.41053",
+        ),
       ),
     );
   });
@@ -144,7 +157,9 @@ describe("SearchSection integration", () => {
 
     await waitFor(() =>
       expect(mockPush).toHaveBeenCalledWith(
-        expect.stringContaining("city=berlin"),
+        expect.stringContaining(
+          "city=Berlin&country=Germany&lat=52.52437&lon=13.41053",
+        ),
       ),
     );
   });
@@ -172,7 +187,9 @@ describe("SearchSection integration", () => {
 
     await waitFor(() =>
       expect(mockPush).toHaveBeenCalledWith(
-        expect.stringContaining("city=berlin"),
+        expect.stringContaining(
+          "city=Berlin&country=Germany&lat=52.52437&lon=13.41053",
+        ),
       ),
     );
   });
