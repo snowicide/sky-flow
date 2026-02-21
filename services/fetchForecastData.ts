@@ -1,13 +1,7 @@
 import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
+import type { CityData } from "@/types/api/CityData";
 import type { WeatherDataUnits } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
-
-export interface CityData {
-  lat: number;
-  lon: number;
-  city: string;
-  country: string;
-}
 
 export async function fetchForecastData(
   cityData: CityData,
