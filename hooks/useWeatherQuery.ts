@@ -23,14 +23,13 @@ export function useWeatherQuery(
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      const data = await fetchForecastData(
-        Number(lat),
-        Number(lon),
+      const cityData = {
+        lat: Number(lat),
+        lon: Number(lon),
         city,
         country,
-        units,
-        combinedSignal,
-      );
+      };
+      const data = await fetchForecastData(cityData, units, combinedSignal);
 
       return data;
     },

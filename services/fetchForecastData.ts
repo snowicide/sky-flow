@@ -2,15 +2,20 @@ import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
 import type { WeatherDataUnits } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
 
+export interface CityData {
+  lat: number;
+  lon: number;
+  city: string;
+  country: string;
+}
+
 export async function fetchForecastData(
-  lat: number,
-  lon: number,
-  city: string,
-  country: string,
+  cityData: CityData,
   units: WeatherDataUnits = DEFAULT_UNITS,
   signal?: AbortSignal,
 ) {
   try {
+    const { city, country, lat, lon } = cityData;
     const url =
       "https://api.open-meteo.com/v1/forecast?" +
       new URLSearchParams({
