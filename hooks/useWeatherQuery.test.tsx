@@ -4,16 +4,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppError } from "@/types/errors";
 import type { WeatherData } from "@/types/api/WeatherData";
 
-const mockFetchWeatherData = vi.hoisted(() => vi.fn());
-vi.mock("@/services/fetchWeatherData", () => ({
-  fetchWeatherData: mockFetchWeatherData,
-}));
-
-const mockAddCity = vi.hoisted(() => vi.fn());
-vi.mock("@/hooks/useSearchHistory", () => ({
-  useSearchHistory: () => ({
-    addCity: mockAddCity,
-  }),
+const mockFetchForecastData = vi.hoisted(() => vi.fn());
+vi.mock("@/services/fetchForecastData", () => ({
+  fetchForecastData: mockFetchForecastData,
 }));
 
 const testQueryClient = new QueryClient({
@@ -37,16 +30,22 @@ function renderHookWithClient<T>(hook: () => T) {
 }
 
 describe("useWeatherQuery", () => {
+  let lat: number;
+  let lon: number;
   let city: string;
+  let country: string;
+
   let mockWeatherData: WeatherData;
 
   beforeEach(() => {
     vi.clearAllMocks();
     testQueryClient.clear();
-    mockAddCity.mockClear();
-    mockFetchWeatherData.mockClear();
+    mockFetchForecastData.mockClear();
 
+    lat = 53.9;
+    lon = 27.56667;
     city = "Minsk";
+    country = "Belarus";
 
     mockWeatherData = {
       current: {
@@ -59,16 +58,20 @@ describe("useWeatherQuery", () => {
       hourly: {
         temperature_2m: [-2],
       },
+      forecastUnits: {
+        temperature: "celsius",
+      },
     } as WeatherData;
   });
 
-  it("should fetch data and add recent city on success", async () => {
-    mockFetchWeatherData.mockResolvedValue(mockWeatherData);
-    const { result } = renderHookWithClient(() => useWeatherQuery(city));
+  it("should fetch data", async () => {
+    mockFetchForecastData.mockResolvedValue(mockWeatherData);
+    const { result } = renderHookWithClient(() =>
+      useWeatherQuery(lat, lon, city, country),
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(mockWeatherData);
-    expect(mockAddCity).toHaveBeenCalledWith("minsk", "belarus");
   });
 
   it("shouldn't retry when not found or aborted", async () => {
@@ -76,9 +79,11 @@ describe("useWeatherQuery", () => {
       "GEOCODING_FAILED",
       `City ${city} not found...`,
     );
-    mockFetchWeatherData.mockRejectedValue(notFoundError);
+    mockFetchForecastData.mockRejectedValue(notFoundError);
 
-    const { result } = renderHookWithClient(() => useWeatherQuery(city));
+    const { result } = renderHookWithClient(() =>
+      useWeatherQuery(lat, lon, city, country),
+    );
 
     await waitFor(() => expect(result.current.isError).toBe(true));
 
@@ -86,6 +91,6 @@ describe("useWeatherQuery", () => {
     expect((result.current.error as AppError).code).toBe("GEOCODING_FAILED");
 
     expect(result.current.failureCount).toBe(1);
-    expect(mockFetchWeatherData).toHaveBeenCalledTimes(1);
+    expect(mockFetchForecastData).toHaveBeenCalledTimes(1);
   });
 });
