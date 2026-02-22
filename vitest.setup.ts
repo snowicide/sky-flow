@@ -1,3 +1,5 @@
+import { server } from "./mocks/server";
+
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
 
@@ -24,3 +26,7 @@ class ResizeObserverMock {
 }
 
 global.ResizeObserver = ResizeObserverMock;
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
