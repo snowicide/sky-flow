@@ -12,9 +12,9 @@ import type {
   WeatherDataDaily,
   WeatherDataHourly,
 } from "@/types/api/WeatherData";
-import { calculateAverageTemps } from "@/utils/calculateAverageTemps";
-import { formatDayOfWeek } from "@/utils/formatDay";
-import groupByDay from "@/utils/groupByDay";
+import { getTicks } from "@/utils/generateTicks";
+import { getChartDailyData } from "@/utils/getChartDailyData";
+import { getChartHourlyData } from "@/utils/getChartHourlyData";
 
 export interface WeatherChartProps {
   dailyData: WeatherDataDaily;
@@ -27,42 +27,11 @@ export function WeatherChart({
   hourlyData,
   currentTab,
 }: WeatherChartProps) {
-  const chartDailyData = dailyData.time.map((time, index) => {
-    const min = dailyData.temperature_2m_min[index];
-    const max = dailyData.temperature_2m_max[index];
-    const date = new Date(time);
-    return {
-      day: formatDayOfWeek(date),
-      temp: calculateAverageTemps(min, max),
-    };
-  });
+  const chartDailyData = getChartDailyData(dailyData);
+  const chartHourlyData = getChartHourlyData(hourlyData);
 
-  const filteredDays = groupByDay(hourlyData);
-
-  const chartHourlyData = filteredDays[1].hours.map((item) => {
-    return {
-      hour: item.hour,
-      temp: item.temp,
-    };
-  });
-
-  const generateTicks = (min: number, max: number) => {
-    const ticks = [];
-    for (let i = Math.floor(min); i <= Math.ceil(max); i += 2) {
-      ticks.push(i);
-    }
-    return ticks;
-  };
-
-  const dailyTicks = generateTicks(
-    Math.min(...chartDailyData.map((item) => item.temp)) - 3,
-    Math.max(...chartDailyData.map((item) => item.temp)) + 3,
-  );
-
-  const hourlyTicks = generateTicks(
-    Math.min(...chartHourlyData.map((item) => item.temp)) - 3,
-    Math.max(...chartHourlyData.map((item) => item.temp)) + 3,
-  );
+  const dailyTicks = getTicks(chartDailyData);
+  const hourlyTicks = getTicks(chartHourlyData);
 
   return (
     <ResponsiveContainer>
