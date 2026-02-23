@@ -3,8 +3,18 @@ import nextPlugin from "@next/eslint-plugin-next";
 import reactPlugin from "eslint-plugin-react";
 import hooksPlugin from "eslint-plugin-react-hooks";
 import importPlugin from "eslint-plugin-import";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { FlatCompat } from "@eslint/eslintrc";
 
-export default [
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
   {
     ignores: [
       ".next/**",
@@ -16,6 +26,7 @@ export default [
     ],
   },
 
+  ...compat.extends("next/core-web-vitals"),
   ...tseslint.configs.recommended,
 
   {
@@ -63,6 +74,12 @@ export default [
       ],
     },
     settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+        },
+      },
       react: {
         version: "detect",
       },
@@ -75,4 +92,13 @@ export default [
       "@typescript-eslint/explicit-function-return-type": "off",
     },
   },
+
+  {
+    files: ["**/*.test.tsx"],
+    rules: {
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
+
+export default eslintConfig;

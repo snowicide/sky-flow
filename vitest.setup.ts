@@ -1,4 +1,4 @@
-import { server } from "./mocks/server";
+import { server } from "./src/mocks/server";
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
