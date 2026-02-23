@@ -5,17 +5,14 @@ import Image from "next/image";
 import type { TodayWeatherProps } from "./TodayWeather.types";
 
 import bgTodayDesktop from "@/public/images/bg-today-large.webp";
-import {
-  getIconByWeatherCode,
-  getWeatherCode,
-} from "@/utils/getIconByWeatherCode";
+import { GET_ICON_BY_WEATHER_CODE, getWeatherCode } from "@/utils/weather";
 
 export default function TodayWeather({
   currentData,
   forecastUnits,
 }: TodayWeatherProps) {
   const code = getWeatherCode(currentData.weather_code);
-  const icon = getIconByWeatherCode[code];
+  const icon = GET_ICON_BY_WEATHER_CODE[code];
 
   return (
     <section

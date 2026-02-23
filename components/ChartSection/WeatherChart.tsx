@@ -8,13 +8,12 @@ import {
   YAxis,
 } from "recharts";
 
+import { getChartDailyData, getChartHourlyData, getTicks } from "./chart-utils";
+
 import type {
   WeatherDataDaily,
   WeatherDataHourly,
 } from "@/types/api/WeatherData";
-import { getTicks } from "@/utils/generateTicks";
-import { getChartDailyData } from "@/utils/getChartDailyData";
-import { getChartHourlyData } from "@/utils/getChartHourlyData";
 
 export interface WeatherChartProps {
   dailyData: WeatherDataDaily;

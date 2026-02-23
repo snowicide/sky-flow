@@ -3,12 +3,12 @@ import Image from "next/image";
 
 import type { DailyForecastProps } from "./DailyForecastProps.types";
 
-import { calculateAverageTemps } from "@/utils/calculateAverageTemps";
-import { formatDayOfWeek } from "@/utils/formatDay";
+import { formatDayOfWeek } from "@/utils/formatters";
 import {
-  getIconByWeatherCode,
+  GET_ICON_BY_WEATHER_CODE,
   getWeatherCode,
-} from "@/utils/getIconByWeatherCode";
+  calculateAverageTemps,
+} from "@/utils/weather";
 
 export default function DailyForecast({ dailyData }: DailyForecastProps) {
   const {
@@ -23,7 +23,7 @@ export default function DailyForecast({ dailyData }: DailyForecastProps) {
   const DailyForecast = time.map((dateStr: string, index: number) => {
     const date = new Date(dateStr);
     const code = getWeatherCode(weatherCode[index]);
-    const image = getIconByWeatherCode[code];
+    const image = GET_ICON_BY_WEATHER_CODE[code];
 
     return {
       day: formatDayOfWeek(date),

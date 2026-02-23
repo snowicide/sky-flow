@@ -5,7 +5,7 @@ import { useMemo, useRef, useState } from "react";
 import ChangeSelectedDay from "./ChangeSelectedDay";
 import type { HourlyForecastProps } from "./HourlyForecast.types";
 
-import groupByDay from "@/utils/groupByDay";
+import { groupByDay } from "@/utils/weather";
 
 export default function HourlyForecast({
   hourlyData,

@@ -3,10 +3,7 @@ import Image from "next/image";
 import type { SearchResultCityProps } from "./SearchResultCity.props";
 
 import { useSearchActions } from "@/hooks/useSearchActions";
-import {
-  getIconByWeatherCode,
-  getWeatherCode,
-} from "@/utils/getIconByWeatherCode";
+import { GET_ICON_BY_WEATHER_CODE, getWeatherCode } from "@/utils/weather";
 
 export function SearchResultCity({
   city,
@@ -20,7 +17,7 @@ export function SearchResultCity({
   const { searchSelectedCity } = useSearchActions();
 
   const code = getWeatherCode(weatherCode);
-  const icon = getIconByWeatherCode[code];
+  const icon = GET_ICON_BY_WEATHER_CODE[code];
   const currentCity =
     resultData.find((item) => item.id === id) || resultData[0];
 
