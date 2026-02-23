@@ -1,14 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { fetchSearchResults } from "@/services/fetchSearchResults";
 import { useSettingsStore } from "@/stores/useSettingsStore";
+import type { SearchDataItem } from "@/types/api/SearchData";
 import { AppError } from "@/types/errors";
 
-export function useSearchQuery(searchResult: string) {
+export function useSearchQuery(
+  searchResult: string,
+): UseQueryResult<SearchDataItem[], AppError> {
   const units = useSettingsStore((state) => state.units);
   const queryValue = searchResult.trim().toLowerCase();
 
-  return useQuery({
+  return useQuery<SearchDataItem[], AppError>({
     queryKey: [
       "search",
       queryValue,
@@ -19,7 +22,7 @@ export function useSearchQuery(searchResult: string) {
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      return fetchSearchResults(queryValue, units, combinedSignal);
+      return await fetchSearchResults(queryValue, units, combinedSignal);
     },
 
     enabled: !!queryValue && queryValue.trim().length > 0,

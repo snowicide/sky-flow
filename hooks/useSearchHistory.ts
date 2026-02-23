@@ -1,5 +1,7 @@
 import { useCallback, useSyncExternalStore } from "react";
 
+import type { UseSearchHistoryReturn } from "./useSearchHistory.types";
+
 import type { HistoryItem } from "@/components/SearchSection/SearchHistory.types";
 import type { CityData } from "@/types/api/CityData";
 
@@ -13,7 +15,7 @@ class WeatherStore {
     this.loadFromStorage();
   }
 
-  private loadFromStorage() {
+  private loadFromStorage(): void {
     try {
       const saved = localStorage.getItem(this.storageKey);
       const parsed = saved ? JSON.parse(saved) : [];
@@ -27,7 +29,7 @@ class WeatherStore {
     }
   }
 
-  getSnapshot() {
+  getSnapshot(): HistoryItem[] {
     return this.data;
   }
 
@@ -36,7 +38,9 @@ class WeatherStore {
     return () => this.listeners.delete(listener);
   }
 
-  update(newData: HistoryItem[] | ((prev: HistoryItem[]) => HistoryItem[])) {
+  update(
+    newData: HistoryItem[] | ((prev: HistoryItem[]) => HistoryItem[]),
+  ): void {
     if (typeof newData === "function") {
       this.data = newData(this.data);
     } else {
@@ -46,7 +50,7 @@ class WeatherStore {
     this.listeners.forEach((listener) => listener());
   }
 
-  reset() {
+  reset(): void {
     this.loadFromStorage();
     this.listeners.forEach((listener) => listener());
   }
@@ -56,7 +60,7 @@ export const recentStore = new WeatherStore("weather-recent");
 export const favoriteStore = new WeatherStore("weather-favorite");
 const EMPTY_ARRAY: [] = [];
 
-export function useSearchHistory() {
+export function useSearchHistory(): UseSearchHistoryReturn {
   const recent = useSyncExternalStore(
     (listener) => recentStore.subscribe(listener),
     () => recentStore.getSnapshot(),

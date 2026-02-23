@@ -2,14 +2,16 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useShallow } from "zustand/shallow";
 
+import type { UseSearchActionsReturn } from "./useSearchActions.types";
 import { useSearchHistory } from "./useSearchHistory";
 import { useSearchQuery } from "./useSearchQuery";
 
 import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { fetchGeoData } from "@/services/fetchGeoData";
 import { useSearchStore } from "@/stores/useSearchStore";
+import type { CityData } from "@/types/api/CityData";
 
-export function useSearchActions() {
+export function useSearchActions(): UseSearchActionsReturn {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =
     useSearchStore(
       useShallow((state) => ({
@@ -35,19 +37,14 @@ export function useSearchActions() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleChangeTab = (value: ActiveTab) => {
+  const handleChangeTab = (value: ActiveTab): void => {
     setCurrentTab(value);
   };
 
   const searchSelectedCity = (
-    cityData: {
-      city: string;
-      country: string;
-      lat: number;
-      lon: number;
-    },
+    cityData: CityData,
     inputRef?: React.RefObject<HTMLInputElement | null>,
-  ) => {
+  ): void => {
     inputRef?.current?.blur();
     setIsOpen(false);
     setInputValue("");
@@ -67,7 +64,7 @@ export function useSearchActions() {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const searchCityWithName = async (city: string) => {
+  const searchCityWithName = async (city: string): Promise<void> => {
     const targetCity = city.trim().toLowerCase();
     if (!targetCity) return;
 
@@ -86,7 +83,7 @@ export function useSearchActions() {
   const handleKeydown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     inputRef: React.RefObject<HTMLInputElement | null>,
-  ) => {
+  ): void => {
     if (e.key === "Enter") {
       e.preventDefault();
       searchCityWithName(inputValue);
@@ -101,7 +98,7 @@ export function useSearchActions() {
     }
   };
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
     setIsOpen(true);
   };

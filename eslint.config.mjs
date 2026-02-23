@@ -34,7 +34,14 @@ export default [
       "@typescript-eslint/no-non-null-assertion": "warn",
       "@typescript-eslint/no-unused-vars": ["warn"],
       "@typescript-eslint/no-unused-expressions": "error",
-      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-function-return-type": [
+        "warn",
+        {
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
 
       "react-hooks/exhaustive-deps": "warn",
       "react-hooks/rules-of-hooks": "error",
@@ -59,6 +66,13 @@ export default [
       react: {
         version: "detect",
       },
+    },
+  },
+
+  {
+    files: ["**/*.tsx", "**/page.tsx", "**/layout.tsx"],
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": "off",
     },
   },
 ];
