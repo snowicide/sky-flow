@@ -1,13 +1,14 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, render, screen, within } from "@testing-library/react";
-import UnitsSettings from "./UnitsSettings";
 import { userEvent } from "@testing-library/user-event";
+
+import UnitsSettings from "./UnitsSettings";
+
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import "@testing-library/jest-dom/vitest";
 
 vi.mock("next/image", () => ({
   default: (props: Partial<React.ImgHTMLAttributes<HTMLImageElement>>) => (
-    // eslint-disable-next-line @next/next/no-img-element
     <img
       {...props}
       alt={props.alt}

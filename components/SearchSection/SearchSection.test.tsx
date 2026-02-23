@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SearchSection from "./SearchSection";
 import {
   act,
   render,
@@ -9,10 +8,13 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import "@testing-library/jest-dom/vitest";
-import { useSearchStore } from "@/stores/useSearchStore";
-import { favoriteStore, recentStore } from "@/hooks/useSearchHistory";
 import type { HistoryItem } from "./SearchHistory.types";
+import SearchSection from "./SearchSection";
+
+import { favoriteStore, recentStore } from "@/hooks/useSearchHistory";
+import { useSearchStore } from "@/stores/useSearchStore";
 
 const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -23,7 +25,6 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("next/image", () => ({
   default: (props: Partial<React.ImgHTMLAttributes<HTMLImageElement>>) => (
-    // eslint-disable-next-line @next/next/no-img-element
     <img
       {...props}
       alt={props.alt}

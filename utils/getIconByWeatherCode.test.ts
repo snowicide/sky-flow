@@ -1,7 +1,8 @@
 import { getIconByWeatherCode, getWeatherCode } from "./getIconByWeatherCode";
-import sunnyIcon from "@/public/icons/icon-sunny.webp";
+
 import fogIcon from "@/public/icons/icon-fog.webp";
 import overcastIcon from "@/public/icons/icon-overcast.webp";
+import sunnyIcon from "@/public/icons/icon-sunny.webp";
 
 describe("getIconByWeatherCode", () => {
   it("should get code", () => {

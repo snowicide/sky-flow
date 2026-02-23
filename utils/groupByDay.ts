@@ -1,14 +1,14 @@
+import { WeatherDataHourly } from "@/types/api/WeatherData";
+import type { DailyForecast, HourlyItem } from "@/types/api/WeatherHourly";
 import {
   formatDayOfWeek,
   formatHourOfDay,
   getHourNumber,
 } from "@/utils/formatDay";
-import type { DailyForecast, HourlyItem } from "@/types/api/WeatherHourly";
 import {
   getIconByWeatherCode,
   getWeatherCode,
 } from "@/utils/getIconByWeatherCode";
-import { WeatherDataHourly } from "@/types/api/WeatherData";
 
 export default function groupByDay(data?: WeatherDataHourly): DailyForecast[] {
   const days: DailyForecast[] = [];

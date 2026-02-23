@@ -1,11 +1,5 @@
-import { useSearchActions } from "@/hooks/useSearchActions";
-import { useSearchHistory } from "@/hooks/useSearchHistory";
-import { useSearchStore } from "@/stores/useSearchStore";
 import { useShallow } from "zustand/shallow";
-import { RecentSearch } from "./RecentSearch";
-import { FavoritesSearch } from "./FavoritesSearch";
-import { SearchResultCity } from "./SearchResultCity";
-import { SearchDropdownSkeleton } from "./SearchDropdown.skeleton";
+
 import {
   FailedSearchIcon,
   FavoriteIcon,
@@ -14,6 +8,15 @@ import {
   UnfavoriteIcon,
 } from "../icons";
 import { SearchIcon } from "../icons/SearchIcon";
+
+import { FavoritesSearch } from "./FavoritesSearch";
+import { RecentSearch } from "./RecentSearch";
+import { SearchDropdownSkeleton } from "./SearchDropdown.skeleton";
+import { SearchResultCity } from "./SearchResultCity";
+
+import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { useSearchStore } from "@/stores/useSearchStore";
 
 export function SearchDropdown({
   inputRef,

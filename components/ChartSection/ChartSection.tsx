@@ -1,9 +1,11 @@
+import { useState } from "react";
+
+import { WeatherChart } from "./WeatherChart";
+
 import type {
   WeatherDataDaily,
   WeatherDataHourly,
 } from "@/types/api/WeatherData";
-import { useState } from "react";
-import { WeatherChart } from "./WeatherChart";
 
 export interface ChartSectionProps {
   dailyData: WeatherDataDaily;

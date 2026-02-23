@@ -1,12 +1,14 @@
 import Image from "next/image";
-import searchIcon from "@/public/icons/icon-search.svg";
 import { useSearchParams } from "next/navigation";
-import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import { useSearchActions } from "@/hooks/useSearchActions";
-import { useSearchStore } from "@/stores/useSearchStore";
-import { useShallow } from "zustand/shallow";
 import { ComponentPropsWithoutRef, forwardRef } from "react";
+import { useShallow } from "zustand/shallow";
+
 import type { SearchBarProps } from "./SearchBar.types";
+
+import { useSearchActions } from "@/hooks/useSearchActions";
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
+import searchIcon from "@/public/icons/icon-search.svg";
+import { useSearchStore } from "@/stores/useSearchStore";
 
 export function SearchBar({ inputRef }: SearchBarProps) {
   const searchParams = useSearchParams();

@@ -1,5 +1,6 @@
-import type { CityData } from "@/types/api/CityData";
 import { fetchForecastData } from "./fetchForecastData";
+
+import type { CityData } from "@/types/api/CityData";
 
 describe("fetchForecastData", () => {
   let cityData: CityData;

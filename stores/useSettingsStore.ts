@@ -1,6 +1,7 @@
-import type { WeatherDataUnits } from "@/types/api/WeatherData";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
+import type { WeatherDataUnits } from "@/types/api/WeatherData";
 
 export interface SettingsStore {
   units: WeatherDataUnits;

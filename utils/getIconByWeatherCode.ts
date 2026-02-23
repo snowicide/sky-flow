@@ -1,12 +1,13 @@
-import sunnyIcon from "@/public/icons/icon-sunny.webp";
-import partlyCloudyIcon from "@/public/icons/icon-partly-cloudy.webp";
-import snowIcon from "@/public/icons/icon-snow.webp";
-import fogIcon from "@/public/icons/icon-fog.webp";
-import rainIcon from "@/public/icons/icon-rain.webp";
-import drizzleIcon from "@/public/icons/icon-drizzle.webp";
-import stormIcon from "@/public/icons/icon-storm.webp";
-import overcastIcon from "@/public/icons/icon-overcast.webp";
 import { StaticImageData } from "next/image";
+
+import drizzleIcon from "@/public/icons/icon-drizzle.webp";
+import fogIcon from "@/public/icons/icon-fog.webp";
+import overcastIcon from "@/public/icons/icon-overcast.webp";
+import partlyCloudyIcon from "@/public/icons/icon-partly-cloudy.webp";
+import rainIcon from "@/public/icons/icon-rain.webp";
+import snowIcon from "@/public/icons/icon-snow.webp";
+import stormIcon from "@/public/icons/icon-storm.webp";
+import sunnyIcon from "@/public/icons/icon-sunny.webp";
 
 export const getIconByWeatherCode: Record<string, StaticImageData> = {
   sunny: sunnyIcon,

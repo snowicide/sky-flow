@@ -1,4 +1,5 @@
 import { act } from "@testing-library/react";
+
 import { useSearchStore } from "./useSearchStore";
 
 describe("useSearchStore", () => {

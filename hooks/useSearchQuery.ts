@@ -1,7 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { fetchSearchResults } from "@/services/fetchSearchResults";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { AppError } from "@/types/errors";
-import { useQuery } from "@tanstack/react-query";
 
 export function useSearchQuery(searchResult: string) {
   const units = useSettingsStore((state) => state.units);

@@ -1,8 +1,9 @@
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
+
 import { Header } from "@/components/Header";
 import { SearchSection } from "@/components/SearchSection";
-import { Metadata } from "next";
 import { WeatherContent } from "@/components/WeatherContent";
-import { redirect } from "next/navigation";
 import { fetchGeoData } from "@/services/fetchGeoData";
 
 interface WeatherPageProps {

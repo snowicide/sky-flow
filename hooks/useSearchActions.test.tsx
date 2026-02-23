@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   act,
   render,
@@ -5,13 +6,15 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useSearchActions } from "./useSearchActions";
-import { useSearchStore } from "@/stores/useSearchStore";
-import { SearchInput } from "@/components/SearchSection/SearchBar";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { useSearchActions } from "./useSearchActions";
+
+import { SearchInput } from "@/components/SearchSection/SearchBar";
+import { useSearchStore } from "@/stores/useSearchStore";
+
 import "@testing-library/jest-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({

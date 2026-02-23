@@ -1,9 +1,11 @@
-import { XIcon } from "@/components/icons";
 import { FavoriteIcon } from "../icons/FavoriteIcon";
+
 import type { RecentTabProps } from "./SearchField.types";
+import { HistoryItem } from "./SearchHistory.types";
+
+import { XIcon } from "@/components/icons";
 import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
-import { HistoryItem } from "./SearchHistory.types";
 
 export function RecentSearch({ data, inputRef }: RecentTabProps) {
   const { searchSelectedCity } = useSearchActions();

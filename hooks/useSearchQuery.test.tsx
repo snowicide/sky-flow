@@ -1,6 +1,8 @@
-import { renderHook, waitFor } from "@testing-library/react";
-import { useSearchQuery } from "./useSearchQuery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
+
+import { useSearchQuery } from "./useSearchQuery";
+
 import { AppError } from "@/types/errors";
 
 const mockFetchSearchResults = vi.hoisted(() => vi.fn());

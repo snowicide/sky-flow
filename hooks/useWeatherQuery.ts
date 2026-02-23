@@ -1,8 +1,9 @@
-import { AppError } from "@/types/errors";
 import { useQuery } from "@tanstack/react-query";
-import { useSettingsStore } from "@/stores/useSettingsStore";
+
 import { fetchForecastData } from "@/services/fetchForecastData";
+import { useSettingsStore } from "@/stores/useSettingsStore";
 import type { CityData } from "@/types/api/CityData";
+import { AppError } from "@/types/errors";
 
 export function useWeatherQuery(cityData: CityData) {
   const units = useSettingsStore((state) => state.units);

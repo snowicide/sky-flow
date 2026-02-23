@@ -1,11 +1,13 @@
-import { useSearchStore } from "@/stores/useSearchStore";
-import { useShallow } from "zustand/shallow";
-import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "use-debounce";
-import { useSearchQuery } from "./useSearchQuery";
-import { fetchGeoData } from "@/services/fetchGeoData";
+import { useShallow } from "zustand/shallow";
+
 import { useSearchHistory } from "./useSearchHistory";
+import { useSearchQuery } from "./useSearchQuery";
+
+import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
+import { fetchGeoData } from "@/services/fetchGeoData";
+import { useSearchStore } from "@/stores/useSearchStore";
 
 export function useSearchActions() {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =

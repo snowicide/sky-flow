@@ -1,10 +1,12 @@
+import Image from "next/image";
+
 import type { SearchResultCityProps } from "./SearchResultCity.props";
+
+import { useSearchActions } from "@/hooks/useSearchActions";
 import {
   getIconByWeatherCode,
   getWeatherCode,
 } from "@/utils/getIconByWeatherCode";
-import Image from "next/image";
-import { useSearchActions } from "@/hooks/useSearchActions";
 
 export function SearchResultCity({
   city,

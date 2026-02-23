@@ -4,10 +4,11 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { useState } from "react";
 import Image from "next/image";
-import dropdownIcon from "@/public/icons/icon-dropdown.svg";
+import { useState } from "react";
+
 import type { ChangeSelectedDayProps } from "@/components/HourlyForecast/ChangeSelectedDay.types";
+import dropdownIcon from "@/public/icons/icon-dropdown.svg";
 
 export default function ChangeSelectedDay({
   days,

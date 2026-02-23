@@ -1,10 +1,3 @@
-import type {
-  WeatherDataDaily,
-  WeatherDataHourly,
-} from "@/types/api/WeatherData";
-import { calculateAverageTemps } from "@/utils/calculateAverageTemps";
-import { formatDayOfWeek } from "@/utils/formatDay";
-import groupByDay from "@/utils/groupByDay";
 import {
   Area,
   AreaChart,
@@ -14,6 +7,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
+import type {
+  WeatherDataDaily,
+  WeatherDataHourly,
+} from "@/types/api/WeatherData";
+import { calculateAverageTemps } from "@/utils/calculateAverageTemps";
+import { formatDayOfWeek } from "@/utils/formatDay";
+import groupByDay from "@/utils/groupByDay";
 
 export interface WeatherChartProps {
   dailyData: WeatherDataDaily;
@@ -37,9 +38,8 @@ export function WeatherChart({
   });
 
   const filteredDays = groupByDay(hourlyData);
-  console.log(filteredDays);
 
-  const chartHourlyData = filteredDays[1].hours.map((item, index) => {
+  const chartHourlyData = filteredDays[1].hours.map((item) => {
     return {
       hour: item.hour,
       temp: item.temp,

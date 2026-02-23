@@ -1,12 +1,13 @@
 "use client";
-import { useWeatherQuery } from "@/hooks/useWeatherQuery";
+import { ChartSection } from "./ChartSection/ChartSection";
 import { DailyForecast } from "./DailyForecast";
-import { TodayWeather } from "./TodayWeather";
-import { WeatherDetails } from "./WeatherDetails";
 import { HourlyForecast } from "./HourlyForecast";
 import { StatusSection } from "./StatusSection";
+import { TodayWeather } from "./TodayWeather";
+import { WeatherDetails } from "./WeatherDetails";
 import { WeatherContentSkeleton } from "./WeatherSkeleton";
-import { ChartSection } from "./ChartSection/ChartSection";
+
+import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 
 export function WeatherContent({
   params,

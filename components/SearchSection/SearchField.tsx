@@ -1,7 +1,9 @@
+import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
+
 import { SearchBar } from "./SearchBar";
 import { SearchDropdown } from "./SearchDropdown";
-import { useSearchParams } from "next/navigation";
+
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 
 export function SearchField() {

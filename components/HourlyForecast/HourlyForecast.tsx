@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
+
 import ChangeSelectedDay from "./ChangeSelectedDay";
-import groupByDay from "@/utils/groupByDay";
 import type { HourlyForecastProps } from "./HourlyForecast.types";
+
+import groupByDay from "@/utils/groupByDay";
 
 export default function HourlyForecast({
   hourlyData,

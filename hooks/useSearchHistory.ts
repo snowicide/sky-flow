@@ -1,6 +1,7 @@
+import { useCallback, useSyncExternalStore } from "react";
+
 import type { HistoryItem } from "@/components/SearchSection/SearchHistory.types";
 import type { CityData } from "@/types/api/CityData";
-import { useCallback, useSyncExternalStore } from "react";
 
 class WeatherStore {
   private data: HistoryItem[] = [];

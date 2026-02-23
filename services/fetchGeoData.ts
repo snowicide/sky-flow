@@ -22,7 +22,6 @@ export async function fetchGeoData(
     if (!geoData.results || geoData.results.length === 0) {
       throw new AppError("GEOCODING_FAILED", `City ${city} not found...`);
     }
-    console.log(geoData);
 
     return geoData;
   } catch (error) {

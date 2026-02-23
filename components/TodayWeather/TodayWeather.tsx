@@ -1,12 +1,14 @@
 "use client";
-import Image from "next/image";
-import bgTodayDesktop from "@/public/images/bg-today-large.webp";
 import dayjs from "dayjs";
+import Image from "next/image";
+
+import type { TodayWeatherProps } from "./TodayWeather.types";
+
+import bgTodayDesktop from "@/public/images/bg-today-large.webp";
 import {
   getIconByWeatherCode,
   getWeatherCode,
 } from "@/utils/getIconByWeatherCode";
-import type { TodayWeatherProps } from "./TodayWeather.types";
 
 export default function TodayWeather({
   currentData,

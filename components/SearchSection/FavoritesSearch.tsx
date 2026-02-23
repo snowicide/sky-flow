@@ -1,7 +1,9 @@
+import { FavoriteIcon } from "../icons/FavoriteIcon";
+
 import type { FavoritesTabProps } from "./SearchField.types";
+
 import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
-import { FavoriteIcon } from "../icons/FavoriteIcon";
 
 export function FavoritesSearch({ data, inputRef }: FavoritesTabProps) {
   const { searchSelectedCity } = useSearchActions();

@@ -1,9 +1,11 @@
-import { renderHook, waitFor } from "@testing-library/react";
-import { useWeatherQuery } from "./useWeatherQuery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AppError } from "@/types/errors";
-import type { WeatherData } from "@/types/api/WeatherData";
+import { renderHook, waitFor } from "@testing-library/react";
+
+import { useWeatherQuery } from "./useWeatherQuery";
+
 import type { CityData } from "@/types/api/CityData";
+import type { WeatherData } from "@/types/api/WeatherData";
+import { AppError } from "@/types/errors";
 
 const mockFetchForecastData = vi.hoisted(() => vi.fn());
 vi.mock("@/services/fetchForecastData", () => ({

@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import retryIcon from "@/public/icons/icon-retry.svg";
 import { AppError } from "@/types/errors";
 

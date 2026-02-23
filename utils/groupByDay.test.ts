@@ -1,4 +1,5 @@
 import groupByDay from "./groupByDay";
+
 import fogIcon from "@/public/icons/icon-fog.webp";
 import sunnyIcon from "@/public/icons/icon-sunny.webp";
 

@@ -1,6 +1,8 @@
 import Image from "next/image";
-import weatherAppLogo from "@/public/images/logo.svg";
+
 import UnitsSettings from "./UnitsSettings";
+
+import weatherAppLogo from "@/public/images/logo.svg";
 
 export default function Header() {
   return (

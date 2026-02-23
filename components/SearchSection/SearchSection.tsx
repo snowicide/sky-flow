@@ -1,11 +1,13 @@
 "use client";
-import { useSearchStore } from "@/stores/useSearchStore";
-import { SearchField } from "./SearchField";
-import { useSearchActions } from "@/hooks/useSearchActions";
 import { useSearchParams } from "next/navigation";
-import { useSearchHistory } from "@/hooks/useSearchHistory";
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/shallow";
+
+import { SearchField } from "./SearchField";
+
+import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { useSearchStore } from "@/stores/useSearchStore";
 
 export default function SearchSection() {
   const { searchCityWithName } = useSearchActions();

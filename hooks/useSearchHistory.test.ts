@@ -1,10 +1,12 @@
-import { beforeEach, describe, expect, it } from "vitest";
 import { renderHook, act } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
+
 import {
   favoriteStore,
   recentStore,
   useSearchHistory,
 } from "./useSearchHistory";
+
 import type { CityData } from "@/types/api/CityData";
 
 describe("useSearchHistory", () => {

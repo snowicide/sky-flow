@@ -1,11 +1,12 @@
 "use client";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Image from "next/image";
+import { useShallow } from "zustand/shallow";
+
+import checkmarkIcon from "@/public/icons/icon-checkmark.svg";
 import dropdownIcon from "@/public/icons/icon-dropdown.svg";
 import unitsIcon from "@/public/icons/icon-units.svg";
-import checkmarkIcon from "@/public/icons/icon-checkmark.svg";
 import { useSettingsStore } from "@/stores/useSettingsStore";
-import { useShallow } from "zustand/shallow";
 import type { WeatherDataUnits } from "@/types/api/WeatherData";
 
 export const DEFAULT_UNITS: WeatherDataUnits = {

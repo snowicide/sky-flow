@@ -1,9 +1,10 @@
 import { fetchGeoData } from "./fetchGeoData";
-import type { WeatherDataUnits } from "@/types/api/WeatherData";
+
 import { DEFAULT_UNITS } from "@/components/Header/UnitsSettings";
-import { AppError } from "@/types/errors";
 import { ForecastResponse } from "@/types/api/ForecastResponse";
 import { SearchDataItem } from "@/types/api/SearchData";
+import type { WeatherDataUnits } from "@/types/api/WeatherData";
+import { AppError } from "@/types/errors";
 
 export const fetchSearchResults = async (
   searchResult: string,

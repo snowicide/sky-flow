@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import dropdownIcon from "@/public/icons/icon-dropdown.svg";
 
 export default function HourlyForecastSkeleton() {
