@@ -48,7 +48,7 @@ export function WeatherChart({
 
   const generateTicks = (min: number, max: number) => {
     const ticks = [];
-    for (let i = Math.floor(min); i <= Math.ceil(max); i++) {
+    for (let i = Math.floor(min); i <= Math.ceil(max); i += 2) {
       ticks.push(i);
     }
     return ticks;
@@ -89,13 +89,13 @@ export function WeatherChart({
           unit="°C"
           fontSize={12}
           ticks={currentTab === "daily" ? dailyTicks : hourlyTicks}
-          interval={currentTab === "daily" ? 1 : 0}
+          interval={currentTab === "daily" ? 0 : 0}
           tickLine={false}
           axisLine={false}
           domain={
             currentTab === "daily"
-              ? ["dataMin - 3", "dataMax + 3"]
-              : ["auto", "auto"]
+              ? [dailyTicks[0], dailyTicks[dailyTicks.length - 1]]
+              : [hourlyTicks[0], hourlyTicks[hourlyTicks.length - 1]]
           }
         />
 
