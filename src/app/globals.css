@@ -7,7 +7,12 @@
 }
 
 body {
-  background-color: hsl(243, 96%, 9%);
+  background: linear-gradient(
+    to top right,
+    hsl(243, 96%, 4%),
+    hsl(243, 60%, 18%)
+  );
+  min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
 }
