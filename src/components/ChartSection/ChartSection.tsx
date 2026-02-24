@@ -16,7 +16,7 @@ export function ChartSection({ dailyData, hourlyData }: ChartSectionProps) {
   const [currentTab, setCurrentTab] = useState<"daily" | "hourly">("daily");
 
   return (
-    <section className="flex flex-col gap-5 w-full h-150 xl:max-w-304 mx-auto bg-[hsl(243,27%,20%)]  p-4 rounded-xl border border-white/10 items-center">
+    <section className="flex flex-col gap-5 w-full h-150 xl:max-w-304 mx-auto bg-[hsl(243,27%,20%)]  p-4 rounded-xl border border-white/10 items-center overflow-hidden">
       {/* daily/hourly tabs */}
       <ul
         role="tablist"
@@ -65,11 +65,13 @@ export function ChartSection({ dailyData, hourlyData }: ChartSectionProps) {
       </ul>
 
       {/* chart */}
-      <WeatherChart
-        currentTab={currentTab}
-        dailyData={dailyData}
-        hourlyData={hourlyData}
-      />
+      <div className="w-full h-full">
+        <WeatherChart
+          currentTab={currentTab}
+          dailyData={dailyData}
+          hourlyData={hourlyData}
+        />
+      </div>
     </section>
   );
 }

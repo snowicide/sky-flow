@@ -7,7 +7,6 @@ import { GET_ICON_BY_WEATHER_CODE, getWeatherCode } from "@/utils/weather";
 
 import type { TodayWeatherProps } from "./TodayWeather.types";
 
-
 export default function TodayWeather({
   currentData,
   forecastUnits,
