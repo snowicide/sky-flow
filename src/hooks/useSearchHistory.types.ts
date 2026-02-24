@@ -1,5 +1,5 @@
-import type { HistoryItem } from "@/components/SearchSection/SearchHistory.types";
 import type { CityData } from "@/types/api/CityData";
+import type { HistoryItem } from "@/types/history";
 
 export interface UseSearchHistoryReturn {
   recent: HistoryItem[];

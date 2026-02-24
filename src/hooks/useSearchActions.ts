@@ -2,10 +2,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useShallow } from "zustand/shallow";
 
-import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import { fetchGeoData } from "@/services/fetchGeoData";
 import { useSearchStore } from "@/stores/useSearchStore";
 import type { CityData } from "@/types/api/CityData";
+import type { ActiveTab } from "@/types/history";
 import { capitalizeString } from "@/utils/formatters";
 
 import type { UseSearchActionsReturn } from "./useSearchActions.types";

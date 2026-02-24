@@ -1,6 +1,6 @@
-import type { ActiveTab } from "@/components/SearchSection/SearchField.types";
 import type { CityData } from "@/types/api/CityData";
 import type { SearchDataItem } from "@/types/api/SearchData";
+import type { ActiveTab } from "@/types/history";
 
 export interface UseSearchActionsReturn {
   handleChangeTab: (value: ActiveTab) => void;

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { ActiveTab } from "@/components/SearchSection/SearchField.types";
+import { ActiveTab } from "@/types/history";
 
 export interface SearchStore {
   inputValue: string;

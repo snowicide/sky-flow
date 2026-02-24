@@ -1,8 +1,8 @@
 import { useCallback, useSyncExternalStore } from "react";
 
-import type { HistoryItem } from "@/components/SearchSection/SearchHistory.types";
 import { WeatherStore } from "@/lib/weather-store";
 import type { CityData } from "@/types/api/CityData";
+import type { HistoryItem } from "@/types/history";
 
 import type { UseSearchHistoryReturn } from "./useSearchHistory.types";
 export const recentStore = new WeatherStore("weather-recent");
