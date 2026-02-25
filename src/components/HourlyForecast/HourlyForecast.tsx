@@ -37,7 +37,9 @@ export default function HourlyForecast({
     >
       <div className="bg-[hsl(243,27%,20%)] max-h-full p-5 sm:p-6 rounded-2xl border border-white/10 sticky top-6">
         <div className="flex justify-between items-center mb-6 lg:h-10.5">
-          <h3 className="text-xl font-bold white">Hourly forecast</h3>
+          <h3 className="text-lg md:text-xl font-bold white">
+            Hourly forecast
+          </h3>
           <ChangeSelectedDay
             days={days}
             setSelectedDayIndex={handleChangeDay}
@@ -51,7 +53,7 @@ export default function HourlyForecast({
           {hours.map(({ hour, image, temp }, index) => (
             <li
               key={`${hour}-${index}`}
-              className="flex items-center justify-between bg-[hsl(243,23%,24%)] hover:opacity-75 p-3 rounded-lg border border-white/10"
+              className="flex items-center justify-between bg-[hsl(243,23%,24%)] hover:opacity-75 py-1 md:py-1.5 px-3 lg:py-1.75 xl:p-3 rounded-lg border border-white/10"
             >
               <div className="flex items-center gap-3">
                 <Image
@@ -59,14 +61,17 @@ export default function HourlyForecast({
                   alt={`${hour} weather`}
                   className="object-contain relative w-8 h-8"
                 />
-                <span className="font-medium">{hour}</span>
+                <span className="font-medium text-sm lg:text-base">{hour}</span>
               </div>
-              <span className="text-xl font-bold">
-                {temp.toFixed(1)}{" "}
-                <span className="text-white/70 text-lg">
+
+              <div className="flex items-center gap-1">
+                <span className="text-md xl:text-xl font-bold">
+                  {temp.toFixed(1)}
+                </span>
+                <span className="text-white/70 text-base xl:text-lg">
                   {forecastUnits.temperature}
                 </span>
-              </span>
+              </div>
             </li>
           ))}
         </ul>

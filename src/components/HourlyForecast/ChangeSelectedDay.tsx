@@ -10,7 +10,6 @@ import { useState } from "react";
 import dropdownIcon from "@/../public/icons/icon-dropdown.svg";
 import type { ChangeSelectedDayProps } from "@/components/HourlyForecast/ChangeSelectedDay.types";
 
-
 export default function ChangeSelectedDay({
   days,
   setSelectedDayIndex,
@@ -26,11 +25,11 @@ export default function ChangeSelectedDay({
   return (
     <Listbox value={selectedDay} onChange={handleChange}>
       <div className="border border-white/0 active:border-white/20 rounded-lg">
-        <ListboxButton className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,30%)] border border-white/10 hover:opacity-80 px-5 py-2 rounded-lg transition-opacity">
+        <ListboxButton className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,30%)] border border-white/10 hover:opacity-80 px-3 sm:px-5 py-2 rounded-lg transition-opacity">
           <span>{selectedDay}</span>
           <Image
             src={dropdownIcon}
-            className="w-4 h-4 group-data-open:rotate-180 transition-transform duration-200"
+            className="w-3 h-3 sm:w-4 sm:h-4 group-data-open:rotate-180 transition-transform duration-200"
             alt="Dropdown"
           />
         </ListboxButton>
