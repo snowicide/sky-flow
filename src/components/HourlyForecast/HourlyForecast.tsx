@@ -33,11 +33,11 @@ export default function HourlyForecast({
   return (
     <section
       aria-label="Hourly Forecast"
-      className="lg:max-w-90 xl:max-w-96 w-full max-h-full"
+      className="lg:max-w-90 xl:min-w-96 w-full max-h-full"
     >
       <div className="bg-[hsl(243,27%,20%)] max-h-full p-5 sm:p-6 rounded-2xl border border-white/10 sticky top-6">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold">Hourly forecast</h3>
+        <div className="flex justify-between items-center mb-6 lg:h-10.5">
+          <h3 className="text-xl font-bold white">Hourly forecast</h3>
           <ChangeSelectedDay
             days={days}
             setSelectedDayIndex={handleChangeDay}
