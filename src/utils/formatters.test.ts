@@ -10,13 +10,13 @@ describe("formatters", () => {
 
   describe("formatDayOfWeek", () => {
     it("should format day of week", () => {
-      expect(formatDayOfWeek(mockDate)).toBe("Saturday");
+      expect(formatDayOfWeek(mockDate, "dddd")).toBe("Saturday");
     });
   });
 
   describe("formatHourOfDay", () => {
     it("should format hour of day", () => {
-      expect(formatHourOfDay(mockDate)).toBe("12 PM");
+      expect(formatHourOfDay(mockDate, "12")).toBe("12 PM");
     });
 
     describe("getHourNumber", () => {

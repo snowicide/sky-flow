@@ -22,6 +22,7 @@ describe("useSettingsStore", () => {
       temperature: "celsius",
       speed: "kmh",
       precipitation: "mm",
+      time: "12",
     });
   });
 
@@ -31,6 +32,7 @@ describe("useSettingsStore", () => {
         temperature: "fahrenheit",
         speed: "mph",
         precipitation: "inch",
+        time: "24",
       },
     });
 
@@ -40,6 +42,7 @@ describe("useSettingsStore", () => {
       temperature: "celsius",
       speed: "kmh",
       precipitation: "mm",
+      time: "12",
     });
   });
 });
