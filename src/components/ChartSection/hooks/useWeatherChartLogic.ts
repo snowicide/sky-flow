@@ -16,7 +16,10 @@ export function useWeatherChartLogic(
   dailyData: WeatherDataDaily,
   hourlyData: WeatherDataHourly,
 ): UseWeatherChartLogicReturn {
-  const { getChartDailyData, getChartHourlyData } = useChartData();
+  const { chartDailyData, chartHourlyData: fullHourlyData } = useChartData(
+    dailyData,
+    hourlyData,
+  );
   const tempUnit = useSettingsStore((state) => state.units.temperature);
   const hourUnit = useSettingsStore((state) => state.units.time);
   const currentUnit = useMemo(
@@ -24,14 +27,6 @@ export function useWeatherChartLogic(
     [tempUnit],
   );
 
-  const chartDailyData = useMemo(
-    () => getChartDailyData(dailyData),
-    [dailyData, getChartDailyData],
-  );
-  const fullHourlyData = useMemo(
-    () => getChartHourlyData(hourlyData),
-    [getChartHourlyData, hourlyData],
-  );
   const chartHourlyData = useResponsiveHourlyData(fullHourlyData);
 
   const dailyTicks = useMemo(() => getTicks(chartDailyData), [chartDailyData]);
@@ -40,12 +35,22 @@ export function useWeatherChartLogic(
     [chartHourlyData],
   );
 
-  return {
-    hourUnit,
-    currentUnit,
-    chartDailyData,
-    chartHourlyData,
-    dailyTicks,
-    hourlyTicks,
-  };
+  return useMemo(
+    () => ({
+      hourUnit,
+      currentUnit,
+      chartDailyData,
+      chartHourlyData,
+      dailyTicks,
+      hourlyTicks,
+    }),
+    [
+      hourUnit,
+      currentUnit,
+      chartDailyData,
+      chartHourlyData,
+      dailyTicks,
+      hourlyTicks,
+    ],
+  );
 }

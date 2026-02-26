@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import type {
   WeatherDataDaily,
@@ -8,38 +10,30 @@ import { calculateAverageTemps, groupByDay } from "@/utils/weather";
 
 import { useDeviceType } from "./useDeviceType";
 
-export interface UseChartDataReturn {
-  getChartDailyData: (
-    dailyData: WeatherDataDaily,
-  ) => { day: string; temp: number }[];
-  getChartHourlyData: (
-    hourlyData: WeatherDataHourly,
-  ) => { hour: string; temp: number }[];
-}
-
-export function useChartData(): UseChartDataReturn {
+export function useChartData(
+  dailyData: WeatherDataDaily,
+  hourlyData: WeatherDataHourly,
+): UseChartDataReturn {
   const { isMobile, isTablet } = useDeviceType();
   const hourFormat = useSettingsStore((state) => state.units.time);
   const shouldReduce = isMobile ? "dd" : isTablet ? "ddd" : "dddd";
 
-  const getChartDailyData = (
-    dailyData: WeatherDataDaily,
-  ): { day: string; temp: number }[] => {
-    return dailyData.time.map((time, index) => {
-      const min = dailyData.temperature_2m_min[index];
-      const max = dailyData.temperature_2m_max[index];
-      const date = new Date(time);
+  const chartDailyData = useMemo(
+    () =>
+      dailyData.time.map((time, index) => {
+        const min = dailyData.temperature_2m_min[index];
+        const max = dailyData.temperature_2m_max[index];
+        const date = new Date(time);
 
-      return {
-        day: formatDayOfWeek(date, shouldReduce),
-        temp: calculateAverageTemps(min, max),
-      };
-    });
-  };
+        return {
+          day: formatDayOfWeek(date, shouldReduce),
+          temp: calculateAverageTemps(min, max),
+        };
+      }),
+    [dailyData, shouldReduce],
+  );
 
-  const getChartHourlyData = (
-    hourlyData: WeatherDataHourly,
-  ): { hour: string; temp: number }[] => {
+  const chartHourlyData = useMemo(() => {
     const filteredDays = groupByDay(hourlyData, {
       hourFormat,
       dayFormat: shouldReduce,
@@ -49,10 +43,24 @@ export function useChartData(): UseChartDataReturn {
       hour: item.hour,
       temp: item.temp,
     }));
-  };
+  }, [hourlyData, hourFormat, shouldReduce]);
 
-  return {
-    getChartDailyData,
-    getChartHourlyData,
-  };
+  return useMemo(
+    () => ({
+      chartDailyData,
+      chartHourlyData,
+    }),
+    [chartDailyData, chartHourlyData],
+  );
+}
+
+interface UseChartDataReturn {
+  chartDailyData: {
+    day: string;
+    temp: number;
+  }[];
+  chartHourlyData: {
+    hour: string;
+    temp: number;
+  }[];
 }
