@@ -31,11 +31,13 @@ export function WeatherChart({
 }: WeatherChartProps) {
   const { getChartDailyData, getChartHourlyData } = useChartData();
   const tempUnit = useSettingsStore((state) => state.units.temperature);
+  const hourUnit = useSettingsStore((state) => state.units.time);
   const currentUnit = tempUnit === "celsius" ? "°C" : "°F";
 
   const isMobile = useMediaQuery({ maxWidth: 640 });
   const isTablet = useMediaQuery({ maxWidth: 768 });
   const isDesk = useMediaQuery({ minWidth: 1025 });
+  const isSmallDesk = useMediaQuery({ minWidth: 1025, maxWidth: 1150 });
 
   const chartDailyData = getChartDailyData(dailyData);
   const chartHourlyData = useResponsiveHourlyData(
@@ -70,9 +72,23 @@ export function WeatherChart({
           tick={{ fill: "#94a3b8" }}
           interval={0}
           dy={10}
+          dx={-5}
           tickFormatter={(value) => {
-            if (isDesk) return value.replace(" AM", "AM").replace(" PM", "PM");
-            if (!isDesk) return value.replace(" AM", "A").replace(" PM", "P");
+            if (currentTab === "daily") return value;
+            if (!isDesk || isSmallDesk) {
+              if (hourUnit === "12") {
+                return value.replace(" AM", "A").replace(" PM", "P");
+              } else {
+                return +value.replace(":00", "").replace(":00", "") + "h";
+              }
+            }
+            if (isDesk) {
+              if (hourUnit === "12") {
+                return value.replace(" AM", "AM").replace(" PM", "PM");
+              } else {
+                return value.replace(":00", ":00").replace(":00", ":00");
+              }
+            }
           }}
         />
         <YAxis
