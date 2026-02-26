@@ -32,6 +32,31 @@ export default function HourlyForecast({
     hoursRef.current?.scrollTo({ top: 0 });
   };
 
+  const getHour = (hour: string) => {
+    if (hourFormat === "12") {
+      const hours = hour.replace(/[a-z]/gi, "");
+      const chars = hour.replace(/[0-9]/g, "");
+      return (
+        <div className="flex items-center gap-1 font-medium text-sm lg:text-lg">
+          <span>{hours}</span>
+          <span className=" text-white/50">{chars}</span>
+        </div>
+      );
+    } else {
+      const [h, m] = hour.split(":");
+
+      return (
+        <div className="flex items-center gap-0.75 text-sm lg:text-lg">
+          <div className="flex items-center gap-0.5 font-medium">
+            <span>{`${h[0] === "0" ? h.replace("0", "") : h}`}</span>
+            <span>:</span>
+          </div>
+          <span className=" text-white/50 font-normal">{m}</span>
+        </div>
+      );
+    }
+  };
+
   return (
     <section
       aria-label="Hourly Forecast"
@@ -63,7 +88,7 @@ export default function HourlyForecast({
                   alt={`${hour} weather`}
                   className="object-contain relative w-8 h-8"
                 />
-                <span className="font-medium text-sm lg:text-lg">{hour}</span>
+                {getHour(hour)}
               </div>
 
               <div className="flex items-center gap-1">
