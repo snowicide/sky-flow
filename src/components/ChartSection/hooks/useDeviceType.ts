@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export function useDeviceType(): UseDeviceTypeReturn {
@@ -6,12 +7,15 @@ export function useDeviceType(): UseDeviceTypeReturn {
   const isDesk = useMediaQuery({ minWidth: 1025 });
   const isSmallDesk = useMediaQuery({ minWidth: 1025, maxWidth: 1150 });
 
-  return {
-    isMobile,
-    isTablet,
-    isDesk,
-    isSmallDesk,
-  };
+  return useMemo(
+    () => ({
+      isMobile,
+      isTablet,
+      isDesk,
+      isSmallDesk,
+    }),
+    [isMobile, isTablet, isDesk, isSmallDesk],
+  );
 }
 
 interface UseDeviceTypeReturn {
