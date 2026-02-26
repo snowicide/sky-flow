@@ -31,6 +31,7 @@ export function WeatherChart({
   return (
     <ResponsiveContainer width="100%" aspect={getAspect(isMobile, isTablet)}>
       <AreaChart
+        tabIndex={-1}
         data={currentTab === "daily" ? chartDailyData : chartHourlyData}
         margin={{
           top: 10,
@@ -40,12 +41,14 @@ export function WeatherChart({
         }}
       >
         <CartesianGrid
+          tabIndex={-1}
           strokeDasharray={"7 7"}
           vertical={false}
           stroke="#ffffff30"
         />
 
         <XAxis
+          tabIndex={-1}
           dataKey={currentTab === "daily" ? "day" : "hour"}
           fontSize={12}
           tickLine={false}
@@ -64,6 +67,7 @@ export function WeatherChart({
           }
         />
         <YAxis
+          tabIndex={-1}
           dataKey="temp"
           unit={currentUnit}
           fontSize={12}
@@ -98,6 +102,7 @@ export function WeatherChart({
         />
 
         <Area
+          tabIndex={-1}
           type="monotone"
           name="Temperature"
           dataKey="temp"

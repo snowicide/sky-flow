@@ -45,3 +45,19 @@ body {
   scrollbar-color: hsl(243, 23%, 35%) transparent;
   -ms-overflow-style: auto;
 }
+
+.chart-no-focus *:focus,
+.chart-no-focus .recharts-wrapper:focus,
+.chart-no-focus .recharts-surface:focus,
+.chart-no-focus .recharts-sector:focus,
+.chart-no-focus .recharts-rectangle:focus,
+.chart-no-focus svg:focus,
+.chart-no-focus .recharts-dot:focus {
+  outline: none;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chart-no-focus *::-moz-focus-inner {
+  border: 0 !important;
+}
