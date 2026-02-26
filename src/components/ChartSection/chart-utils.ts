@@ -27,3 +27,29 @@ export const getAspect = (isM: boolean, isT: boolean): number => {
   if (isT) return 21 / 10.5;
   return 21 / 8.75;
 };
+
+export function getXTickFormatter(
+  value: string,
+  data: {
+    currentTab: string;
+    isDesk: boolean;
+    isSmallDesk: boolean;
+    hourUnit: "12" | "24";
+  },
+): string {
+  const { currentTab, isDesk, isSmallDesk, hourUnit } = data;
+  if (currentTab === "daily") return value;
+  if (!isDesk || isSmallDesk) {
+    if (hourUnit === "12") {
+      return value.replace(" AM", "A").replace(" PM", "P");
+    } else {
+      return +value.replace(":00", "").replace(":00", "") + "h";
+    }
+  } else {
+    if (hourUnit === "12") {
+      return value.replace(" AM", "AM").replace(" PM", "PM");
+    } else {
+      return value.replace(":00", ":00").replace(":00", ":00");
+    }
+  }
+}

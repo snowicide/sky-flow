@@ -1,4 +1,3 @@
-import { useMediaQuery } from "react-responsive";
 import {
   Area,
   AreaChart,
@@ -9,43 +8,25 @@ import {
   YAxis,
 } from "recharts";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
-import type {
-  WeatherDataDaily,
-  WeatherDataHourly,
-} from "@/types/api/WeatherData";
-
-import { getAspect, getTicks } from "./chart-utils";
-import { useChartData, useResponsiveHourlyData } from "./hooks";
-
-export interface WeatherChartProps {
-  dailyData: WeatherDataDaily;
-  hourlyData: WeatherDataHourly;
-  currentTab: string;
-}
+import { getAspect, getXTickFormatter } from "./chart-utils";
+import { useWeatherChartLogic } from "./hooks";
+import { useDeviceType } from "./hooks/useDeviceType";
+import type { WeatherChartProps } from "./WeatherChart.types";
 
 export function WeatherChart({
   dailyData,
   hourlyData,
   currentTab,
 }: WeatherChartProps) {
-  const { getChartDailyData, getChartHourlyData } = useChartData();
-  const tempUnit = useSettingsStore((state) => state.units.temperature);
-  const hourUnit = useSettingsStore((state) => state.units.time);
-  const currentUnit = tempUnit === "celsius" ? "°C" : "°F";
-
-  const isMobile = useMediaQuery({ maxWidth: 640 });
-  const isTablet = useMediaQuery({ maxWidth: 768 });
-  const isDesk = useMediaQuery({ minWidth: 1025 });
-  const isSmallDesk = useMediaQuery({ minWidth: 1025, maxWidth: 1150 });
-
-  const chartDailyData = getChartDailyData(dailyData);
-  const chartHourlyData = useResponsiveHourlyData(
-    getChartHourlyData(hourlyData),
-  );
-
-  const dailyTicks = getTicks(chartDailyData);
-  const hourlyTicks = getTicks(chartHourlyData);
+  const { isMobile, isTablet, isDesk, isSmallDesk } = useDeviceType();
+  const {
+    hourUnit,
+    currentUnit,
+    chartDailyData,
+    chartHourlyData,
+    dailyTicks,
+    hourlyTicks,
+  } = useWeatherChartLogic(dailyData, hourlyData);
 
   return (
     <ResponsiveContainer width="100%" aspect={getAspect(isMobile, isTablet)}>
@@ -73,23 +54,14 @@ export function WeatherChart({
           interval={0}
           dy={10}
           dx={-5}
-          tickFormatter={(value) => {
-            if (currentTab === "daily") return value;
-            if (!isDesk || isSmallDesk) {
-              if (hourUnit === "12") {
-                return value.replace(" AM", "A").replace(" PM", "P");
-              } else {
-                return +value.replace(":00", "").replace(":00", "") + "h";
-              }
-            }
-            if (isDesk) {
-              if (hourUnit === "12") {
-                return value.replace(" AM", "AM").replace(" PM", "PM");
-              } else {
-                return value.replace(":00", ":00").replace(":00", ":00");
-              }
-            }
-          }}
+          tickFormatter={(value) =>
+            getXTickFormatter(value, {
+              currentTab,
+              isDesk,
+              isSmallDesk,
+              hourUnit,
+            })
+          }
         />
         <YAxis
           dataKey="temp"
