@@ -10,9 +10,9 @@ export function useResponsiveHourlyData<
   return useMemo(() => {
     if (isDesk) return data;
 
-    if (isTablet) return data.filter((_, index) => index % 2 === 0) as T;
-
     if (isMobile) return data.filter((_, index) => index % 4 === 0) as T;
+
+    if (isTablet) return data.filter((_, index) => index % 2 === 0) as T;
 
     return data;
   }, [data, isMobile, isTablet, isDesk]);
