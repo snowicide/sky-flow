@@ -15,6 +15,7 @@ export function useChartData(
   hourlyData: WeatherDataHourly,
 ): UseChartDataReturn {
   const { isMobile, isTablet } = useDeviceType();
+  const selectedDayIndex = useSettingsStore((state) => state.selectedDayIndex);
   const hourFormat = useSettingsStore((state) => state.units.time);
   const shouldReduce = isMobile ? "dd" : isTablet ? "ddd" : "dddd";
 
@@ -37,13 +38,13 @@ export function useChartData(
     const filteredDays = groupByDay(hourlyData, {
       hourFormat,
       dayFormat: shouldReduce,
-    });
+    }).slice(1);
 
-    return filteredDays[1].hours.map((item) => ({
+    return filteredDays[selectedDayIndex].hours.map((item) => ({
       hour: item.hour,
       temp: item.temp,
     }));
-  }, [hourlyData, hourFormat, shouldReduce]);
+  }, [hourlyData, hourFormat, shouldReduce, selectedDayIndex]);
 
   return useMemo(
     () => ({

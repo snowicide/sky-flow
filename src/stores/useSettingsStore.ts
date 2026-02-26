@@ -5,12 +5,14 @@ import type { WeatherDataUnits } from "@/types/api/WeatherData";
 
 export interface SettingsStore {
   units: WeatherDataUnits;
+  selectedDayIndex: number;
 
   setUnits: (
     update:
       | Partial<WeatherDataUnits>
       | ((prev: WeatherDataUnits) => WeatherDataUnits),
   ) => void;
+  setSelectedDayIndex: (day: number) => void;
   reset: () => void;
 }
 
@@ -23,6 +25,7 @@ export const useSettingsStore = create<SettingsStore>()(
         precipitation: "mm",
         time: "12",
       },
+      selectedDayIndex: 0,
 
       setUnits: (
         update:
@@ -35,6 +38,8 @@ export const useSettingsStore = create<SettingsStore>()(
               ? update(state.units)
               : { ...state.units, ...update },
         })),
+
+      setSelectedDayIndex: (day: number) => set({ selectedDayIndex: day }),
 
       reset: () =>
         set({

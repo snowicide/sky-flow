@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { groupByDay } from "@/utils/weather";
@@ -12,7 +12,10 @@ export default function HourlyForecast({
   hourlyData,
   forecastUnits,
 }: HourlyForecastProps) {
-  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
+  const selectedDayIndex = useSettingsStore((state) => state.selectedDayIndex);
+  const setSelectedDayIndex = useSettingsStore(
+    (state) => state.setSelectedDayIndex,
+  );
   const hourFormat = useSettingsStore((state) => state.units.time);
   const hoursRef = useRef<HTMLUListElement>(null);
 
