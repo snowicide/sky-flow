@@ -1,49 +1,20 @@
 "use client";
 import Image from "next/image";
 
-import { formatDayOfWeek } from "@/utils/formatters";
-import {
-  GET_ICON_BY_WEATHER_CODE,
-  getWeatherCode,
-  calculateAverageTemps,
-} from "@/utils/weather";
+import type { WeatherDataDaily } from "@/types/api/WeatherData";
 
-import type { DailyForecastProps } from "./DailyForecastProps.types";
+import { useDailyForecast } from "./useDailyForecast";
 
 export default function DailyForecast({ dailyData }: DailyForecastProps) {
-  const {
-    temperature_2m_min: tempMin,
-    temperature_2m_max: tempMax,
-    time,
-    weather_code: weatherCode,
-    apparent_temperature_min: apparentTempMin,
-    apparent_temperature_max: apparentTempMax,
-  } = dailyData;
-
-  const DailyForecast = time
-    .map((dateStr: string, index: number) => {
-      const date = new Date(dateStr);
-      const code = getWeatherCode(weatherCode[index]);
-      const image = GET_ICON_BY_WEATHER_CODE[code];
-
-      return {
-        day: formatDayOfWeek(date, "dddd"),
-        weatherCode: weatherCode?.[index] || 0,
-        temp: `${calculateAverageTemps(tempMin[index], tempMax[index])}°`,
-        feelsLike: `${calculateAverageTemps(apparentTempMin[index], apparentTempMax[index])}°`,
-        date: dateStr,
-        image,
-      };
-    })
-    .slice(0, 7);
+  const { formattedDays } = useDailyForecast(dailyData);
 
   return (
     <section aria-label="Daily Forecast" className="mb-10">
       <h3 className="text-xl sm:text-2xl font-bold mb-5">Daily forecast</h3>
       <ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
-        {DailyForecast.map(({ day, image, temp, feelsLike }) => (
+        {formattedDays.map(({ day, image, temp, feelsLike }, index) => (
           <li
-            key={day}
+            key={`${day}-${index}`}
             className="bg-[hsl(243,27%,20%)] hover:opacity-75 transition duration-75 p-4 rounded-xl border border-white/10 flex flex-col items-center"
           >
             <p className="font-medium mb-3 lg:text-sm">{day}</p>
@@ -63,4 +34,8 @@ export default function DailyForecast({ dailyData }: DailyForecastProps) {
       </ul>
     </section>
   );
+}
+
+export interface DailyForecastProps {
+  dailyData: WeatherDataDaily;
 }

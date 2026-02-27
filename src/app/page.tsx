@@ -6,15 +6,6 @@ import { SearchSection } from "@/components/SearchSection";
 import { WeatherContent } from "@/components/WeatherContent";
 import { fetchGeoData } from "@/services/fetchGeoData";
 
-interface WeatherPageProps {
-  searchParams: Promise<{
-    city?: string;
-    country?: string;
-    lat?: string;
-    lon?: string;
-  }>;
-}
-
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const params = await searchParams;
   if (!params.city)
@@ -57,4 +48,13 @@ export async function generateMetadata({
   } catch {
     return { title: "SkyFlow" };
   }
+}
+
+interface WeatherPageProps {
+  searchParams: Promise<{
+    city?: string;
+    country?: string;
+    lat?: string;
+    lon?: string;
+  }>;
 }
