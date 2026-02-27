@@ -3,9 +3,11 @@ import dayjs from "dayjs";
 import Image from "next/image";
 
 import bgTodayDesktop from "@/../public/images/bg-today-large.webp";
+import type {
+  WeatherDataCurrent,
+  WeatherDataUnits,
+} from "@/types/api/WeatherData";
 import { GET_ICON_BY_WEATHER_CODE, getWeatherCode } from "@/utils/weather";
-
-import type { TodayWeatherProps } from "./TodayWeather.types";
 
 export default function TodayWeather({
   currentData,
@@ -60,4 +62,9 @@ export default function TodayWeather({
       </div>
     </section>
   );
+}
+
+interface TodayWeatherProps {
+  currentData: WeatherDataCurrent;
+  forecastUnits: WeatherDataUnits;
 }
