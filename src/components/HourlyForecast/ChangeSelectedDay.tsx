@@ -5,11 +5,12 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import Image from "next/image";
+import React from "react";
 
 import dropdownIcon from "@/../public/icons/icon-dropdown.svg";
 import type { DailyForecast } from "@/types/api/WeatherHourly";
 
-export default function ChangeSelectedDay({
+export default React.memo(function ChangeSelectedDay({
   days,
   selectedDayIndex,
   handleChangeDay,
@@ -47,7 +48,7 @@ export default function ChangeSelectedDay({
       </ListboxOptions>
     </Listbox>
   );
-}
+});
 
 interface ChangeSelectedDayProps {
   days: DailyForecast[];
