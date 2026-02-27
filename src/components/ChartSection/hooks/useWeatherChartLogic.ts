@@ -22,11 +22,7 @@ export function useWeatherChartLogic(
   );
   const tempUnit = useSettingsStore((state) => state.units.temperature);
   const hourUnit = useSettingsStore((state) => state.units.time);
-  const currentUnit = useMemo(
-    () => (tempUnit === "celsius" ? "°C" : "°F"),
-    [tempUnit],
-  );
-
+  const currentUnit = tempUnit === "celsius" ? "°C" : "°F";
   const chartHourlyData = useResponsiveHourlyData(fullHourlyData);
 
   const dailyTicks = useMemo(() => getTicks(chartDailyData), [chartDailyData]);
