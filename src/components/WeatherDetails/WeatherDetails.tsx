@@ -1,45 +1,40 @@
 "use client";
+import { useMemo } from "react";
 
-import type { WeatherDetailsProps } from "./WeatherDetails.types";
+import type {
+  WeatherDataCurrent,
+  WeatherDataUnits,
+} from "@/types/api/WeatherData";
 
 export default function WeatherDetails({
   currentData,
   forecastUnits,
 }: WeatherDetailsProps) {
-  const {
-    apparent_temperature: temp,
-    relative_humidity_2m: humidity,
-    wind_speed_10m: speed,
-    precipitation,
-  } = currentData;
-  const {
-    temperature: tempUnit,
-    speed: speedUnit,
-    precipitation: precipitationUnit,
-  } = forecastUnits;
-
-  const weatherDetails = [
-    {
-      title: "Feels Like",
-      value: `${temp.toFixed(1)}`,
-      unit: tempUnit,
-    },
-    {
-      title: "Humidity",
-      value: `${humidity}`,
-      unit: "%",
-    },
-    {
-      title: "Wind",
-      value: `${speed}`,
-      unit: speedUnit,
-    },
-    {
-      title: "Precipitation",
-      value: `${precipitation}`,
-      unit: precipitationUnit,
-    },
-  ];
+  const weatherDetails = useMemo(
+    () => [
+      {
+        title: "Feels Like",
+        value: currentData.apparent_temperature.toFixed(1),
+        unit: forecastUnits.temperature,
+      },
+      {
+        title: "Humidity",
+        value: currentData.relative_humidity_2m.toString(),
+        unit: "%",
+      },
+      {
+        title: "Wind",
+        value: currentData.wind_speed_10m.toString(),
+        unit: forecastUnits.speed,
+      },
+      {
+        title: "Precipitation",
+        value: currentData.precipitation.toString(),
+        unit: forecastUnits.precipitation,
+      },
+    ],
+    [currentData, forecastUnits],
+  );
 
   return (
     <section aria-label="Weather Details" className="mb-10">
@@ -60,4 +55,9 @@ export default function WeatherDetails({
       </ul>
     </section>
   );
+}
+
+interface WeatherDetailsProps {
+  currentData: WeatherDataCurrent;
+  forecastUnits: WeatherDataUnits;
 }
