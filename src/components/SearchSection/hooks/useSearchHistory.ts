@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 import { WeatherStore } from "@/components/SearchSection/lib/weather-store";
 import type { CityData } from "@/types/api/CityData";
@@ -21,83 +21,75 @@ export function useSearchHistory(): UseSearchHistoryReturn {
     () => EMPTY_ARRAY,
   );
 
-  const addCity = useCallback(
-    (cityData: CityData, favorited?: boolean) => {
-      const { lat, lon } = cityData;
-      const isFavorited = favorites.some(
-        (item) => item.latitude === lat && item.longitude === lon,
-      );
-      recentStore.update((prev: HistoryItem[]) => {
-        const { city, country } = cityData;
-        const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
+  const addCity = useCallback((cityData: CityData, favorited?: boolean) => {
+    const { lat, lon, city, country } = cityData;
+    const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
 
-        const newItem: HistoryItem = {
-          id,
-          city: city.trim().toLowerCase(),
-          country: country.trim().toLowerCase(),
-          isFavorite: isFavorited || (!!favorited && favorited),
-          timestamp: Date.now(),
-          latitude: lat,
-          longitude: lon,
-        };
+    const currentFavorites = favoriteStore.getSnapshot();
+    const isFavorited = currentFavorites.some(
+      (item) => item.latitude === lat && item.longitude === lon,
+    );
 
-        const newData: HistoryItem[] = [
-          newItem,
-          ...prev.filter((item) => item.id !== id),
-        ].slice(0, 8);
+    recentStore.update((prev) => {
+      const newitem: HistoryItem = {
+        id,
+        city: city.toLowerCase().trim(),
+        country: country.toLowerCase().trim(),
+        isFavorite: isFavorited || !!favorited,
+        timestamp: Date.now(),
+        latitude: lat,
+        longitude: lon,
+      };
 
-        return newData;
-      });
-    },
-    [favorites],
-  );
+      return [newitem, ...prev.filter((item) => item.id !== id)].slice(0, 8);
+    });
+  }, []);
 
-  const toggleFavorite = useCallback(
-    (id: string) => {
-      const newData = recent.map((item: HistoryItem) =>
+  const toggleFavorite = useCallback((id: string) => {
+    recentStore.update((prev) => {
+      const newData = prev.map((item) =>
         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item,
       );
-      recentStore.update(newData);
 
-      const allFavorites = newData.filter((item) => item.isFavorite);
-      favoriteStore.update([
-        ...favorites.filter((item) => item.id !== id),
-        ...allFavorites.filter((item) => item.id === id),
-      ]);
-    },
-    [recent, favorites],
-  );
+      const targetItem = newData.find((item) => item.id === id);
+      if (targetItem) {
+        favoriteStore.update((prev) => {
+          if (targetItem.isFavorite)
+            return [...prev.filter((item) => item.id !== id), targetItem];
+          return prev.filter((item) => item.id !== id);
+        });
+      }
+
+      return newData;
+    });
+  }, []);
 
   const removeCity = useCallback(
-    (id: string) => {
-      const newData = recent.filter((item: HistoryItem) => item.id !== id);
-
-      recentStore.update(newData);
-    },
-    [recent],
+    (id: string) =>
+      recentStore.update((prev) => prev.filter((item) => item.id !== id)),
+    [],
   );
 
-  const removeFavorite = useCallback(
-    (id: string) => {
-      const newFavorites = favorites.filter((item) => item.id !== id);
-      favoriteStore.update(newFavorites);
-
-      const newRecent = recent.map((item) =>
+  const removeFavorite = useCallback((id: string) => {
+    favoriteStore.update((prev) => prev.filter((item) => item.id !== id));
+    recentStore.update((prev) =>
+      prev.map((item) =>
         item.id === id ? { ...item, isFavorite: false } : item,
-      );
-      recentStore.update(newRecent);
-    },
-    [recent, favorites],
-  );
+      ),
+    );
+  }, []);
 
-  return {
-    recent,
-    favorites,
-    addCity,
-    toggleFavorite,
-    removeCity,
-    removeFavorite,
-  };
+  return useMemo(
+    () => ({
+      recent,
+      favorites,
+      addCity,
+      toggleFavorite,
+      removeCity,
+      removeFavorite,
+    }),
+    [recent, favorites, addCity, toggleFavorite, removeCity, removeFavorite],
+  );
 }
 
 interface UseSearchHistoryReturn {
