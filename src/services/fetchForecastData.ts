@@ -1,11 +1,12 @@
 import { DEFAULT_UNITS } from "@/components/HeaderSection/UnitsSettings";
 import type { CityData } from "@/types/api/CityData";
-import type { WeatherData, WeatherDataUnits } from "@/types/api/WeatherData";
+import type { WeatherData } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
+import type { Units } from "@/types/weather";
 
 export async function fetchForecastData(
   cityData: CityData,
-  units: WeatherDataUnits = DEFAULT_UNITS,
+  units: Units = DEFAULT_UNITS,
   signal?: AbortSignal,
 ): Promise<WeatherData> {
   try {

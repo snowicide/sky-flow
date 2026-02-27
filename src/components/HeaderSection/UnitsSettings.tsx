@@ -8,8 +8,9 @@ import dropdownIcon from "@/../public/icons/icon-dropdown.svg";
 import unitsIcon from "@/../public/icons/icon-units.svg";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import type { WeatherDataUnits } from "@/types/api/WeatherData";
+import type { Units } from "@/types/weather";
 
-export const DEFAULT_UNITS: WeatherDataUnits = {
+export const DEFAULT_UNITS: Units = {
   temperature: "celsius",
   speed: "kmh",
   precipitation: "mm",

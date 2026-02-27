@@ -1,6 +1,6 @@
 export interface UseWeatherChartLogicReturn {
   hourUnit: "12" | "24";
-  currentUnit: string;
+  currentUnit: "°C" | "°F";
   chartDailyData: {
     day: string;
     temp: number;

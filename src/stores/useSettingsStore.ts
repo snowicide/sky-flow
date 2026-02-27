@@ -1,17 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import type { WeatherDataUnits } from "@/types/api/WeatherData";
+import type { Units } from "@/types/weather";
 
 export interface SettingsStore {
-  units: WeatherDataUnits;
+  units: Units;
   selectedDayIndex: number;
 
-  setUnits: (
-    update:
-      | Partial<WeatherDataUnits>
-      | ((prev: WeatherDataUnits) => WeatherDataUnits),
-  ) => void;
+  setUnits: (update: Partial<Units> | ((prev: Units) => Units)) => void;
   setSelectedDayIndex: (day: number) => void;
   reset: () => void;
 }
@@ -27,11 +23,7 @@ export const useSettingsStore = create<SettingsStore>()(
       },
       selectedDayIndex: 0,
 
-      setUnits: (
-        update:
-          | Partial<WeatherDataUnits>
-          | ((prev: WeatherDataUnits) => WeatherDataUnits),
-      ) =>
+      setUnits: (update: Partial<Units> | ((prev: Units) => Units)) =>
         set((state) => ({
           units:
             typeof update === "function"

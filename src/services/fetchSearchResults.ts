@@ -1,14 +1,14 @@
 import { DEFAULT_UNITS } from "@/components/HeaderSection/UnitsSettings";
 import { ForecastResponse } from "@/types/api/ForecastResponse";
 import { SearchDataItem } from "@/types/api/SearchData";
-import type { WeatherDataUnits } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
+import type { Units } from "@/types/weather";
 
 import { fetchGeoData } from "./fetchGeoData";
 
 export const fetchSearchResults = async (
   searchResult: string,
-  units: WeatherDataUnits = DEFAULT_UNITS,
+  units: Units = DEFAULT_UNITS,
   signal?: AbortSignal,
 ): Promise<SearchDataItem[]> => {
   try {
