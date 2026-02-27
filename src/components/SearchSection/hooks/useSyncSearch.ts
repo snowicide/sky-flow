@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { useSearchHistory } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
 import type { CityData } from "@/types/api/CityData";
 

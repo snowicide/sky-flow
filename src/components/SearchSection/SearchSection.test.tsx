@@ -10,7 +10,10 @@ import {
 import userEvent from "@testing-library/user-event";
 
 import "@testing-library/jest-dom/vitest";
-import { favoriteStore, recentStore } from "@/hooks/useSearchHistory";
+import {
+  favoriteStore,
+  recentStore,
+} from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
 import type { CityData } from "@/types/api/CityData";
 import type { HistoryItem } from "@/types/history";

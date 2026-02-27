@@ -1,10 +1,9 @@
 import { useCallback, useSyncExternalStore } from "react";
 
-import { WeatherStore } from "@/lib/weather-store";
+import { WeatherStore } from "@/components/SearchSection/lib/weather-store";
 import type { CityData } from "@/types/api/CityData";
 import type { HistoryItem } from "@/types/history";
 
-import type { UseSearchHistoryReturn } from "./useSearchHistory.types";
 export const recentStore = new WeatherStore("weather-recent");
 export const favoriteStore = new WeatherStore("weather-favorite");
 const EMPTY_ARRAY: [] = [];
@@ -99,4 +98,13 @@ export function useSearchHistory(): UseSearchHistoryReturn {
     removeCity,
     removeFavorite,
   };
+}
+
+interface UseSearchHistoryReturn {
+  recent: HistoryItem[];
+  favorites: HistoryItem[];
+  addCity: (cityData: CityData, favorited?: boolean) => void;
+  toggleFavorite: (id: string) => void;
+  removeCity: (id: string) => void;
+  removeFavorite: (id: string) => void;
 }

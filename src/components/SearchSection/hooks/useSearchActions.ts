@@ -17,8 +17,9 @@ import { SearchDataItem } from "@/types/api/SearchData";
 import type { ActiveTab } from "@/types/history";
 import { capitalizeString } from "@/utils/formatters";
 
-import { useSearchHistory } from "../../../hooks/useSearchHistory";
 import { useSearchQuery } from "../../../hooks/useSearchQuery";
+
+import { useSearchHistory } from "./useSearchHistory";
 
 export function useSearchActions(): UseSearchActionsReturn {
   const { setInputValue, setCurrentTab, inputValue, setIsOpen } =

@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from "react";
 import { XIcon } from "@/components/icons";
 import { FavoriteIcon } from "@/components/icons";
 import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
-import { useSearchHistory } from "@/hooks/useSearchHistory";
+import { useSearchHistory } from "@/components/SearchSection/hooks/useSearchHistory";
 import type { SearchTabProps } from "@/types/history";
 import { capitalizeString } from "@/utils/formatters";
 
