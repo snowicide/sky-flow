@@ -1,21 +1,15 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
-import { useShallow } from "zustand/shallow";
 
-import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useSearchStore } from "@/stores/useSearchStore";
 
 export const SearchInput = forwardRef<
   HTMLInputElement,
   ComponentPropsWithoutRef<"input">
 >((props, ref) => {
-  const { setIsOpen, inputValue } = useSearchStore(
-    useShallow((state) => ({
-      setIsOpen: state.setIsOpen,
-      inputValue: state.inputValue,
-    })),
-  );
-
   const { handleKeydown, handleChangeInput } = useSearchActions();
+  const setIsOpen = useSearchStore((state) => state.setIsOpen);
+  const inputValue = useSearchStore((state) => state.inputValue);
 
   return (
     <input

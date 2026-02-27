@@ -1,38 +1,23 @@
-import type { ActiveTab } from "@/types/history";
-
 export function FavoriteIcon({
   className,
-  allowFill = true,
-  currentTab,
   isFilled,
-  fillColor,
   isFavorite,
 }: {
   className?: string;
-  allowFill?: boolean;
-  currentTab?: ActiveTab;
   isFilled?: boolean;
-  fillColor?: string;
   isFavorite?: boolean;
 }) {
+  const active = "hsl(233,100%,70%)";
+  const shouldFill = isFilled || isFavorite;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill={
-        (isFavorite && allowFill) ||
-        (!allowFill && currentTab === "favorites") ||
-        isFilled
-          ? `${fillColor ? fillColor : "hsl(233,100%,70%)"}`
-          : "none"
-      }
-      stroke={
-        (isFavorite && allowFill) || isFilled
-          ? `${fillColor ? "" : "hsl(233,100%,70%)"}`
-          : "currentColor"
-      }
+      fill={shouldFill ? active : "none"}
+      stroke={shouldFill ? active : "currentColor"}
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

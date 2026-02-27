@@ -1,29 +1,15 @@
 import Image from "next/image";
+import React from "react";
 
-import { useSearchActions } from "@/hooks/useSearchActions";
-import { GET_ICON_BY_WEATHER_CODE, getWeatherCode } from "@/utils/weather";
+import type { SearchDataItem } from "@/types/api/SearchData";
 
-import type { SearchResultCityProps } from "./SearchResultCity.types";
+import { useSearchResultCity } from "./useSearchResultCity";
 
-export function SearchResultCity({ data, resultData }: SearchResultCityProps) {
-  const { weatherCode, city, country, temperature, temperatureUnit, id } = data;
-  const { searchSelectedCity } = useSearchActions();
-
-  const code = getWeatherCode(weatherCode);
-  const icon = GET_ICON_BY_WEATHER_CODE[code];
-  const currentCity =
-    resultData.find((item) => item.id === id) || resultData[0];
-
-  const handleClick = () => {
-    const { latitude, longitude, city, country } = currentCity;
-    const cityData = {
-      lat: latitude,
-      lon: longitude,
-      city: city,
-      country: country,
-    };
-    searchSelectedCity(cityData);
-  };
+export const SearchResultCity = React.memo(function SearchResultCity({
+  data,
+}: SearchResultCityProps) {
+  const { handleClick, icon, city, country, temperature, temperatureUnit } =
+    useSearchResultCity(data);
 
   return (
     <li
@@ -43,4 +29,8 @@ export function SearchResultCity({ data, resultData }: SearchResultCityProps) {
       </div>
     </li>
   );
+});
+
+interface SearchResultCityProps {
+  data: SearchDataItem;
 }

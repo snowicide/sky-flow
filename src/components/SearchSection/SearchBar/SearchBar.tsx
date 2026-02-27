@@ -2,10 +2,10 @@ import Image from "next/image";
 
 import searchIcon from "@/../public/icons/icon-search.svg";
 import { XIcon } from "@/components/icons";
-import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useSearchStore } from "@/stores/useSearchStore";
+import { AppError } from "@/types/errors";
 
-import type { SearchBarProps } from "./SearchBar.types";
 import { SearchInput } from "./SearchInput";
 
 export function SearchBar({ inputRef, error }: SearchBarProps) {
@@ -41,4 +41,9 @@ export function SearchBar({ inputRef, error }: SearchBarProps) {
       )}
     </div>
   );
+}
+
+interface SearchBarProps {
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  error: AppError | null;
 }

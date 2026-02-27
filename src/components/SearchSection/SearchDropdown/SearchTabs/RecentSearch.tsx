@@ -1,53 +1,58 @@
+import React, { useCallback, useMemo } from "react";
+
 import { XIcon } from "@/components/icons";
 import { FavoriteIcon } from "@/components/icons";
-import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useSearchHistory } from "@/hooks/useSearchHistory";
 import type { SearchTabProps } from "@/types/history";
-import { HistoryItem } from "@/types/history";
+import { capitalizeString } from "@/utils/formatters";
 
-export function RecentSearch({ data, inputRef }: SearchTabProps) {
+export const RecentSearch = React.memo(function RecentSearch({
+  data,
+  inputRef,
+}: SearchTabProps) {
   const { searchSelectedCity } = useSearchActions();
 
-  const { toggleFavorite, removeCity, recent } = useSearchHistory();
+  const { toggleFavorite, removeCity } = useSearchHistory();
 
-  const city =
-    data.city.charAt(0).toUpperCase() + data.city.slice(1).toLocaleLowerCase();
-  const country =
-    data.country.charAt(0).toUpperCase() + data.country.slice(1).toLowerCase();
+  const displayPlace = useMemo(
+    () => `${capitalizeString(data.city)}, ${capitalizeString(data.country)}`,
+    [data.city, data.country],
+  );
 
-  const handleFavoriteIcon = () => {
+  const handleFavoriteIcon = useCallback(() => {
     toggleFavorite(data.id);
-  };
+  }, [toggleFavorite, data.id]);
 
-  const handleClick = async () => {
-    const cityData = {
-      lat: data.latitude,
-      lon: data.longitude,
-      city: data.city,
-      country: data.country,
-    };
-    searchSelectedCity(cityData, inputRef);
-  };
-
-  const currentRecent = recent.filter(
-    (item: HistoryItem) => item.id === data.id,
-  )[0];
+  const handleClick = useCallback(
+    () =>
+      searchSelectedCity(
+        {
+          lat: data.latitude,
+          lon: data.longitude,
+          city: data.city,
+          country: data.country,
+        },
+        inputRef,
+      ),
+    [data, searchSelectedCity, inputRef],
+  );
 
   return (
     <li
       role="option"
       aria-selected="false"
-      aria-label={`${city}, ${country}`}
+      aria-label={displayPlace}
       className="flex justify-between font-medium mx-2 px-5 py-3 my-3 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl"
     >
-      <div
+      <button
         role="button"
-        aria-label={`Select ${city}`}
+        aria-label={`Select ${displayPlace}`}
         onClick={handleClick}
         className="font-normal text-sm sm:text-base md:text-lg flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer"
       >
-        {`${city}, ${country}`}
-      </div>
+        {displayPlace}
+      </button>
 
       <div className="flex items-center gap-1 sm:gap-3 opacity-70">
         <button
@@ -56,7 +61,7 @@ export function RecentSearch({ data, inputRef }: SearchTabProps) {
           onClick={handleFavoriteIcon}
         >
           <FavoriteIcon
-            isFavorite={currentRecent?.isFavorite}
+            isFavorite={data.isFavorite}
             className="w-5 h-5 sm:w-6 sm:h-6 focus:outline-none hover:text-[hsl(233,100%,70%)] transition duration-100 cursor-pointer"
           />
         </button>
@@ -70,4 +75,4 @@ export function RecentSearch({ data, inputRef }: SearchTabProps) {
       </div>
     </li>
   );
-}
+});

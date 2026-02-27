@@ -7,20 +7,13 @@ import type { ActiveTab } from "@/types/history";
 
 import { CurrentTab } from "./CurrentTab";
 
-export function SearchTabs({
-  inputRef,
-  handleChangeTab,
-}: {
-  inputRef: React.RefObject<HTMLInputElement | null>;
-  handleChangeTab: (value: ActiveTab) => void;
-}) {
+export function SearchTabs({ inputRef, handleChangeTab }: SearchTabsProps) {
   const { currentTab, isOpen } = useSearchStore(
     useShallow((state) => ({
       currentTab: state.currentTab,
       isOpen: state.isOpen,
     })),
   );
-
   const { recent, favorites } = useSearchHistory();
 
   return (
@@ -34,37 +27,53 @@ export function SearchTabs({
         role="tablist"
         className="flex items-center border-b border-white/10 mx-6 py-5"
       >
-        <li
-          role="tab"
-          aria-selected={currentTab === "recent"}
-          aria-label="Recent searches"
-          onClick={() => handleChangeTab("recent")}
-          className={`gap-1.5 cursor-pointer hover:opacity-80 transition flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider ${currentTab === "recent" ? "text-[hsl(233,100%,70%)]" : ""}`}
-        >
-          <HistoryIcon className="w-4.25 h-4.25 sm:w-5 sm:h-5" />
-          <span className="text-sm sm:text-lg lg:text-xl whitespace-nowrap">
-            Recent ({recent.length})
-          </span>
-        </li>
-        <li
-          role="tab"
-          aria-selected={currentTab === "favorites"}
-          aria-label="Favorites searches"
-          onClick={() => handleChangeTab("favorites")}
-          className={`flex-1 gap-1.5 cursor-pointer hover:opacity-80 transition flex items-center h-full justify-center mx-auto text-xl font-bold tracking-wider ${currentTab === "favorites" ? "text-[hsl(233,100%,70%)]" : ""}`}
-        >
-          <FavoriteIcon
-            className="w-4 h-4 sm:w-5 sm:h-5"
-            allowFill={false}
-            currentTab={currentTab}
-          />
-          <span className="text-sm sm:text-lg lg:text-xl whitespace-nowrap">
-            Favorites ({favorites.length})
-          </span>
-        </li>
+        {TABS.map(({ tab, label, Icon }) => {
+          const isActive = currentTab === tab;
+          const count = tab === "recent" ? recent.length : favorites.length;
+
+          return (
+            <li
+              role="tab"
+              key={tab}
+              aria-selected={isActive}
+              aria-label={`${label} searches`}
+              onClick={() => handleChangeTab(tab as ActiveTab)}
+              className={`gap-1.5 cursor-pointer hover:opacity-80 transition flex w-auto justify-center items-center flex-1 mx-auto text-xl font-bold tracking-wider ${isActive ? "text-[hsl(233,100%,70%)]" : ""}`}
+            >
+              <Icon
+                isFilled={tab === "favorites" && currentTab === "favorites"}
+                className={
+                  tab === "recent"
+                    ? "w-4.25 h-4.25 sm:w-5 sm:h-5"
+                    : "w-4 h-4 sm:w-5 sm:h-5"
+                }
+              />
+              <span className="text-sm sm:text-lg lg:text-xl whitespace-nowrap">{`${label} (${count})`}</span>
+            </li>
+          );
+        })}
       </ul>
 
       <CurrentTab inputRef={inputRef} />
     </div>
   );
+}
+
+const TABS = [
+  {
+    tab: "recent",
+    label: "Recent",
+    Icon: HistoryIcon,
+  },
+
+  {
+    tab: "favorites",
+    label: "Favorites",
+    Icon: FavoriteIcon,
+  },
+];
+
+interface SearchTabsProps {
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  handleChangeTab: (value: ActiveTab) => void;
 }

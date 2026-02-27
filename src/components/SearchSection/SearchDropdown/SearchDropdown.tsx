@@ -1,6 +1,4 @@
-import { useShallow } from "zustand/shallow";
-
-import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useSearchStore } from "@/stores/useSearchStore";
 
 import { SearchPlaceholder } from "./Results/SearchPlaceholder";
@@ -13,12 +11,8 @@ export function SearchDropdown({
 }: {
   inputRef: React.RefObject<HTMLInputElement | null>;
 }) {
-  const { isOpen, inputValue } = useSearchStore(
-    useShallow((state) => ({
-      isOpen: state.isOpen,
-      inputValue: state.inputValue,
-    })),
-  );
+  const isOpen = useSearchStore((state) => state.isOpen);
+  const inputValue = useSearchStore((state) => state.inputValue);
 
   const { resultData, shouldSearchSkeleton, handleChangeTab } =
     useSearchActions();
@@ -44,11 +38,7 @@ export function SearchDropdown({
       >
         <ul className="h-112 lg:h-128 xl:h-151.5">
           {resultData.map((data) => (
-            <SearchResultCity
-              key={data.id}
-              data={data}
-              resultData={resultData}
-            />
+            <SearchResultCity key={data.id} data={data} />
           ))}
         </ul>
       </div>

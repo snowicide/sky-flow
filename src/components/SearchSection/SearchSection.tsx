@@ -2,9 +2,8 @@
 
 import { useRef } from "react";
 
-import { useSearchActions } from "@/hooks/useSearchActions";
+import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import { useSearchStore } from "@/stores/useSearchStore";
 import type { CityData } from "@/types/api/CityData";
 
 import { SearchBar } from "./SearchBar";
@@ -13,16 +12,10 @@ import { useSyncSearch } from "./useSyncSearch";
 
 export default function SearchSection({ cityData }: { cityData: CityData }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { searchCityWithName } = useSearchActions();
+  const { handleSubmit } = useSearchActions();
   const { isError, error } = useWeatherQuery(cityData);
-  const inputValue = useSearchStore((state) => state.inputValue);
 
   useSyncSearch(cityData);
-
-  const handleSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
-    searchCityWithName(inputValue);
-  };
 
   return (
     <section className="mb-10">
@@ -31,7 +24,7 @@ export default function SearchSection({ cityData }: { cityData: CityData }) {
       </h1>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto"
       >
         <div
