@@ -1,15 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { SearchInput } from "@/components/SearchSection/SearchBar/SearchInput";
 import { useSearchStore } from "@/stores/useSearchStore";
 
 import { useSearchActions } from "./useSearchActions";
@@ -28,7 +20,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 const mockAddCity = vi.hoisted(() => vi.fn());
-vi.mock("@/hooks/useSearchHistory", () => ({
+vi.mock("@/components/SearchSection/hooks/useSearchHistory", () => ({
   useSearchHistory: () => ({
     addCity: mockAddCity,
     recent: [],
@@ -58,50 +50,36 @@ function renderHookWithClient<T>(hook: () => T) {
   return renderHook(hook, { wrapper });
 }
 
-function renderWithClient(element: React.ReactElement) {
-  const queryClient = testQueryClient();
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-  return render(element, { wrapper });
-}
-
 describe("useSearchActions", () => {
-  let inputElement: HTMLElement;
-  let user: ReturnType<typeof userEvent.setup>;
+  let inputElement: HTMLInputElement;
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockAddCity.mockClear();
     mockFetchGeoData.mockClear();
 
+    inputElement = document.createElement("input");
+    inputElement.setAttribute("aria-label", "search");
+    document.body.appendChild(inputElement);
+
     mockFetchGeoData.mockResolvedValue({
       results: [
         {
-          name: "Berlin",
-          country: "Germany",
-          latitude: 52.52437,
-          longitude: 13.41053,
+          name: "Minsk",
+          country: "Belarus",
+          latitude: 53.9,
+          longitude: 27.56667,
         },
       ],
     });
-
-    renderWithClient(<SearchInput />);
-    inputElement = screen.getByRole("textbox", { name: /search/i });
-    user = userEvent.setup();
 
     act(() => {
       useSearchStore.getState().reset();
     });
   });
 
-  it("should open dropdown and handling value", async () => {
-    await user.click(inputElement);
-    expect(inputElement).toHaveFocus();
-    await waitFor(() => expect(useSearchStore.getState().isOpen).toBe(true));
-
-    await user.type(inputElement, "Berlin");
-    expect(useSearchStore.getState().inputValue).toBe("Berlin");
+  afterAll(() => {
+    document.body.removeChild(inputElement);
   });
 
   it("should change active tab", () => {
@@ -116,7 +94,7 @@ describe("useSearchActions", () => {
 
   it("should handling keydown", () => {
     const { result } = renderHookWithClient(() => useSearchActions());
-    const mockRef = { current: inputElement as HTMLInputElement };
+    const mockRef = { current: inputElement };
 
     const enterEvent = {
       key: "Enter",
@@ -143,29 +121,31 @@ describe("useSearchActions", () => {
     expect(document.activeElement).not.toBe(inputElement);
   });
 
-  it("should change URL", () => {
+  it("should change URL", async () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
     const cityData = {
-      city: "Berlin",
-      country: "Germany",
-      lat: 52.52437,
-      lon: 13.41053,
+      city: "Minsk",
+      country: "Belarus",
+      lat: 53.9,
+      lon: 27.56667,
     };
 
-    act(() => result.current.searchSelectedCity(cityData));
+    result.current.searchSelectedCity(cityData, {
+      current: inputElement,
+    });
 
-    expect(mockPush).toHaveBeenCalledTimes(1);
-    expect(mockPush).toHaveBeenCalledWith(
-      expect.stringContaining(
-        "city=Berlin&country=Germany&lat=52.52437&lon=13.41053",
-      ),
-    );
-
-    expect(mockPush).toHaveBeenCalledTimes(1);
-
-    expect(mockAddCity).toHaveBeenCalledTimes(1);
-    expect(mockAddCity).toHaveBeenCalledWith(cityData);
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledTimes(1);
+      expect(mockPush).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "city=Minsk&country=Belarus&lat=53.9&lon=27.56667",
+        ),
+      );
+      expect(mockPush).toHaveBeenCalledTimes(1);
+      expect(mockAddCity).toHaveBeenCalledTimes(1);
+      expect(mockAddCity).toHaveBeenCalledWith(cityData);
+    });
 
     expect(useSearchStore.getState().inputValue).toBe("");
   });

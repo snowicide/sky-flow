@@ -28,7 +28,7 @@ export function useSearchQuery(
     enabled: !!queryValue && queryValue.trim().length > 0,
 
     retry: (failureCount, error) => {
-      if (error instanceof AppError) {
+      if (error && (error as AppError)) {
         if (error.code === "GEOCODING_FAILED") return false;
       }
       return failureCount < 2;
