@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import type { SearchDataItem } from "@/types/api/SearchData";
+import type { SearchDataItem } from "@/components/SearchSection/types/SearchData";
 
 import { useSearchResultCity } from "./useSearchResultCity";
 

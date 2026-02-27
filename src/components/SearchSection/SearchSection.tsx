@@ -4,7 +4,7 @@ import { useRef } from "react";
 
 import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import type { CityData } from "@/types/api/CityData";
+import type { CityData } from "@/types/location";
 
 import { useSyncSearch } from "./hooks/useSyncSearch";
 import { SearchBar } from "./SearchBar";

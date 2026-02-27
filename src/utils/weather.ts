@@ -9,7 +9,7 @@ import snowIcon from "@/../public/icons/icon-snow.webp";
 import stormIcon from "@/../public/icons/icon-storm.webp";
 import sunnyIcon from "@/../public/icons/icon-sunny.webp";
 import { WeatherDataHourly } from "@/types/api/WeatherData";
-import type { DailyForecast, HourlyItem } from "@/types/api/WeatherHourly";
+import type { DailyForecast, HourlyItem } from "@/types/weather";
 import {
   formatDayOfWeek,
   formatHourOfDay,

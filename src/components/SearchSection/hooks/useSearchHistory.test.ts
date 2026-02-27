@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import type { CityData } from "@/types/api/CityData";
+import type { CityData } from "@/types/location";
 
 import {
   favoriteStore,

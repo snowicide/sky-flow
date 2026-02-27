@@ -2,9 +2,9 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { fetchForecastData } from "@/services/fetchForecastData";
 import { useSettingsStore } from "@/stores/useSettingsStore";
-import type { CityData } from "@/types/api/CityData";
 import type { WeatherData } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
+import type { CityData } from "@/types/location";
 
 export function useWeatherQuery(
   cityData: CityData,

@@ -2,7 +2,7 @@ import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
 
 import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
-import type { SearchDataItem } from "@/types/api/SearchData";
+import type { SearchDataItem } from "@/components/SearchSection/types/SearchData";
 import { GET_ICON_BY_WEATHER_CODE, getWeatherCode } from "@/utils/weather";
 
 export function useSearchResultCity(

@@ -1,7 +1,7 @@
 import { DEFAULT_UNITS } from "@/stores/useSettingsStore";
-import type { CityData } from "@/types/api/CityData";
 import type { WeatherData } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
+import type { CityData } from "@/types/location";
 import type { Units } from "@/types/weather";
 
 export async function fetchForecastData(

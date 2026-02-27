@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 import { WeatherStore } from "@/components/SearchSection/lib/weather-store";
-import type { CityData } from "@/types/api/CityData";
 import type { HistoryItem } from "@/types/history";
+import type { CityData } from "@/types/location";
 
 export const recentStore = new WeatherStore("weather-recent");
 export const favoriteStore = new WeatherStore("weather-favorite");

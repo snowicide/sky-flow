@@ -1,10 +1,9 @@
+import { SearchDataItem } from "@/components/SearchSection/types/SearchData";
 import { DEFAULT_UNITS } from "@/stores/useSettingsStore";
-import { ForecastResponse } from "@/types/api/ForecastResponse";
-import { SearchDataItem } from "@/types/api/SearchData";
 import { AppError } from "@/types/errors";
 import type { Units } from "@/types/weather";
 
-import { fetchGeoData } from "./fetchGeoData";
+import { fetchGeoData } from "../../../services/fetchGeoData";
 
 export const fetchSearchResults = async (
   searchResult: string,
@@ -60,3 +59,24 @@ export const fetchSearchResults = async (
     throw new AppError("UNKNOWN_ERROR", message);
   }
 };
+
+interface ForecastResponse {
+  current: {
+    interval: number;
+    temperature_2m: number;
+    time: string;
+    weather_code: number;
+  };
+  current_units: {
+    interval: string;
+    temperature_2m: string;
+    time: string;
+  };
+  elevation: number;
+  generationtime_ms: number;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  timezone_abbreviation: string;
+  utc_offset_seconds: number;
+}

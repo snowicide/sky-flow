@@ -10,11 +10,11 @@ import {
 import { useDebounce } from "use-debounce";
 import { useShallow } from "zustand/shallow";
 
+import { SearchDataItem } from "@/components/SearchSection/types/SearchData";
 import { fetchGeoData } from "@/services/fetchGeoData";
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { CityData } from "@/types/api/CityData";
-import { SearchDataItem } from "@/types/api/SearchData";
 import type { ActiveTab } from "@/types/history";
+import type { CityData } from "@/types/location";
 import { capitalizeString } from "@/utils/formatters";
 
 import { useSearchHistory } from "./useSearchHistory";

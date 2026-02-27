@@ -15,8 +15,8 @@ import {
   recentStore,
 } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { CityData } from "@/types/api/CityData";
 import type { HistoryItem } from "@/types/history";
+import type { CityData } from "@/types/location";
 
 import SearchSection from "./SearchSection";
 

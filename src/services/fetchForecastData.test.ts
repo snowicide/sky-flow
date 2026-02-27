@@ -1,4 +1,4 @@
-import type { CityData } from "@/types/api/CityData";
+import type { CityData } from "@/types/location";
 
 import { fetchForecastData } from "./fetchForecastData";
 

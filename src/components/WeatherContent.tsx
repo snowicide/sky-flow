@@ -1,6 +1,6 @@
 "use client";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import type { CityData } from "@/types/api/CityData";
+import type { CityData } from "@/types/location";
 
 import { ChartSection } from "./ChartSection";
 import { DailyForecast } from "./DailyForecast";

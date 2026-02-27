@@ -1,4 +1,3 @@
-import type { SearchGeoData } from "@/types/api/SearchGeoData";
 import { AppError } from "@/types/errors";
 
 export async function fetchGeoData(
@@ -31,4 +30,15 @@ export async function fetchGeoData(
       error instanceof Error ? error.message : "Unexpected error...";
     throw new AppError("UNKNOWN_ERROR", message);
   }
+}
+
+interface SearchGeoData {
+  results: {
+    latitude: number;
+    longitude: number;
+    timezone: string;
+    name: string;
+    country: string;
+    id: number;
+  }[];
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import type { HourlyItem } from "@/types/api/WeatherHourly";
+import type { HourlyItem } from "@/types/weather";
 
 import { getHour } from "./hourly-utils";
 

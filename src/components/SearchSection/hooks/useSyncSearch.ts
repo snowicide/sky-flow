@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { useSearchHistory } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { CityData } from "@/types/api/CityData";
+import type { CityData } from "@/types/location";
 
 export function useSyncSearch(cityData: CityData): void {
   const isSync = useRef(false);

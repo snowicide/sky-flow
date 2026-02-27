@@ -3,7 +3,7 @@ import { useShallow } from "zustand/shallow";
 
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import type { WeatherDataHourly } from "@/types/api/WeatherData";
-import type { DailyForecast, HourlyItem } from "@/types/api/WeatherHourly";
+import type { DailyForecast, HourlyItem } from "@/types/weather";
 import { groupByDay } from "@/utils/weather";
 
 export function useHourlyForecast(

@@ -8,7 +8,7 @@ import Image from "next/image";
 import React from "react";
 
 import dropdownIcon from "@/../public/icons/icon-dropdown.svg";
-import type { DailyForecast } from "@/types/api/WeatherHourly";
+import type { DailyForecast } from "@/types/weather";
 
 export default React.memo(function ChangeSelectedDay({
   days,
