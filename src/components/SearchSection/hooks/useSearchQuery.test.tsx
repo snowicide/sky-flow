@@ -6,7 +6,7 @@ import { AppError } from "@/types/errors";
 import { useSearchQuery } from "./useSearchQuery";
 
 const mockFetchSearchResults = vi.hoisted(() => vi.fn());
-vi.mock("@/services/fetchSearchResults", () => ({
+vi.mock("@/components/SearchSection/services/fetchSearchResults", () => ({
   fetchSearchResults: mockFetchSearchResults,
 }));
 

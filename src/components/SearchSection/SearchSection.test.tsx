@@ -164,7 +164,7 @@ describe("SearchSection integration", () => {
       name: "Berlin, Germany",
     });
     const cityLink = within(cityOption).getByRole("button", {
-      name: "Select Berlin",
+      name: "Select Berlin, Germany",
     });
     await user.click(cityLink);
 
@@ -195,7 +195,9 @@ describe("SearchSection integration", () => {
     const cityOption = await screen.findByRole("option", {
       name: "Berlin, Germany",
     });
-    const cityLink = within(cityOption).getByLabelText("Select Berlin");
+    const cityLink = within(cityOption).getByLabelText(
+      "Select Berlin, Germany",
+    );
     await user.click(cityLink);
 
     await waitFor(() =>
