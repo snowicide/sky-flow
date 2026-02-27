@@ -6,9 +6,9 @@ import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActi
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 import type { CityData } from "@/types/api/CityData";
 
+import { useSyncSearch } from "./hooks/useSyncSearch";
 import { SearchBar } from "./SearchBar";
 import { SearchDropdown } from "./SearchDropdown";
-import { useSyncSearch } from "./useSyncSearch";
 
 export default function SearchSection({ cityData }: { cityData: CityData }) {
   const inputRef = useRef<HTMLInputElement>(null);
