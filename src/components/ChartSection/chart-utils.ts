@@ -1,4 +1,4 @@
-function generateTicks(min: number, max: number): number[] {
+export function generateTicks(min: number, max: number): number[] {
   const ticks = [];
   const start = Math.floor(min / 2) * 2;
   const end = Math.ceil(max / 2) * 2;
@@ -15,7 +15,9 @@ function generateTicks(min: number, max: number): number[] {
   return ticks;
 }
 
-export function getTicks(chartData: { temp: number }[]): number[] {
+export function getTicks(
+  chartData: { temp: number }[] | null | undefined,
+): number[] {
   if (!chartData || chartData.length === 0) return [0, 10, 20, 30];
 
   return generateTicks(
@@ -41,17 +43,15 @@ export function getXTickFormatter(
 ): string {
   const { currentChartTab, isDesk, isSmallDesk, hourUnit } = data;
   if (currentChartTab === "daily") return value;
+
   if (!isDesk || isSmallDesk) {
     if (hourUnit === "12") {
       return value.replace(" AM", "A").replace(" PM", "P");
-    } else {
-      return +value.replace(":00", "").replace(":00", "") + "h";
     }
-  } else {
-    if (hourUnit === "12") {
-      return value.replace(" AM", "AM").replace(" PM", "PM");
-    } else {
-      return value.replace(":00", ":00").replace(":00", ":00");
-    }
+    return +value.split(":")[0] + "h";
   }
+
+  if (hourUnit === "12") return value.replace(" AM", "AM").replace(" PM", "PM");
+
+  return value;
 }
