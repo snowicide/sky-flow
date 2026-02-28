@@ -43,5 +43,5 @@
 
 ---
 
-проект - решение задания с заготовленным дизайном и добавления новых идей и деталей
-дизайн: https://www.frontendmentor.io/challenges/weather-app-K1FhddVm49
+- проект - решение задания с заготовленным дизайном и добавления новых идей и деталей
+- дизайн: https://www.frontendmentor.io/challenges/weather-app-K1FhddVm49
