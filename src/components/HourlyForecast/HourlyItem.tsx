@@ -3,7 +3,7 @@ import React from "react";
 
 import type { HourlyItem } from "@/types/weather";
 
-import { getHour } from "./hourly-utils";
+import { HourDisplay } from "./HourDisplay";
 
 export default React.memo(function HourlyItem({
   hour,
@@ -20,7 +20,7 @@ export default React.memo(function HourlyItem({
           alt={`${hourItem} weather`}
           className="object-contain relative w-8 h-8"
         />
-        {getHour(hourItem, hourFormat)}
+        <HourDisplay hourItem={hourItem} hourFormat={hourFormat} />
       </div>
 
       <div className="flex items-center gap-1">
