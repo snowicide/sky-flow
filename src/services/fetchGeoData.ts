@@ -18,9 +18,8 @@ export async function fetchGeoData(
 
     const geoData: SearchGeoData = await geoRes.json();
 
-    if (!geoData.results || geoData.results.length === 0) {
-      throw new AppError("GEOCODING_FAILED", `City ${city} not found...`);
-    }
+    if (!geoData.results || geoData.results.length === 0)
+      return { results: [] };
 
     return geoData;
   } catch (error) {

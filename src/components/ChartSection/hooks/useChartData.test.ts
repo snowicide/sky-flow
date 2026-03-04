@@ -47,7 +47,7 @@ describe("useChartData", () => {
     ]);
   });
 
-  it("should change selected day index", () => {
+  it("should change selected day index", async () => {
     const { result, rerender } = renderHook(() =>
       useChartData(mockDailyData, mockHourlyData),
     );
@@ -55,7 +55,7 @@ describe("useChartData", () => {
     expect(result.current.chartHourlyData[0].hour).toBe("2 PM");
     expect(result.current.chartHourlyData[0].temp).toBe(-2);
 
-    act(() => useSettingsStore.setState({ selectedDayIndex: 1 }));
+    await act(() => useSettingsStore.setState({ selectedDayIndex: 1 }));
     rerender();
 
     expect(result.current.chartHourlyData[0].hour).toBe("3 PM");

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 import { WeatherStore } from "@/components/SearchSection/lib/weather-store";
 import type { HistoryItem } from "@/types/history";
-import type { CityData } from "@/types/location";
+import { isFoundCity, type CityData } from "@/types/location";
 
 export const recentStore = new WeatherStore("weather-recent");
 export const favoriteStore = new WeatherStore("weather-favorite");
@@ -22,9 +22,10 @@ export function useSearchHistory(): UseSearchHistoryReturn {
   );
 
   const addCity = useCallback((cityData: CityData, favorited?: boolean) => {
-    const { lat, lon, city, country } = cityData;
-    const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
+    if (!isFoundCity(cityData)) return;
+    const { city, country, lat, lon } = cityData;
 
+    const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
     const currentFavorites = favoriteStore.getSnapshot();
     const isFavorited = currentFavorites.some(
       (item) => item.latitude === lat && item.longitude === lon,

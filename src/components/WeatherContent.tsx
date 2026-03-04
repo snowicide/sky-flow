@@ -1,20 +1,32 @@
 "use client";
+
+import { SearchError } from "@/components/ui/SearchError";
 import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import type { CityData } from "@/types/location";
+import { AppError } from "@/types/errors";
+import { isNotFoundCity, type CityData } from "@/types/location";
 
 import { ChartSection } from "./ChartSection";
 import { DailyForecast } from "./DailyForecast";
 import { HourlyForecast } from "./HourlyForecast";
-import { StatusSection } from "./StatusSection";
 import { TodayWeather } from "./TodayWeather";
+import { NetworkError } from "./ui/NetworkError";
 import { WeatherDetails } from "./WeatherDetails";
 import { WeatherContentSkeleton } from "./WeatherSkeleton";
 
 export function WeatherContent({ cityData }: { cityData: CityData }) {
-  const { data, isPending, isError, error } = useWeatherQuery(cityData);
+  const { data, isPending, isError, error, refetch } =
+    useWeatherQuery(cityData);
+
+  if (isNotFoundCity(cityData)) return <SearchError message={cityData.city} />;
 
   if (isPending) return <WeatherContentSkeleton />;
-  if (isError || !data) return <StatusSection error={error} />;
+  if (isError || !data) {
+    const message =
+      error instanceof AppError && error.code === "FORECAST_FAILED"
+        ? error.message
+        : "Check your network connection...";
+    return <NetworkError message={message} refetch={refetch} />;
+  }
 
   const { current, daily, hourly, forecastUnits } = data;
 

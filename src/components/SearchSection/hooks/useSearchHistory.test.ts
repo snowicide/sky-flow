@@ -10,6 +10,7 @@ import {
 } from "./useSearchHistory";
 
 const createCity = (city: string, country: string): CityData => ({
+  status: "found",
   city,
   country,
   lat: 5,
@@ -158,10 +159,10 @@ describe("useSearchHistory", () => {
     expect(result.current.recent[0].city).toBe("berlin");
   });
 
-  it("should remove from favorite in favorite tab", () => {
+  it("should remove from favorite in favorite tab", async () => {
     const { result } = renderHook(() => useSearchHistory());
 
-    act(() =>
+    await act(() =>
       TEST_CITIES.slice(0, 3).map((cityData) =>
         result.current.addCity(cityData),
       ),

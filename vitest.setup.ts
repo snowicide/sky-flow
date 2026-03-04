@@ -1,5 +1,7 @@
-import { server } from "./src/mocks/server";
+import { mockAnimationsApi } from "jsdom-testing-mocks";
+
 import "@testing-library/jest-dom/vitest";
+import { server } from "@/mocks/server";
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
@@ -28,6 +30,11 @@ class ResizeObserverMock {
 
 global.ResizeObserver = ResizeObserverMock;
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterEach(() => {
+  server.resetHandlers();
+  vi.clearAllMocks();
+});
 afterAll(() => server.close());
+
+mockAnimationsApi();

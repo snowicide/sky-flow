@@ -12,7 +12,8 @@ export const fetchSearchResults = async (
 ): Promise<SearchDataItem[]> => {
   try {
     const geoData = await fetchGeoData(searchResult, signal);
-    const results = geoData.results;
+    const results = geoData?.results;
+    if (!results) return [];
 
     const onlyLats = results.map((item) => item.latitude).join(",");
     const onlyLons = results.map((item) => item.longitude).join(",");

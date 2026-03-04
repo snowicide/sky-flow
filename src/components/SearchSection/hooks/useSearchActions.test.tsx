@@ -3,6 +3,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useSearchStore } from "@/stores/useSearchStore";
+import type { CityData } from "@/types/location";
 
 import { useSearchActions } from "./useSearchActions";
 
@@ -125,11 +126,12 @@ describe("useSearchActions", () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
     const cityData = {
+      status: "found",
       city: "Minsk",
       country: "Belarus",
       lat: 53.9,
       lon: 27.56667,
-    };
+    } as CityData;
 
     result.current.searchSelectedCity(cityData, {
       current: inputElement,
@@ -159,10 +161,10 @@ describe("useSearchActions", () => {
     expect(mockFetchGeoData).toHaveBeenCalledWith("berlin");
   });
 
-  it("shouldn't navigate when input is empty", () => {
+  it("shouldn't navigate when input is empty", async () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
-    act(() => result.current.searchCityWithName(""));
+    await act(() => result.current.searchCityWithName(""));
     expect(mockFetchGeoData).not.toHaveBeenCalled();
     expect(mockPush).not.toHaveBeenCalled();
   });

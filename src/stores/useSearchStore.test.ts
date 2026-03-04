@@ -7,7 +7,7 @@ describe("useSearchStore", () => {
     useSearchStore.getState().reset();
   });
 
-  it("should set input value", () => {
+  it("should set input value", async () => {
     act(() => useSearchStore.getState().setInputValue("Berlin"));
     expect(useSearchStore.getState().inputValue).toBe("Berlin");
   });

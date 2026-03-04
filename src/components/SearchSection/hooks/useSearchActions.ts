@@ -14,7 +14,7 @@ import { SearchDataItem } from "@/components/SearchSection/types/SearchData";
 import { fetchGeoData } from "@/services/fetchGeoData";
 import { useSearchStore } from "@/stores/useSearchStore";
 import type { ActiveTab } from "@/types/history";
-import type { CityData } from "@/types/location";
+import { isFoundCity, type CityData } from "@/types/location";
 import { capitalizeString } from "@/utils/formatters";
 
 import { useSearchHistory } from "./useSearchHistory";
@@ -61,18 +61,21 @@ export function useSearchActions(): UseSearchActionsReturn {
       setIsOpen(false);
       setInputValue("");
 
-      if (cityData) {
+      const { city } = cityData;
+
+      const params = new URLSearchParams();
+
+      params.set("city", capitalizeString(city));
+
+      if (isFoundCity(cityData)) {
+        const { country, lat, lon } = cityData;
+        params.set("country", capitalizeString(country));
+        params.set("lat", lat.toString());
+        params.set("lon", lon.toString());
+
         addCity(cityData);
       }
 
-      const latStr = cityData.lat.toString();
-      const lonStr = cityData.lon.toString();
-
-      const params = new URLSearchParams();
-      params.set("city", capitalizeString(cityData.city));
-      params.set("country", capitalizeString(cityData.country));
-      params.set("lat", latStr);
-      params.set("lon", lonStr);
       router.push(`${pathname}?${params.toString()}`);
     },
     [addCity, pathname, router, setInputValue, setIsOpen],
@@ -82,19 +85,22 @@ export function useSearchActions(): UseSearchActionsReturn {
     async (city: string): Promise<void> => {
       const targetCity = city.trim().toLowerCase();
       if (!targetCity) return;
-
       const geoData = await fetchGeoData(targetCity);
 
-      const cityData = {
+      if (!geoData || geoData.results.length === 0) {
+        searchSelectedCity({ status: "not-found", city: inputValue });
+        return;
+      }
+
+      searchSelectedCity({
+        status: "found",
         city: geoData.results[0].name,
         country: geoData.results[0].country,
         lat: geoData.results[0].latitude,
         lon: geoData.results[0].longitude,
-      };
-
-      searchSelectedCity(cityData);
+      });
     },
-    [searchSelectedCity],
+    [searchSelectedCity, inputValue],
   );
 
   const handleKeydown = useCallback(
@@ -169,7 +175,7 @@ interface UseSearchActionsReturn {
     inputRef: RefObject<HTMLInputElement | null>,
   ) => void;
   handleChangeInput: (e: ChangeEvent<HTMLInputElement>) => void;
-  resultData: SearchDataItem[] | undefined;
+  resultData: SearchDataItem[] | null | undefined;
   searchCityWithName: (city: string) => Promise<void>;
   shouldSearchSkeleton: boolean;
   handleSubmit: (e: SubmitEvent<HTMLFormElement>) => void;

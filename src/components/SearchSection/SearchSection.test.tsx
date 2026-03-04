@@ -125,6 +125,7 @@ describe("SearchSection integration", () => {
     ];
 
     cityData = {
+      status: "found",
       city: "Minsk",
       country: "Belarus",
       lat: 12,
@@ -137,7 +138,7 @@ describe("SearchSection integration", () => {
     const input = screen.getByPlaceholderText("Search for a place...");
 
     const { result } = renderHook(() => useSearchStore());
-    act(() => result.current.reset());
+    await act(() => result.current.reset());
 
     await user.type(input, "Berlin{enter}");
     await waitFor(() =>
@@ -149,7 +150,7 @@ describe("SearchSection integration", () => {
 
   it("should navigate from recent list", async () => {
     window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
-    act(() => {
+    await act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });

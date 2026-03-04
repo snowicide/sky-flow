@@ -5,6 +5,7 @@ import { FavoriteIcon } from "@/components/icons";
 import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useSearchHistory } from "@/components/SearchSection/hooks/useSearchHistory";
 import type { SearchTabProps } from "@/types/history";
+import { isFoundCity } from "@/types/location";
 import { capitalizeString } from "@/utils/formatters";
 
 export const RecentSearch = React.memo(function RecentSearch({
@@ -24,19 +25,14 @@ export const RecentSearch = React.memo(function RecentSearch({
     toggleFavorite(data.id);
   }, [toggleFavorite, data.id]);
 
-  const handleClick = useCallback(
-    () =>
+  const handleClick = useCallback(() => {
+    const { city, country, latitude: lat, longitude: lon } = data;
+    if (isFoundCity({ status: "found", city, country, lat, lon }))
       searchSelectedCity(
-        {
-          lat: data.latitude,
-          lon: data.longitude,
-          city: data.city,
-          country: data.country,
-        },
+        { status: "found", city, country, lat, lon },
         inputRef,
-      ),
-    [data, searchSelectedCity, inputRef],
-  );
+      );
+  }, [data, searchSelectedCity, inputRef]);
 
   return (
     <li

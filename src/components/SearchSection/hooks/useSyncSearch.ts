@@ -1,19 +1,27 @@
 import { useEffect, useRef } from "react";
+import { useShallow } from "zustand/shallow";
 
 import { useSearchHistory } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { CityData } from "@/types/location";
+import { isNotFoundCity, type CityData } from "@/types/location";
 
 export function useSyncSearch(cityData: CityData): void {
+  const { _hasHydrated, setIsOpen } = useSearchStore(
+    useShallow((s) => ({
+      _hasHydrated: s._hasHydrated,
+      setIsOpen: s.setIsOpen,
+    })),
+  );
   const isSync = useRef(false);
   const { addCity } = useSearchHistory();
-  const _hasHydrated = useSearchStore((state) => state._hasHydrated);
-  const setIsOpen = useSearchStore((state) => state.setIsOpen);
+  const shouldReturn =
+    isSync.current || !_hasHydrated || isNotFoundCity(cityData);
 
   useEffect(() => {
-    if (isSync.current || !_hasHydrated || !cityData) return;
+    if (shouldReturn) return;
+
     setIsOpen(false);
-    addCity(cityData);
+    if (cityData) addCity(cityData);
     isSync.current = true;
-  }, [cityData, _hasHydrated, setIsOpen, addCity]);
+  }, [cityData, _hasHydrated, addCity, shouldReturn, setIsOpen]);
 }

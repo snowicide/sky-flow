@@ -1,7 +1,7 @@
 import { DEFAULT_UNITS } from "@/stores/useSettingsStore";
 import type { WeatherData } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
-import type { CityData } from "@/types/location";
+import { isFoundCity, type CityData } from "@/types/location";
 import type { Units } from "@/types/weather";
 
 export async function fetchForecastData(
@@ -10,7 +10,17 @@ export async function fetchForecastData(
   signal?: AbortSignal,
 ): Promise<WeatherData> {
   try {
+    if (!isFoundCity(cityData))
+      throw new AppError(
+        "FORECAST_FAILED",
+        "Cannot fetch weather! City coords not found...",
+      );
+
     const { city, country, lat, lon } = cityData;
+
+    if (!city || !country || !lat || !lon)
+      throw new AppError("FORECAST_FAILED", "Invalid city data");
+
     const url =
       "https://api.open-meteo.com/v1/forecast?" +
       new URLSearchParams({

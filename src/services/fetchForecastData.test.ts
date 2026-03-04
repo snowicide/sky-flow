@@ -7,6 +7,7 @@ describe("fetchForecastData", () => {
 
   beforeEach(() => {
     cityData = {
+      status: "found",
       city: "Minsk",
       country: "Belarus",
       lat: 53.9,

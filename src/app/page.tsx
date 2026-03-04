@@ -1,22 +1,17 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 
 import { HeaderSection } from "@/components/HeaderSection";
 import { SearchSection } from "@/components/SearchSection";
 import { WeatherContent } from "@/components/WeatherContent";
 import { fetchGeoData } from "@/services/fetchGeoData";
 
+import { findCityDataFromParams, redirectToDefaultCity } from "./utils";
+
 export default async function WeatherPage({ searchParams }: WeatherPageProps) {
   const params = await searchParams;
-  if (!params.city)
-    redirect("/?city=Minsk&country=Belarus&lat=53.9&lon=27.56667");
 
-  const lat = Number(params.lat) || 53.9;
-  const lon = Number(params.lon) || 27.56667;
-  const city = params.city || "Minsk";
-  const country = params.country || "Belarus";
-
-  const cityData = { lat, lon, city, country };
+  redirectToDefaultCity(params);
+  const cityData = findCityDataFromParams(params);
 
   return (
     <>
@@ -39,7 +34,7 @@ export async function generateMetadata({
     const { city, lat, lon } = await searchParams;
     if (!city) return { title: "SkyFlow" };
     const data = await fetchGeoData(city);
-    const targetCity = data.results.find(
+    const targetCity = data?.results.find(
       (item) => item.latitude === Number(lat) && item.longitude === Number(lon),
     );
     const cityName = targetCity ? targetCity.name : "Not found";

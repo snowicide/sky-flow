@@ -1,6 +1,7 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
 import { useSearchStore } from "@/stores/useSearchStore";
+import type { CityData } from "@/types/location";
 
 import { useSyncSearch } from "./useSyncSearch";
 
@@ -12,16 +13,22 @@ vi.mock("@/components/SearchSection/hooks/useSearchHistory", () => ({
 }));
 
 describe("useSyncSearch", () => {
+  const mockSetIsOpen = vi.fn();
   const mockCity = {
+    status: "found",
     city: "Minsk",
     country: "Belarus",
     lat: 53.9,
     lon: 27.56667,
-  };
+  } as CityData;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    useSearchStore.setState({ _hasHydrated: false, setIsOpen: vi.fn() });
+    act(() => useSearchStore.setState({ _hasHydrated: false }));
+
+    vi.spyOn(useSearchStore.getState(), "setIsOpen").mockImplementation(
+      mockSetIsOpen,
+    );
   });
 
   it("shouldn't call addCity if hydrated false", () => {
@@ -30,14 +37,14 @@ describe("useSyncSearch", () => {
     expect(mockAddCity).not.toHaveBeenCalled();
   });
 
-  it("should call addCity 1 time after hydration", () => {
+  it("should call addCity 1 time after hydration", async () => {
     const setIsOpen = useSearchStore.getState().setIsOpen;
 
     const { rerender } = renderHook(({ city }) => useSyncSearch(city), {
       initialProps: { city: mockCity },
     });
 
-    useSearchStore.setState({ _hasHydrated: true });
+    await act(() => useSearchStore.setState({ _hasHydrated: true }));
     rerender({ city: mockCity });
 
     expect(mockAddCity).toHaveBeenCalledTimes(1);
