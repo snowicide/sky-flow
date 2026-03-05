@@ -46,9 +46,9 @@ export default function WeatherDetails({
             className="bg-[hsl(243,27%,20%)] hover:opacity-75 transition duration-75 p-4 sm:p-5 rounded-xl border border-white/10"
           >
             <p className="text-white/70 text-sm mb-2">{title}</p>
-            <p className="font-semibold">
-              <span className="text-2xl">{value} </span>
-              <span className="text-white/70 text-xl">{unit}</span>
+            <p className="flex items-center gap-1.25 font-semibold">
+              <span className="text-xl xl:text-2xl">{value}</span>
+              <span className="text-white/70 text-lg xl:text-xl">{unit}</span>
             </p>
           </li>
         ))}
