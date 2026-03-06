@@ -6,38 +6,13 @@ import { useSettingsStore } from "@/stores/useSettingsStore";
 
 import UnitsSettings from "./UnitsSettings";
 
-vi.mock("next/image", () => ({
-  default: (props: Partial<React.ImgHTMLAttributes<HTMLImageElement>>) => (
-    <img
-      {...props}
-      alt={props.alt}
-      src={props.src}
-      width={props.width}
-      height={props.height}
-    />
-  ),
-}));
-
-const mockFetchWeatherData = vi.hoisted(() => vi.fn());
-vi.mock("@/services/fetchWeatherData", () => ({
-  fetchWeatherData: mockFetchWeatherData,
-}));
-
-const testQueryClient = new QueryClient({
-  defaultOptions: {
-    queries: { retry: false },
-  },
+//  --- 1. mocks ---
+vi.mock("next/image", async () => {
+  const actual = await vi.importActual("@/testing/mocks/next/image");
+  return { default: actual.default };
 });
 
-const renderWithClient = (element: React.ReactElement) => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>
-      {children}
-    </QueryClientProvider>
-  );
-  return render(element, { wrapper });
-};
-
+//  --- 2. tests ---
 describe("UnitsSettings integration", () => {
   let user: ReturnType<typeof userEvent.setup>;
 
@@ -98,3 +73,19 @@ describe("UnitsSettings integration", () => {
     expect(useSettingsStore.getState().units.time).toBe("12");
   });
 });
+
+// --- 3. render with client
+const testQueryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+  },
+});
+
+const renderWithClient = (element: React.ReactElement) => {
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={testQueryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+  return render(element, { wrapper });
+};

@@ -19,6 +19,7 @@ import type { CityData } from "@/types/location";
 
 import SearchSection from "./SearchSection";
 
+// --- 1. mocks ---
 const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockPush }),
@@ -26,111 +27,60 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-vi.mock("next/image", () => ({
-  default: (props: Partial<React.ImgHTMLAttributes<HTMLImageElement>>) => (
-    <img
-      {...props}
-      alt={props.alt}
-      src={props.src}
-      width={props.width || 5}
-      height={props.height || 5}
-    />
-  ),
-}));
-
-const mockFetchForecastData = vi.hoisted(() => vi.fn());
-vi.mock("@/services/fetchforecastData", () => ({
-  fetchforecastData: mockFetchForecastData,
-}));
-
-const testQueryClient = new QueryClient({
-  defaultOptions: {
-    queries: { retry: false },
-  },
+vi.mock("next/image", async () => {
+  const actual = await vi.importActual("@/testing/mocks/next/image");
+  return { default: actual.default };
 });
 
-const renderWithClient = (element: React.ReactElement) => {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>
-      {children}
-    </QueryClientProvider>
-  );
-  return render(element, { wrapper });
-};
-
-//
+// --- 2. tests ---
 describe("SearchSection integration", () => {
   let user: ReturnType<typeof userEvent.setup>;
-  let mockData: HistoryItem[];
-  let cityData: CityData;
+  const mockData: HistoryItem[] = [
+    {
+      id: "warsaw-poland",
+      city: "Warsaw",
+      country: "Poland",
+      isFavorite: false,
+      timestamp: 1,
+      latitude: 52.22977,
+      longitude: 21.01178,
+    },
+    {
+      id: "berlin-germany",
+      city: "Berlin",
+      country: "Germany",
+      isFavorite: false,
+      timestamp: 2,
+      latitude: 52.52437,
+      longitude: 13.41053,
+    },
+    {
+      id: "minsk-belarus",
+      city: "Minsk",
+      country: "Belarus",
+      isFavorite: false,
+      timestamp: 3,
+      latitude: 53.9,
+      longitude: 27.56667,
+    },
+  ];
+  const cityData: CityData = {
+    status: "found",
+    city: "Minsk",
+    country: "Belarus",
+    lat: 12,
+    lon: 34,
+  };
 
   beforeEach(() => {
     window.localStorage.clear();
     recentStore.reset();
     favoriteStore.reset();
-
     testQueryClient.clear();
     vi.clearAllMocks();
-    mockFetchForecastData.mockClear();
     mockPush.mockClear();
 
-    mockFetchForecastData.mockResolvedValue({
-      current: {
-        city: "Berlin",
-        country: "Germany",
-        latitude: 52.52437,
-        longitude: 13.41053,
-      },
-      daily: {
-        temperature_2m_max: [-2],
-      },
-      hourly: {
-        temperature_2m: [-2],
-      },
-      forecastUnits: {
-        temperature: "celsius",
-      },
-    });
-
     user = userEvent.setup();
-
-    mockData = [
-      {
-        id: "warsaw-poland",
-        city: "Warsaw",
-        country: "Poland",
-        isFavorite: false,
-        timestamp: 1,
-        latitude: 52.22977,
-        longitude: 21.01178,
-      },
-      {
-        id: "berlin-germany",
-        city: "Berlin",
-        country: "Germany",
-        isFavorite: false,
-        timestamp: 2,
-        latitude: 52.52437,
-        longitude: 13.41053,
-      },
-      {
-        id: "minsk-belarus",
-        city: "Minsk",
-        country: "Belarus",
-        isFavorite: false,
-        timestamp: 3,
-        latitude: 53.9,
-        longitude: 27.56667,
-      },
-    ];
-
-    cityData = {
-      status: "found",
-      city: "Minsk",
-      country: "Belarus",
-      lat: 12,
-      lon: 34,
-    };
   });
 
   it("should update URL with city name", async () => {
@@ -138,7 +88,7 @@ describe("SearchSection integration", () => {
     const input = screen.getByPlaceholderText("Search for a place...");
 
     const { result } = renderHook(() => useSearchStore());
-    await act(() => result.current.reset());
+    act(() => result.current.reset());
 
     await user.type(input, "Berlin{enter}");
     await waitFor(() =>
@@ -150,7 +100,7 @@ describe("SearchSection integration", () => {
 
   it("should navigate from recent list", async () => {
     window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
-    await act(() => {
+    act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
@@ -291,3 +241,19 @@ describe("SearchSection integration", () => {
     });
   });
 });
+
+// --- 3. render with client
+const testQueryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+  },
+});
+
+const renderWithClient = (element: React.ReactElement) => {
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={testQueryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+  return render(element, { wrapper });
+};
