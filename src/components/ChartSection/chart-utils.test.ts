@@ -21,17 +21,18 @@ describe("chart-utils", () => {
   });
 
   describe("getTicks", () => {
-    it("should get chart ticks", () => {
-      const mockChartData = [{ temp: 0 }, { temp: 2 }, { temp: 4 }];
-      const result = getTicks(mockChartData);
-      expect(result).toEqual([-4, -2, +0, 2, 4, 6, 8]);
-    });
-
-    it("should handle missing data", () => {
-      const mockChartData = null;
-      const result = getTicks(mockChartData);
-      expect(result).toEqual([0, 10, 20, 30]);
-    });
+    test.each([
+      {
+        data: [{ temp: 0 }, { temp: 2 }, { temp: 4 }],
+        expected: [-4, -2, +0, 2, 4, 6, 8],
+      },
+      { data: null, expected: [0, 10, 20, 30] },
+    ])(
+      "should get chart ticks and handle missing data",
+      ({ data, expected }) => {
+        expect(getTicks(data)).toEqual(expected);
+      },
+    );
   });
 
   describe("getAspect", () => {
