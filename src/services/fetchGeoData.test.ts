@@ -6,10 +6,6 @@ import { AppError } from "@/types/errors";
 import { fetchGeoData } from "./fetchGeoData";
 
 describe("fetchGeoData", () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   it("should fetch 8 cities with minsk query", async () => {
     const result = await fetchGeoData("Minsk");
 
