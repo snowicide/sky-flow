@@ -6,7 +6,7 @@ export function redirectToDefaultCity(params: WeatherParams): void {
   const { city, country, lat, lon } = params;
 
   if (!city && !country && !lat && !lon)
-    redirect("/?city=Minsk&country=Belarus&lat=53.9&lon=27.56667");
+    redirect("weather/?city=Minsk&country=Belarus&lat=53.9&lon=27.56667");
 }
 
 export function findCityDataFromParams(params: WeatherParams): CityData {

@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { HeaderSection } from "@/components/HeaderSection";
 import { SearchSection } from "@/components/SearchSection";
 import { WeatherContent } from "@/components/WeatherContent";
-import { fetchGeoData } from "@/services/fetchGeoData";
 
 import { findCityDataFromParams, redirectToDefaultCity } from "./utils";
 
@@ -28,18 +27,21 @@ export default async function WeatherPage({ searchParams }: WeatherPageProps) {
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ city?: string; lat?: string; lon?: string }>;
+  searchParams: Promise<{
+    city?: string;
+    country?: string;
+    lat?: string;
+    lon?: string;
+  }>;
 }): Promise<Metadata> {
   try {
-    const { city, lat, lon } = await searchParams;
+    const { city, country, lat, lon } = await searchParams;
     if (!city) return { title: "SkyFlow" };
-    const data = await fetchGeoData(city);
-    const targetCity = data?.results.find(
-      (item) => item.latitude === Number(lat) && item.longitude === Number(lon),
-    );
-    const cityName = targetCity ? targetCity.name : "Not found";
 
-    return { title: `SkyFlow - ${cityName}` };
+    if (city && (!lat || !lon || !country))
+      return { title: "SkyFlow - Not found" };
+
+    return { title: `SkyFlow - ${city}` };
   } catch {
     return { title: "SkyFlow" };
   }
