@@ -17,7 +17,7 @@ export function useChartData(
 
   const chartDailyData = useMemo(
     () =>
-      dailyData.time.map((time, index) => {
+      dailyData.time.slice(0, 7).map((time, index) => {
         const min = dailyData.temperature_2m_min[index];
         const max = dailyData.temperature_2m_max[index];
         const date = new Date(time);
@@ -34,7 +34,7 @@ export function useChartData(
     const filteredDays = groupByDay(hourlyData, {
       hourFormat,
       dayFormat: "dddd",
-    }).slice(1);
+    }).filter((day) => day.hours.length === 24);
 
     return filteredDays[selectedDayIndex]?.hours.map((item) => ({
       hour: item.hour,
