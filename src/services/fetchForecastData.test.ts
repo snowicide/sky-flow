@@ -1,22 +1,10 @@
-import type { CityData } from "@/types/location";
+import { minskCityData } from "@/testing/mocks/factories/cityData";
 
 import { fetchForecastData } from "./fetchForecastData";
 
 describe("fetchForecastData", () => {
-  let cityData: CityData;
-
-  beforeEach(() => {
-    cityData = {
-      status: "found",
-      city: "Minsk",
-      country: "Belarus",
-      lat: 53.9,
-      lon: 27.56667,
-    };
-  });
-
   it("should fetch city with cityData", async () => {
-    const result = await fetchForecastData(cityData);
+    const result = await fetchForecastData(minskCityData);
 
     expect(result.current.city).toBe("Minsk");
     expect(result.current.latitude).toBe(53.9);
