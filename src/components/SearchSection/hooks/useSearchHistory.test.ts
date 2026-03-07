@@ -1,6 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { createHistoryCity } from "@/testing/mocks/factories/historyData";
 import type { CityData } from "@/types/location";
 
 import {
@@ -9,6 +10,7 @@ import {
   useSearchHistory,
 } from "./useSearchHistory";
 
+// --- 1. city factories ---
 const createCity = (city: string, country: string): CityData => ({
   status: "found",
   city,
@@ -17,19 +19,23 @@ const createCity = (city: string, country: string): CityData => ({
   lon: 10,
 });
 
-const TEST_CITIES = [
-  { city: "Tokyo", country: "Japan" },
-  { city: "Berlin", country: "Germany" },
-  { city: "Warsaw", country: "Poland" },
-  { city: "Minsk", country: "Belarus" },
-  { city: "Paris", country: "France" },
-  { city: "Bern", country: "Switzerland" },
-  { city: "Rome", country: "Italy" },
-  { city: "London", country: "United Kingdom" },
-  { city: "Stockholm", country: "Sweden" },
-].map(({ city, country }) => createCity(city, country));
+const getTestCities = (): CityData[] =>
+  [
+    { city: "Tokyo", country: "Japan" },
+    { city: "Berlin", country: "Germany" },
+    { city: "Warsaw", country: "Poland" },
+    { city: "Minsk", country: "Belarus" },
+    { city: "Paris", country: "France" },
+    { city: "Bern", country: "Switzerland" },
+    { city: "Rome", country: "Italy" },
+    { city: "London", country: "United Kingdom" },
+    { city: "Stockholm", country: "Sweden" },
+  ].map(({ city, country }) => createCity(city, country));
 
+// --- 2. tests ---
 describe("useSearchHistory", () => {
+  const warsawHistoryData = createHistoryCity();
+
   beforeEach(() => {
     window.localStorage.clear();
     recentStore.reset();
@@ -37,19 +43,10 @@ describe("useSearchHistory", () => {
   });
 
   it("should get recent from localStorage", () => {
-    const mockData = [
-      {
-        id: "warsaw-poland",
-        city: "Warsaw",
-        country: "Poland",
-        isFavorite: false,
-        timestamp: 123,
-        latitude: 52,
-        longitude: 21,
-      },
-    ];
-
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    window.localStorage.setItem(
+      "weather-recent",
+      JSON.stringify(warsawHistoryData),
+    );
     recentStore.reset();
 
     const { result } = renderHook(() => useSearchHistory());
@@ -60,19 +57,10 @@ describe("useSearchHistory", () => {
   });
 
   it("should get favorites from localStorage", () => {
-    const mockData = [
-      {
-        id: "warsaw-poland",
-        city: "Warsaw",
-        country: "Poland",
-        isFavorite: true,
-        timestamp: 123,
-        latitude: 52,
-        longitude: 21,
-      },
-    ];
-
-    window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
+    window.localStorage.setItem(
+      "weather-favorite",
+      JSON.stringify([{ ...warsawHistoryData[0], isFavorite: true }]),
+    );
     favoriteStore.reset();
 
     const { result } = renderHook(() => useSearchHistory());
@@ -84,9 +72,10 @@ describe("useSearchHistory", () => {
   });
 
   it("should add a new city to the recent", () => {
+    const cities = getTestCities();
     const { result } = renderHook(() => useSearchHistory());
 
-    act(() => result.current.addCity(TEST_CITIES[0]));
+    act(() => result.current.addCity(cities[0]));
 
     expect(result.current.recent).toHaveLength(1);
     expect(result.current.recent[0]).toMatchObject({
@@ -104,20 +93,20 @@ describe("useSearchHistory", () => {
   });
 
   it("shouldn't duplicate the same city", () => {
+    const cities = getTestCities();
     const { result } = renderHook(() => useSearchHistory());
 
-    act(() => result.current.addCity(TEST_CITIES[0]));
-    act(() => result.current.addCity(TEST_CITIES[0]));
+    act(() => result.current.addCity(cities[0]));
+    act(() => result.current.addCity(cities[0]));
 
     expect(result.current.recent).toHaveLength(1);
   });
 
   it("should have maximum 8 cities", () => {
+    const cities = getTestCities();
     const { result } = renderHook(() => useSearchHistory());
 
-    act(() =>
-      TEST_CITIES.forEach((cityData) => result.current.addCity(cityData)),
-    );
+    act(() => cities.forEach((cityData) => result.current.addCity(cityData)));
 
     expect(result.current.recent).toHaveLength(8);
     expect(result.current.recent[result.current.recent.length - 1].id).toBe(
@@ -126,9 +115,10 @@ describe("useSearchHistory", () => {
   });
 
   it("should toggle favorite", () => {
+    const cities = getTestCities();
     const { result } = renderHook(() => useSearchHistory());
 
-    act(() => result.current.addCity(TEST_CITIES[0]));
+    act(() => result.current.addCity(cities[0]));
     const id = result.current.recent[0].id;
     act(() => result.current.toggleFavorite(id));
 
@@ -144,12 +134,13 @@ describe("useSearchHistory", () => {
   });
 
   it("should remove city from recent", () => {
+    const cities = getTestCities();
     const { result } = renderHook(() => useSearchHistory());
 
-    act(() => result.current.addCity(TEST_CITIES[0]));
+    act(() => result.current.addCity(cities[0]));
     const tokyoId = result.current.recent[0].id;
     expect(result.current.recent[0].id).toBe(tokyoId);
-    act(() => result.current.addCity(TEST_CITIES[1]));
+    act(() => result.current.addCity(cities[1]));
 
     expect(result.current.recent).toHaveLength(2);
 
@@ -160,12 +151,11 @@ describe("useSearchHistory", () => {
   });
 
   it("should remove from favorite in favorite tab", async () => {
+    const cities = getTestCities();
     const { result } = renderHook(() => useSearchHistory());
 
     await act(() =>
-      TEST_CITIES.slice(0, 3).map((cityData) =>
-        result.current.addCity(cityData),
-      ),
+      cities.slice(0, 3).map((cityData) => result.current.addCity(cityData)),
     );
     const tokyoId = result.current.recent[0].id;
     const berlinId = result.current.recent[1].id;
