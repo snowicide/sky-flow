@@ -1,57 +1,34 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 
+import { createResultsMocks } from "@/testing/mocks/factories/weather";
 import { AppError } from "@/types/errors";
 
 import { useSearchQuery } from "./useSearchQuery";
 
+// --- 1. mocks ---
 const mockFetchSearchResults = vi.hoisted(() => vi.fn());
 vi.mock("@/components/SearchSection/services/fetchSearchResults", () => ({
   fetchSearchResults: mockFetchSearchResults,
 }));
 
-const testQueryClient = new QueryClient({
-  defaultOptions: {
-    queries: { retry: false, retryDelay: 0, gcTime: 0, staleTime: 0 },
-  },
-});
-
-function renderHookWithClient<T>(hook: () => T) {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>
-      {children}
-    </QueryClientProvider>
-  );
-  return renderHook(hook, { wrapper });
-}
-
+// --- 2. tests ---
 describe("useSearchQuery", () => {
-  let searchResult: string;
-  const mockSearchResults = [
-    {
-      city: "Berlin",
-      country: "Germany",
-      id: 123,
-      latitude: 10,
-      longitude: 20,
-      temperature: -2,
-    },
-  ];
+  const searchResults = createResultsMocks();
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockFetchSearchResults.mockClear();
     testQueryClient.clear();
-
-    searchResult = "Berlin";
   });
 
   it("should fetch data", async () => {
-    mockFetchSearchResults.mockResolvedValue(mockSearchResults);
-    const { result } = renderHookWithClient(() => useSearchQuery(searchResult));
+    mockFetchSearchResults.mockResolvedValue(searchResults);
+    const { result } = renderHookWithClient(() => useSearchQuery("Berlin"));
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toEqual(mockSearchResults);
+    expect(result.current.data).toHaveLength(8);
+    expect(result.current.data).toEqual(searchResults);
   });
 
   it("should return empty array when city not found", async () => {
@@ -73,7 +50,7 @@ describe("useSearchQuery", () => {
       "Server is temporarily unaavailable...",
     );
     mockFetchSearchResults.mockRejectedValue(error);
-    const { result } = renderHookWithClient(() => useSearchQuery(searchResult));
+    const { result } = renderHookWithClient(() => useSearchQuery("Berlin"));
 
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBe(error);
@@ -87,3 +64,19 @@ describe("useSearchQuery", () => {
     expect(result.current.fetchStatus).toBe("idle");
   });
 });
+
+// --- 3. render with client ---
+const testQueryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false, retryDelay: 0, gcTime: 0, staleTime: 0 },
+  },
+});
+
+function renderHookWithClient<T>(hook: () => T) {
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={testQueryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+  return renderHook(hook, { wrapper });
+}

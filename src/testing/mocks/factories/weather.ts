@@ -1,8 +1,10 @@
+import type { SearchDataItem } from "@/components/SearchSection/types/SearchData";
 import type {
   WeatherDataDaily,
   WeatherDataHourly,
 } from "@/types/api/WeatherData";
 
+// --- 1.1 weather data factories ---
 export const createWeatherDataMocks = (
   overrides: WeatherOverrides = {},
 ): WeatherDataMocks => {
@@ -19,6 +21,7 @@ export const createWeatherDataMocks = (
   };
 };
 
+// --- 1.2 weather data items ---
 const getDailyData = (): WeatherDataDaily => ({
   temperature_2m_min: Array.from({ length: 8 }, (_, i) => i),
   temperature_2m_max: Array.from({ length: 8 }, (_, i) => i + 2),
@@ -47,6 +50,46 @@ const getHourlyData = (): WeatherDataHourly => ({
     ),
   ],
   weather_code: [...Array(24).fill(0), ...Array(24).fill(1)],
+});
+
+// --- 2.1 search results factories ---
+export const createResultsMocks = (
+  overrides: Partial<SearchDataItem> = {},
+): SearchDataItem[] => {
+  return [
+    ...Array(7).fill({
+      ...getFirstSearchResults(),
+      ...overrides,
+    }),
+
+    {
+      ...getLastSearchResults(),
+      ...overrides,
+    },
+  ];
+};
+
+// --- 2.2 search results items ---
+const getFirstSearchResults = (): SearchDataItem => ({
+  city: "Berlin",
+  country: "Germany",
+  id: 2950159,
+  latitude: 52.52437,
+  longitude: 13.41053,
+  temperature: 11.5,
+  temperatureUnit: "°C",
+  weatherCode: 3,
+});
+
+const getLastSearchResults = (): SearchDataItem => ({
+  city: "East Berlin",
+  country: "United States",
+  id: 4557666,
+  latitude: 39.9376,
+  longitude: -76.97859,
+  temperature: 11,
+  temperatureUnit: "°C",
+  weatherCode: 3,
 });
 
 interface WeatherOverrides {
