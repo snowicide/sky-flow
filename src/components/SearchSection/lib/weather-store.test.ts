@@ -5,7 +5,7 @@ import { WeatherStore } from "./weather-store";
 
 describe("WeatherStore", () => {
   const storageKey = "test-key";
-  const historyData = createHistoryCity();
+  const historyData = createHistoryCity().slice(0, 1);
 
   beforeEach(() => {
     localStorage.clear();

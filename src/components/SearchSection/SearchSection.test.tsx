@@ -14,8 +14,8 @@ import {
   recentStore,
 } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { HistoryItem } from "@/types/history";
-import type { CityData } from "@/types/location";
+import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createHistoryCity } from "@/testing/mocks/factories/historyData";
 
 import SearchSection from "./SearchSection";
 
@@ -35,42 +35,8 @@ vi.mock("next/image", async () => {
 // --- 2. tests ---
 describe("SearchSection integration", () => {
   let user: ReturnType<typeof userEvent.setup>;
-  const mockData: HistoryItem[] = [
-    {
-      id: "warsaw-poland",
-      city: "Warsaw",
-      country: "Poland",
-      isFavorite: false,
-      timestamp: 1,
-      latitude: 52.22977,
-      longitude: 21.01178,
-    },
-    {
-      id: "berlin-germany",
-      city: "Berlin",
-      country: "Germany",
-      isFavorite: false,
-      timestamp: 2,
-      latitude: 52.52437,
-      longitude: 13.41053,
-    },
-    {
-      id: "minsk-belarus",
-      city: "Minsk",
-      country: "Belarus",
-      isFavorite: false,
-      timestamp: 3,
-      latitude: 53.9,
-      longitude: 27.56667,
-    },
-  ];
-  const cityData: CityData = {
-    status: "found",
-    city: "Minsk",
-    country: "Belarus",
-    lat: 12,
-    lon: 34,
-  };
+  const historyData = createHistoryCity();
+  const { berlinCityData } = createCityDataMocks();
 
   beforeEach(() => {
     window.localStorage.clear();
@@ -84,7 +50,7 @@ describe("SearchSection integration", () => {
   });
 
   it("should update URL with city name", async () => {
-    renderWithClient(<SearchSection cityData={cityData} />);
+    renderWithClient(<SearchSection cityData={berlinCityData} />);
     const input = screen.getByPlaceholderText("Search for a place...");
 
     const { result } = renderHook(() => useSearchStore());
@@ -99,12 +65,12 @@ describe("SearchSection integration", () => {
   });
 
   it("should navigate from recent list", async () => {
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    window.localStorage.setItem("weather-recent", JSON.stringify(historyData));
     act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
+    renderWithClient(<SearchSection cityData={berlinCityData} />);
     const input = screen.getByPlaceholderText(/search for a place/i);
     await user.click(input);
 
@@ -126,12 +92,15 @@ describe("SearchSection integration", () => {
   });
 
   it("should navigate from favorites list", async () => {
-    window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
+    window.localStorage.setItem(
+      "weather-favorite",
+      JSON.stringify(historyData),
+    );
     act(() => {
       favoriteStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
+    renderWithClient(<SearchSection cityData={berlinCityData} />);
     await waitFor(() => useSearchStore.setState({ isOpen: true }));
 
     const favoritesTab = await screen.findByRole("tab", {
@@ -158,12 +127,12 @@ describe("SearchSection integration", () => {
   });
 
   it("should toggle favorites in recent tab", async () => {
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    window.localStorage.setItem("weather-recent", JSON.stringify(historyData));
     act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
+    renderWithClient(<SearchSection cityData={berlinCityData} />);
     await waitFor(() => useSearchStore.setState({ isOpen: true }));
 
     const cityOption = screen.getByRole("option", { name: "Berlin, Germany" });
@@ -190,12 +159,12 @@ describe("SearchSection integration", () => {
   });
 
   it("should remove city from recent", async () => {
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    window.localStorage.setItem("weather-recent", JSON.stringify(historyData));
     act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
+    renderWithClient(<SearchSection cityData={berlinCityData} />);
     await waitFor(() => useSearchStore.setState({ isOpen: true }));
 
     const cityOption = screen.getByRole("option", { name: "Berlin, Germany" });
@@ -214,12 +183,15 @@ describe("SearchSection integration", () => {
   });
 
   it("should remove city from favorites", async () => {
-    window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
+    window.localStorage.setItem(
+      "weather-favorite",
+      JSON.stringify(historyData),
+    );
     act(() => {
       favoriteStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
+    renderWithClient(<SearchSection cityData={berlinCityData} />);
     await waitFor(() =>
       useSearchStore.setState({ isOpen: true, currentTab: "favorites" }),
     );

@@ -3,7 +3,10 @@ import { type CityData } from "@/types/location";
 export const createCityDataMocks = (
   overrides: CityDataOverrides = {},
 ): CityDataMocks => {
-  const getCity = (data: CityData, override?: Partial<CityData>): CityData => {
+  const getCity = (
+    data: CityData,
+    override: Partial<CityData> = {},
+  ): CityData => {
     if (override?.status === "not-found" || data.status === "not-found")
       return { status: "not-found", city: data.city };
     return { ...data, ...override };
@@ -43,6 +46,7 @@ interface CityDataOverrides {
   berlin?: Partial<CityData>;
   warsaw?: Partial<CityData>;
 }
+
 interface CityDataMocks {
   minskCityData: CityData;
   berlinCityData: CityData;
