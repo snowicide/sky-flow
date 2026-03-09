@@ -1,11 +1,14 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
+import { useSettingsStore } from "@/stores/useSettingsStore";
 import { createWeatherDataMocks } from "@/testing/mocks/factories/weather";
 
 import { useDailyForecast } from "./useDailyForecast";
 
 describe("useDailyForecast", () => {
   const { dailyData } = createWeatherDataMocks();
+
+  beforeEach(() => useSettingsStore.getState().reset());
 
   it("should correct format days", () => {
     const { result } = renderHook(() => useDailyForecast(dailyData));
@@ -15,5 +18,13 @@ describe("useDailyForecast", () => {
 
     expect(result.current.formattedDays[1].temp).toBe("2°");
     expect(result.current.formattedDays[1].day).toBe("Monday");
+  });
+
+  it("should change selected day on click", () => {
+    const { result } = renderHook(() => useDailyForecast(dailyData));
+
+    expect(useSettingsStore.getState().selectedDayIndex).toBe(0);
+    act(() => result.current.handleClick(1));
+    expect(useSettingsStore.getState().selectedDayIndex).toBe(1);
   });
 });

@@ -34,7 +34,7 @@ const getTestCities = (): CityData[] =>
 
 // --- 2. tests ---
 describe("useSearchHistory", () => {
-  const warsawHistoryData = createHistoryCity();
+  const warsawHistoryData = createHistoryCity().slice(0, 1);
 
   beforeEach(() => {
     window.localStorage.clear();

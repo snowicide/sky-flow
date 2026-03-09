@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "d": "next dev --turbo",
-    "build": "next build",
+    "b": "next build",
     "start": "next start",
     "lint": "eslint",
     "t": "vitest",
     "t:ui": "vitest --ui",
     "t:cov": "vitest --coverage",
+    "t:run": "vitest run",
+    "t:rel": "vitest related",
     "prepare": "husky"
   },
   "dependencies": {
