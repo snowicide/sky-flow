@@ -14,8 +14,9 @@ import {
   recentStore,
 } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
+import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createHistoryCity } from "@/testing/mocks/factories/historyData";
 import type { HistoryItem } from "@/types/history";
-import type { CityData } from "@/types/location";
 
 import SearchSection from "./SearchSection";
 
@@ -32,46 +33,43 @@ vi.mock("next/image", async () => {
   return { default: actual.default };
 });
 
-// --- 2. tests ---
-describe("SearchSection integration", () => {
-  let user: ReturnType<typeof userEvent.setup>;
-  const mockData: HistoryItem[] = [
-    {
-      id: "warsaw-poland",
-      city: "Warsaw",
-      country: "Poland",
-      isFavorite: false,
-      timestamp: 1,
-      latitude: 52.22977,
-      longitude: 21.01178,
-    },
-    {
-      id: "berlin-germany",
-      city: "Berlin",
-      country: "Germany",
-      isFavorite: false,
-      timestamp: 2,
-      latitude: 52.52437,
-      longitude: 13.41053,
-    },
-    {
-      id: "minsk-belarus",
-      city: "Minsk",
-      country: "Belarus",
-      isFavorite: false,
-      timestamp: 3,
-      latitude: 53.9,
-      longitude: 27.56667,
-    },
-  ];
-  const cityData: CityData = {
-    status: "found",
-    city: "Minsk",
-    country: "Belarus",
-    lat: 12,
-    lon: 34,
-  };
+// --- 2. setup ---
+const setup = () => {
+  const historyData = createHistoryCity();
 
+  const setRecentItem = (data: HistoryItem[] = historyData) =>
+    act(() => recentStore.update(data));
+  const setFavoritesItem = (data: HistoryItem[] = historyData) =>
+    act(() => favoriteStore.update(data));
+  const user = userEvent.setup();
+  const { berlinCityData } = createCityDataMocks();
+  const renderResult = renderWithClient(
+    <SearchSection cityData={berlinCityData} />,
+  );
+  const input = screen.getByPlaceholderText(/search for a place\.\.\./i);
+
+  return {
+    ...renderResult,
+    user,
+    historyData,
+    berlinCityData,
+    input,
+
+    setRecentItem,
+    setFavoritesItem,
+
+    findOption: (name: string) => screen.findByRole("option", { name }),
+    findTab: (name: RegExp) => screen.findByRole("tab", { name }),
+    getLink: (option: HTMLElement, name: RegExp) =>
+      within(option).getByRole("button", { name }),
+
+    getIcon: (option: HTMLElement, name: RegExp) =>
+      within(option).getByLabelText(name),
+  };
+};
+
+// --- 3. tests ---
+describe("SearchSection integration", () => {
   beforeEach(() => {
     window.localStorage.clear();
     recentStore.reset();
@@ -79,13 +77,10 @@ describe("SearchSection integration", () => {
     testQueryClient.clear();
     vi.clearAllMocks();
     mockPush.mockClear();
-
-    user = userEvent.setup();
   });
 
   it("should update URL with city name", async () => {
-    renderWithClient(<SearchSection cityData={cityData} />);
-    const input = screen.getByPlaceholderText("Search for a place...");
+    const { user, input } = setup();
 
     const { result } = renderHook(() => useSearchStore());
     act(() => result.current.reset());
@@ -99,21 +94,19 @@ describe("SearchSection integration", () => {
   });
 
   it("should navigate from recent list", async () => {
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    const { setRecentItem, user, input, findOption, getLink } = setup();
+    setRecentItem();
+
     act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
-    const input = screen.getByPlaceholderText(/search for a place/i);
+
     await user.click(input);
 
-    const cityOption = await screen.findByRole("option", {
-      name: "Berlin, Germany",
-    });
-    const cityLink = within(cityOption).getByRole("button", {
-      name: "Select Berlin, Germany",
-    });
+    const cityOption = await findOption("Berlin, Germany");
+    const cityLink = getLink(cityOption, /select berlin, germany/i);
+
     await user.click(cityLink);
 
     await waitFor(() =>
@@ -126,26 +119,20 @@ describe("SearchSection integration", () => {
   });
 
   it("should navigate from favorites list", async () => {
-    window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
+    const { setFavoritesItem, findTab, findOption, user, getLink } = setup();
+    setFavoritesItem();
     act(() => {
       favoriteStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
-    await waitFor(() => useSearchStore.setState({ isOpen: true }));
+    await act(async () => await useSearchStore.setState({ isOpen: true }));
 
-    const favoritesTab = await screen.findByRole("tab", {
-      name: /favorites searches/i,
-    });
+    const favoritesTab = await findTab(/favorites searches/i);
     await user.click(favoritesTab);
     expect(useSearchStore.getState().currentTab).toBe("favorites");
 
-    const cityOption = await screen.findByRole("option", {
-      name: "Berlin, Germany",
-    });
-    const cityLink = within(cityOption).getByLabelText(
-      "Select Berlin, Germany",
-    );
+    const cityOption = await findOption("Berlin, Germany");
+    const cityLink = getLink(cityOption, /select berlin, germany/i);
     await user.click(cityLink);
 
     await waitFor(() =>
@@ -158,16 +145,16 @@ describe("SearchSection integration", () => {
   });
 
   it("should toggle favorites in recent tab", async () => {
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    const { setRecentItem, findOption, getIcon, user } = setup();
+    setRecentItem();
     act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
-    await waitFor(() => useSearchStore.setState({ isOpen: true }));
+    await act(async () => await useSearchStore.setState({ isOpen: true }));
 
-    const cityOption = screen.getByRole("option", { name: "Berlin, Germany" });
-    const favoriteIcon = within(cityOption).getByLabelText(/toggle favorite/i);
+    const cityOption = await findOption("Berlin, Germany");
+    const favoriteIcon = getIcon(cityOption, /toggle favorite/i);
 
     await user.click(favoriteIcon);
     await waitFor(() => {
@@ -190,23 +177,23 @@ describe("SearchSection integration", () => {
   });
 
   it("should remove city from recent", async () => {
-    window.localStorage.setItem("weather-recent", JSON.stringify(mockData));
+    const { setRecentItem, findOption, getIcon, user } = setup();
+    setRecentItem();
     act(() => {
       recentStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
-    await waitFor(() => useSearchStore.setState({ isOpen: true }));
+    await act(async () => await useSearchStore.setState({ isOpen: true }));
 
-    const cityOption = screen.getByRole("option", { name: "Berlin, Germany" });
-    const removeCity =
-      within(cityOption).getByLabelText(/remove from history/i);
+    const cityOption = await findOption("Berlin, Germany");
+    const removeCity = getIcon(cityOption, /remove from history/i);
 
     await user.click(removeCity);
 
     await waitFor(() => {
       const currentRecent = recentStore.getSnapshot();
       expect(currentRecent.length).toBe(2);
+
       const hasCity = currentRecent.some((item) => /berlin/i.test(item.city));
       expect(hasCity).toBe(false);
       expect(screen.queryByText("Berlin, Germany")).not.toBeInTheDocument();
@@ -214,22 +201,25 @@ describe("SearchSection integration", () => {
   });
 
   it("should remove city from favorites", async () => {
-    window.localStorage.setItem("weather-favorite", JSON.stringify(mockData));
+    const { setFavoritesItem, findOption, getIcon, user } = setup();
     act(() => {
       favoriteStore.reset();
       useSearchStore.getState().reset();
     });
-    renderWithClient(<SearchSection cityData={cityData} />);
-    await waitFor(() =>
-      useSearchStore.setState({ isOpen: true, currentTab: "favorites" }),
+    setFavoritesItem();
+    await act(
+      async () =>
+        await useSearchStore.setState({
+          isOpen: true,
+          currentTab: "favorites",
+        }),
     );
 
-    const cityOption = screen.getByRole("option", { name: "Berlin, Germany" });
-    const favoriteIcon = within(cityOption).getByLabelText(
-      /remove from favorites/i,
-    );
+    const cityOption = await findOption("Berlin, Germany");
+    const favoriteIcon = getIcon(cityOption, /remove from favorites/i);
 
     await user.click(favoriteIcon);
+
     await waitFor(() => {
       const currentFavorites = favoriteStore.getSnapshot();
       expect(currentFavorites.length).toBe(2);
@@ -242,7 +232,7 @@ describe("SearchSection integration", () => {
   });
 });
 
-// --- 3. render with client
+// --- 4. render with client ---
 const testQueryClient = new QueryClient({
   defaultOptions: {
     queries: { retry: false },

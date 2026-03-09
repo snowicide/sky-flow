@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
 
-import { createResultsMocks } from "@/testing/mocks/factories/weather";
+import { createResultsMocks } from "@/testing/mocks/factories/search";
 import { AppError } from "@/types/errors";
 
 import { useSearchQuery } from "./useSearchQuery";
@@ -14,7 +14,7 @@ vi.mock("@/components/SearchSection/services/fetchSearchResults", () => ({
 
 // --- 2. tests ---
 describe("useSearchQuery", () => {
-  const searchResults = createResultsMocks();
+  const [searchResults] = createResultsMocks();
 
   beforeEach(() => {
     vi.clearAllMocks();

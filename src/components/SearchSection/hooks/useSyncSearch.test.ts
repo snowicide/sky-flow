@@ -1,10 +1,11 @@
 import { act, renderHook } from "@testing-library/react";
 
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { CityData } from "@/types/location";
+import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
 
 import { useSyncSearch } from "./useSyncSearch";
 
+// --- 1. mocks ---
 const mockAddCity = vi.fn();
 vi.mock("@/components/SearchSection/hooks/useSearchHistory", () => ({
   useSearchHistory: vi.fn(() => ({
@@ -12,15 +13,10 @@ vi.mock("@/components/SearchSection/hooks/useSearchHistory", () => ({
   })),
 }));
 
+// --- 2. tests ---
 describe("useSyncSearch", () => {
   const mockSetIsOpen = vi.fn();
-  const mockCity = {
-    status: "found",
-    city: "Minsk",
-    country: "Belarus",
-    lat: 53.9,
-    lon: 27.56667,
-  } as CityData;
+  const { minskCityData } = createCityDataMocks();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -32,7 +28,7 @@ describe("useSyncSearch", () => {
   });
 
   it("shouldn't call addCity if hydrated false", () => {
-    renderHook(() => useSyncSearch(mockCity));
+    renderHook(() => useSyncSearch(minskCityData));
 
     expect(mockAddCity).not.toHaveBeenCalled();
   });
@@ -41,14 +37,14 @@ describe("useSyncSearch", () => {
     const setIsOpen = useSearchStore.getState().setIsOpen;
 
     const { rerender } = renderHook(({ city }) => useSyncSearch(city), {
-      initialProps: { city: mockCity },
+      initialProps: { city: minskCityData },
     });
 
     await act(() => useSearchStore.setState({ _hasHydrated: true }));
-    rerender({ city: mockCity });
+    rerender({ city: minskCityData });
 
     expect(mockAddCity).toHaveBeenCalledTimes(1);
-    expect(mockAddCity).toHaveBeenCalledWith(mockCity);
+    expect(mockAddCity).toHaveBeenCalledWith(minskCityData);
     expect(setIsOpen).toHaveBeenCalledWith(false);
   });
 });
