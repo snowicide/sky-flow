@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 
 import {
-  createCurrentWeatherMocks,
+  createCurrentWeather,
   createForecastUnits,
 } from "@/testing/mocks/factories/weather";
 
@@ -9,7 +9,7 @@ import WeatherDetails from "./WeatherDetails";
 
 // --- 1. setup ---
 const setup = (units = createForecastUnits()) => {
-  const currentWeather = createCurrentWeatherMocks();
+  const currentWeather = createCurrentWeather();
   render(<WeatherDetails currentData={currentWeather} forecastUnits={units} />);
 
   return {

@@ -1,12 +1,12 @@
 import { act, renderHook } from "@testing-library/react";
 
 import { useSettingsStore } from "@/stores/useSettingsStore";
-import { createWeatherDataMocks } from "@/testing/mocks/factories/weather";
+import { createForecastData } from "@/testing/mocks/factories/weather";
 
 import { useDailyForecast } from "./useDailyForecast";
 
 describe("useDailyForecast", () => {
-  const { dailyData } = createWeatherDataMocks();
+  const { dailyData } = createForecastData();
 
   beforeEach(() => useSettingsStore.getState().reset());
 

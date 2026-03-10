@@ -14,7 +14,7 @@ import {
   recentStore,
 } from "@/components/SearchSection/hooks/useSearchHistory";
 import { useSearchStore } from "@/stores/useSearchStore";
-import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createCityData } from "@/testing/mocks/factories/cityData";
 import { createHistoryCity } from "@/testing/mocks/factories/historyData";
 import type { HistoryItem } from "@/types/history";
 
@@ -42,7 +42,7 @@ const setup = () => {
   const setFavoritesItem = (data: HistoryItem[] = historyData) =>
     act(() => favoriteStore.update(data));
   const user = userEvent.setup();
-  const { berlinCityData } = createCityDataMocks();
+  const { berlinCityData } = createCityData();
   const renderResult = renderWithClient(
     <SearchSection cityData={berlinCityData} />,
   );

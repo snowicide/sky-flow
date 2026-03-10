@@ -1,4 +1,5 @@
 import type {
+  WeatherData,
   WeatherDataCurrent,
   WeatherDataDaily,
   WeatherDataHourly,
@@ -6,7 +7,35 @@ import type {
 } from "@/types/api/WeatherData";
 
 // --- 1.1 weather data factories ---
-export const createWeatherDataMocks = (
+export const createWeatherData = (
+  overrides: Partial<WeatherData> = {},
+): WeatherData => {
+  return {
+    ...getWeatherData(),
+    ...overrides,
+  };
+};
+
+// --- 1.2 weather data item ---
+const getWeatherData = (): WeatherData => {
+  return {
+    current: {
+      ...getCurrentWeather(),
+    },
+    daily: {
+      ...getDailyData(),
+    },
+    hourly: {
+      ...getHourlyData(),
+    },
+    forecastUnits: {
+      ...getUnits(),
+    },
+  };
+};
+
+// --- 2.1 daily/hourly data factories ---
+export const createForecastData = (
   overrides: WeatherOverrides = {},
 ): WeatherDataMocks => {
   return {
@@ -22,7 +51,7 @@ export const createWeatherDataMocks = (
   };
 };
 
-// --- 1.2 weather data items ---
+// --- 2.2 daily/hourly data items ---
 const getDailyData = (): WeatherDataDaily => ({
   temperature_2m_min: Array.from({ length: 8 }, (_, i) => i),
   temperature_2m_max: Array.from({ length: 8 }, (_, i) => i + 2),
@@ -53,8 +82,8 @@ const getHourlyData = (): WeatherDataHourly => ({
   weather_code: [...Array(24).fill(0), ...Array(24).fill(1)],
 });
 
-// --- 2.1 current weather factory ---
-export const createCurrentWeatherMocks = (
+// --- 3.1 current weather factory ---
+export const createCurrentWeather = (
   overrides: Partial<WeatherDataCurrent> = {},
 ): WeatherDataCurrent => {
   return {
@@ -63,7 +92,7 @@ export const createCurrentWeatherMocks = (
   };
 };
 
-// --- 2.2 current weather item ---
+// --- 3.2 current weather item ---
 const getCurrentWeather = (): WeatherDataCurrent => ({
   apparent_temperature: -4,
   city: "Berlin",
@@ -79,7 +108,7 @@ const getCurrentWeather = (): WeatherDataCurrent => ({
   wind_speed_10m: 10,
 });
 
-// --- 3.1 forecast units factory
+// --- 4.1 forecast units factory
 export const createForecastUnits = (
   overrides: Partial<WeatherDataUnits> = {},
 ): WeatherDataUnits => {
@@ -89,7 +118,7 @@ export const createForecastUnits = (
   };
 };
 
-// --- 3.2 forecast units item ---
+// --- 4.2 forecast units item ---
 const getUnits = (): WeatherDataUnits => ({
   precipitation: "mm",
   speed: "km/h",
