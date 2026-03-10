@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 
 import sunnyIcon from "@/../public/icons/icon-sunny.webp";
-import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createCityData } from "@/testing/mocks/factories/cityData";
 import { createResultsMocks } from "@/testing/mocks/factories/search";
 
 import { useSearchResultCity } from "./useSearchResultCity";
@@ -21,7 +21,7 @@ describe("useSearchResultCity", () => {
   });
 
   it("should call searchSelectedCity when handleClick is triggered", () => {
-    const { berlinCityData } = createCityDataMocks();
+    const { berlinCityData } = createCityData();
     const { result } = renderHook(() => useSearchResultCity(searchResult));
 
     act(() => result.current.handleClick());

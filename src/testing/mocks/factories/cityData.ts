@@ -1,6 +1,6 @@
 import { type CityData } from "@/types/location";
 
-export const createCityDataMocks = (
+export const createCityData = (
   overrides: CityDataOverrides = {},
 ): CityDataMocks => {
   const getCity = (
@@ -19,7 +19,7 @@ export const createCityDataMocks = (
   };
 };
 
-const createCityData = (
+const createBaseCityData = (
   city: string,
   country: string,
   lat: number,
@@ -33,13 +33,13 @@ const createCityData = (
 });
 
 const getMinskData = (): CityData =>
-  createCityData("Minsk", "Belarus", 53.9, 27.56667);
+  createBaseCityData("Minsk", "Belarus", 53.9, 27.56667);
 
 const getBerlinData = (): CityData =>
-  createCityData("Berlin", "Germany", 52.52437, 13.41053);
+  createBaseCityData("Berlin", "Germany", 52.52437, 13.41053);
 
 const getWarsawData = (): CityData =>
-  createCityData("Warsaw", "Poland", 52.22977, 21.01178);
+  createBaseCityData("Warsaw", "Poland", 52.22977, 21.01178);
 
 interface CityDataOverrides {
   minsk?: Partial<CityData>;

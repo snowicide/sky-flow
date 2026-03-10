@@ -3,7 +3,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useSearchStore } from "@/stores/useSearchStore";
-import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createCityData } from "@/testing/mocks/factories/cityData";
 import { createGeoData } from "@/testing/mocks/factories/location";
 import { getSearchMocks } from "@/testing/mocks/useSearchMocks";
 
@@ -91,7 +91,7 @@ describe("useSearchActions", () => {
   it("should change URL", async () => {
     const { result } = renderHookWithClient(() => useSearchActions());
 
-    const { minskCityData } = createCityDataMocks();
+    const { minskCityData } = createCityData();
 
     act(() =>
       result.current.searchSelectedCity(minskCityData, {

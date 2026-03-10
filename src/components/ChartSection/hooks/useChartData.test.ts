@@ -1,12 +1,12 @@
 import { act, renderHook } from "@testing-library/react";
 
 import { useSettingsStore } from "@/stores/useSettingsStore";
-import { createWeatherDataMocks } from "@/testing/mocks/factories/weather";
+import { createForecastData } from "@/testing/mocks/factories/weather";
 
 import { useChartData } from "./useChartData";
 
 describe("useChartData", () => {
-  const { dailyData, hourlyData } = createWeatherDataMocks();
+  const { dailyData, hourlyData } = createForecastData();
 
   beforeEach(() => {
     vi.clearAllMocks();

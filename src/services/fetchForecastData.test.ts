@@ -1,9 +1,9 @@
-import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createCityData } from "@/testing/mocks/factories/cityData";
 
 import { fetchForecastData } from "./fetchForecastData";
 
 describe("fetchForecastData", () => {
-  const { minskCityData } = createCityDataMocks();
+  const { minskCityData } = createCityData();
 
   it("should fetch city with cityData", async () => {
     const result = await fetchForecastData(minskCityData);

@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 
 import { useSearchStore } from "@/stores/useSearchStore";
-import { createCityDataMocks } from "@/testing/mocks/factories/cityData";
+import { createCityData } from "@/testing/mocks/factories/cityData";
 
 import { useSyncSearch } from "./useSyncSearch";
 
@@ -16,7 +16,7 @@ vi.mock("@/components/SearchSection/hooks/useSearchHistory", () => ({
 // --- 2. tests ---
 describe("useSyncSearch", () => {
   const mockSetIsOpen = vi.fn();
-  const { minskCityData } = createCityDataMocks();
+  const { minskCityData } = createCityData();
 
   beforeEach(() => {
     vi.clearAllMocks();

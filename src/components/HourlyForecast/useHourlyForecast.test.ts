@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { createWeatherDataMocks } from "@/testing/mocks/factories/weather";
+import { createForecastData } from "@/testing/mocks/factories/weather";
 
 import { useHourlyForecast } from "./useHourlyForecast";
 
@@ -10,7 +10,7 @@ vi.mock("@/hooks/useDeviceType", () => ({
 }));
 
 describe("useHourlyForecast", () => {
-  const { hourlyData } = createWeatherDataMocks();
+  const { hourlyData } = createForecastData();
 
   beforeEach(() => {
     mockUseDeviceType.mockReturnValue({ isMobile: true });
