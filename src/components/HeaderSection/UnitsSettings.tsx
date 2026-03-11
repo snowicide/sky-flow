@@ -7,8 +7,7 @@ import checkmarkIcon from "@/../public/icons/icon-checkmark.svg";
 import dropdownIcon from "@/../public/icons/icon-dropdown.svg";
 import unitsIcon from "@/../public/icons/icon-units.svg";
 import { useSettingsStore } from "@/stores/useSettingsStore";
-
-import { MENU_OPTIONS } from "./UnitsSettings.constants";
+import type { WeatherDataUnits } from "@/types/api/WeatherData";
 
 export default function UnitsSettings() {
   const units = useSettingsStore((state) => state.units);
@@ -21,7 +20,10 @@ export default function UnitsSettings() {
         aria-label="Units"
         className="border border-white/0 active:border-white/20 rounded-lg"
       >
-        <MenuButton className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,24%)] border border-white/10 hover:opacity-80 px-3 py-2 rounded-lg transition-opacity">
+        <MenuButton
+          id="units-menu-nutton"
+          className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,24%)] border border-white/10 hover:opacity-80 px-3 py-2 rounded-lg transition-opacity"
+        >
           <Image src={unitsIcon} className="w-3.5" alt="Units Icon" />
           <span className="text-[14px]">Units</span>
           <Image src={dropdownIcon} className="w-2.5" alt="Dropdown Icon" />
@@ -80,3 +82,42 @@ export default function UnitsSettings() {
     </Menu>
   );
 }
+
+const MENU_OPTIONS = [
+  {
+    id: 1,
+    title: "Temperature",
+    unit: "temperature" as keyof WeatherDataUnits,
+    options: [
+      { label: "Celsius (°C)", value: "celsius" },
+      { label: "Fahrenheit (°F)", value: "fahrenheit" },
+    ],
+  },
+  {
+    id: 2,
+    title: "Wind Speed",
+    unit: "speed" as keyof WeatherDataUnits,
+    options: [
+      { label: "Kilometers (km)", value: "kmh" },
+      { label: "Miles (mi)", value: "mph" },
+    ],
+  },
+  {
+    id: 3,
+    title: "Precipitation",
+    unit: "precipitation" as keyof WeatherDataUnits,
+    options: [
+      { label: "Millimeters (mm)", value: "mm" },
+      { label: "Inches (in)", value: "inch" },
+    ],
+  },
+  {
+    id: 4,
+    title: "Time Format",
+    unit: "time" as keyof WeatherDataUnits,
+    options: [
+      { label: "12-hour", value: "12" },
+      { label: "24-hour", value: "24" },
+    ],
+  },
+];
