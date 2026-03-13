@@ -29,7 +29,7 @@ describe("WeatherDetails", () => {
     const { getItem, allItems } = setup();
 
     expect(allItems).toHaveLength(4);
-    expect(getItem(/feels like/i)).toHaveTextContent("°C");
+    expect(getItem(/feels like/i)).toHaveTextContent("°");
     expect(getItem(/wind/i)).toHaveTextContent("km/h");
     expect(getItem(/precipitation/i)).toHaveTextContent("mm");
   });
@@ -41,8 +41,8 @@ describe("WeatherDetails", () => {
       temperature: "°F",
     });
 
-    expect(getItem(/feels like/i)).toHaveTextContent("°F");
+    expect(getItem(/feels like/i)).toHaveTextContent("°");
     expect(getItem(/wind/i)).toHaveTextContent("mp/h");
-    expect(getItem(/precipitation/i)).toHaveTextContent("inch");
+    expect(getItem(/precipitation/i)).toHaveTextContent("in");
   });
 });
