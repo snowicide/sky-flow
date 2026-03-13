@@ -45,7 +45,7 @@ export const RecentSearch = React.memo(function RecentSearch({
         role="button"
         aria-label={`Select ${displayPlace}`}
         onClick={handleClick}
-        className="font-normal text-sm sm:text-base md:text-lg flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer"
+        className="font-normal text-sm sm:text-base md:text-lg flex flex-1 text-start items-center gap-1 sm:gap-2 cursor-pointer"
       >
         {displayPlace}
       </button>
