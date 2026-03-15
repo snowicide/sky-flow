@@ -22,16 +22,25 @@ export default function UnitsSettings() {
       >
         <MenuButton
           id="units-menu-nutton"
-          className="group flex items-center justify-center gap-2 focus:outline-none bg-[hsl(243,23%,24%)] border border-white/10 hover:opacity-80 px-3 py-2 rounded-lg transition-opacity"
+          className="group flex items-center justify-center gap-2 px-2.5 py-2 sm:px-3 border focus:outline-none border-white/10 hover:opacity-80 bg-[hsl(243,23%,24%)] rounded-lg transition-opacity"
         >
-          <Image src={unitsIcon} className="w-3.5" alt="Units Icon" />
-          <span className="text-[14px]">Units</span>
-          <Image src={dropdownIcon} className="w-2.5" alt="Dropdown Icon" />
+          <Image
+            src={unitsIcon}
+            className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-data-open:rotate-180 transition-transform duration-200"
+            alt="Units Icon"
+          />
+          <span className="text-xs sm:text-sm">Units</span>
+          <Image
+            src={dropdownIcon}
+            className="w-2.5 h-2.5 mt-px group-data-open:rotate-180 transition-transform duration-200"
+            alt="Dropdown Icon"
+          />
         </MenuButton>
       </div>
 
       <MenuItems
-        className="bg-[hsl(243,27%,20%)] [--anchor-gap:10px] focus:outline-none border border-white/10 rounded-xl w-55 justify-self-center shadow-[0_10px_12px_black]/25 transition-transform duration-75 data-closed:opacity-0 data-closed:scale-95 data-closed:-translate-y-2"
+        className="w-45 sm:w-55 justify-self-center focus:outline-none border border-white/10 rounded-xl bg-[hsl(243,27%,20%)]
+         shadow-[0_10px_12px_black]/25 transition-transform duration-75 [--anchor-gap:10px] data-closed:opacity-0 data-closed:scale-95 data-closed:-translate-y-2"
         transition
         modal={false}
         anchor="bottom end"
@@ -44,7 +53,7 @@ export default function UnitsSettings() {
               e.stopPropagation();
               reset();
             }}
-            className="hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)] transition-colors rounded-xl mx-2 px-3 mt-2 -mb-2 py-3 cursor-pointer"
+            className="text-sm sm:text-base mx-2 px-3 mt-2 -mb-2 py-3 cursor-pointer rounded-xl transition-colors hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)]"
           >
             Switch to Imperial
           </div>
@@ -55,7 +64,9 @@ export default function UnitsSettings() {
             key={group.id}
             className="mt-4 mx-2 border-b border-white/10 last:border-b-0"
           >
-            <h2 className="text-sm text-white/70 ml-3">{group.title}</h2>
+            <h2 className="text-xs sm:text-sm text-white/70 ml-3">
+              {group.title}
+            </h2>
 
             {group.options.map((option) => (
               <MenuItem key={option.value}>
@@ -67,9 +78,9 @@ export default function UnitsSettings() {
                     e.stopPropagation();
                     setUnits({ [group.unit]: option.value });
                   }}
-                  className="flex justify-between items-center hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)] transition-colors rounded-xl px-3 my-2 py-3 cursor-pointer"
+                  className="flex justify-between items-center hover:bg-[hsl(243,23%,30%)] active:bg-[hsl(243,23%,24%)] transition-colors rounded-xl px-3 my-1.75 py-1.75 cursor-pointer"
                 >
-                  <span>{option.label}</span>
+                  <span className="text-sm sm:text-base">{option.label}</span>
                   {units[group.unit] === option.value && (
                     <Image src={checkmarkIcon} alt="Checked" />
                   )}
