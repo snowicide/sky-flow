@@ -27,17 +27,17 @@ export default function HourlyForecast({
   return (
     <section
       aria-label="Hourly Forecast"
-      className="lg:max-w-90 xl:min-w-96 w-full"
+      className="lg:max-w-82 xl:min-w-96 w-full"
     >
       <div className="lg:max-h-166 p-5 sm:px-6 sm:py-7 rounded-2xl border bg-[hsl(243,27%,20%)] border-white/10 sticky top-6">
         <div
-          className={`flex mx-1.5 gap-4 sm:flex-row justify-between items-center lg:h-10.5 ${isHourlyOpen ? "mb-6" : ""}`}
+          className={`flex mx-1.5 gap-4 lg:gap-3 xl:gap-4 sm:flex-row justify-between items-center lg:h-10.5 ${isHourlyOpen ? "mb-6" : ""}`}
         >
           <h3
             onClick={() => !isDesk && setIsHourlyOpen((prev) => !prev)}
             className="flex items-center gap-1 sm:gap-2 cursor-pointer lg:cursor-auto"
           >
-            <span className="text-[0.95rem] sm:text-lg md:text-xl font-bold tracking-wider lg:tracking-wide whitespace-nowrap">
+            <span className="text-[0.95rem] sm:text-lg md:text-xl lg:text-lg xl:text-xl font-bold tracking-wider lg:tracking-wide whitespace-nowrap">
               Hourly forecast
             </span>
             <Image
