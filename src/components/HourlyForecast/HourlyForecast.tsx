@@ -47,6 +47,7 @@ export default function HourlyForecast({
             />
           </h3>
           <ChangeSelectedDay
+            setIsHourlyOpen={setIsHourlyOpen}
             days={days}
             selectedDayIndex={selectedDayIndex}
             handleChangeDay={handleChangeDay}

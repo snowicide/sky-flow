@@ -6,7 +6,7 @@ import {
 } from "@headlessui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import React from "react";
+import React, { type SetStateAction, type Dispatch } from "react";
 
 import checkmarkIcon from "@/../public/icons/icon-checkmark.svg";
 import dropdownIcon from "@/../public/icons/icon-dropdown.svg";
@@ -16,13 +16,17 @@ export default React.memo(function ChangeSelectedDay({
   days,
   selectedDayIndex,
   handleChangeDay,
+  setIsHourlyOpen,
 }: ChangeSelectedDayProps) {
   const currentDay = days[selectedDayIndex]?.dayName || days[0].dayName;
 
   return (
     <Listbox value={selectedDayIndex} onChange={handleChangeDay}>
       <div className="relative border border-white/0 active:border-white/20 rounded-lg">
-        <ListboxButton className="group flex items-center justify-center gap-1 sm:gap-2 focus:outline-none bg-[hsl(243,23%,30%)] border border-white/10 hover:opacity-80 px-3 sm:px-5 py-2 rounded-lg transition-opacity">
+        <ListboxButton
+          onClick={() => setIsHourlyOpen(true)}
+          className="group flex items-center justify-center gap-1 sm:gap-2 focus:outline-none bg-[hsl(243,23%,30%)] border border-white/10 hover:opacity-80 px-3 sm:px-5 py-2 rounded-lg transition-opacity"
+        >
           <span className="text-xs sm:text-base">{currentDay}</span>
           <Image
             src={dropdownIcon}
@@ -70,4 +74,5 @@ interface ChangeSelectedDayProps {
   days: DailyForecast[];
   selectedDayIndex: number;
   handleChangeDay: (index: number) => void;
+  setIsHourlyOpen: Dispatch<SetStateAction<boolean>>;
 }
