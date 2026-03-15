@@ -27,9 +27,9 @@ export default function HourlyForecast({
   return (
     <section
       aria-label="Hourly Forecast"
-      className="lg:max-w-90 lg:flex-1 xl:min-w-96 w-full"
+      className="lg:max-w-90 xl:min-w-96 w-full"
     >
-      <div className="bg-[hsl(243,27%,20%)] lg:max-h-166 xl:max-h-167 p-5 sm:px-6 sm:py-7 rounded-2xl border border-white/10 sticky top-6">
+      <div className="lg:max-h-166 p-5 sm:px-6 sm:py-7 rounded-2xl border bg-[hsl(243,27%,20%)] border-white/10 sticky top-6">
         <div
           className={`flex mx-1.5 gap-4 sm:flex-row justify-between items-center lg:h-10.5 ${isHourlyOpen ? "mb-6" : ""}`}
         >
