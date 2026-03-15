@@ -32,8 +32,8 @@ export function WeatherContent({ cityData }: { cityData: CityData }) {
 
   return (
     <div className="flex flex-col w-full justify-center items-center">
-      <div className="flex flex-col w-full md:w-auto self-center max-w-99 sm:max-w-full items-center lg:items-start lg:flex-row lg:gap-4 xl:gap-8 mb-8 lg:mb-0">
-        <div className="w-full lg:max-w-200 mb-8">
+      <div className="flex flex-col w-full xl:w-auto max-w-99 sm:max-w-full lg:gap-4 xl:gap-8 mb-8 lg:mb-0 items-center lg:items-start lg:flex-row">
+        <div className="w-full xl:max-w-200 mb-8">
           <TodayWeather currentData={current} forecastUnits={forecastUnits} />
           <WeatherDetails currentData={current} forecastUnits={forecastUnits} />
           <DailyForecast dailyData={daily} />
