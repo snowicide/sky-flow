@@ -8,7 +8,7 @@ export default function HeaderSection() {
       className="flex justify-between items-center 
         mx-auto px-3.75 w-full max-w-106.75 mt-6
         sm:px-3.5 sm:max-w-full
-        md:px-5.5 md:mt-10
+        md:px-5.5
         lg:px-7.75 lg:max-w-full
         xl:px-0 xl:max-w-304.5"
     >
