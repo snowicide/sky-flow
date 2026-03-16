@@ -40,7 +40,7 @@ export const FavoritesSearch = React.memo(function FavoritesSearch({
         role="button"
         aria-label={`Select ${displayPlace}`}
         onClick={handleClick}
-        className="flex flex-1 items-center gap-1 sm:gap-2 cursor-pointer font-normal text-sm sm:text-base md:text-lg"
+        className="flex flex-1 items-center text-start gap-1 sm:gap-2 cursor-pointer font-normal text-sm sm:text-base md:text-lg"
       >
         {displayPlace}
       </button>
