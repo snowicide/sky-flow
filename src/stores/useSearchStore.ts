@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 import { DEFAULT_CITY_DATA } from "@/app/weather/constants";
 import type { ActiveTab } from "@/types/history";
-import type { CityData } from "@/types/location";
+import { isNotFoundCity, type CityData } from "@/types/location";
 
 export interface SearchStore {
   inputValue: string;
@@ -21,31 +21,37 @@ export interface SearchStore {
   reset: () => void;
 }
 
+const initialState = {
+  inputValue: "",
+  currentTab: "recent" as const,
+  isOpen: false,
+  _hasHydrated: false,
+  lastValidatedCity: DEFAULT_CITY_DATA,
+};
+
 export const useSearchStore = create<SearchStore>()(
   persist(
     (set) => ({
-      inputValue: "",
-      currentTab: "recent",
-      isOpen: false,
-      _hasHydrated: false,
-      lastValidatedCity: DEFAULT_CITY_DATA,
+      ...initialState,
 
       setInputValue: (value: string) => set({ inputValue: value }),
       setCurrentTab: (tab: ActiveTab) => set({ currentTab: tab }),
       setIsOpen: (value: boolean) => set({ isOpen: value }),
       setHasHydrated: (state) => set({ _hasHydrated: state }),
 
-      setLastValidatedCity: (cityData) => set({ lastValidatedCity: cityData }),
+      setLastValidatedCity: (cityData) => {
+        if (isNotFoundCity(cityData)) return;
+        set({ lastValidatedCity: cityData });
+      },
 
-      reset: () =>
-        set({
-          inputValue: "",
-          currentTab: "recent",
-          isOpen: false,
-        }),
+      reset: () => set(initialState),
     }),
     {
       name: "search-hydration",
+      partialize: (s) => ({
+        lastValidatedCity: s.lastValidatedCity,
+        currentTab: s.currentTab,
+      }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },

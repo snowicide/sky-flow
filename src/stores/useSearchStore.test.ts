@@ -1,5 +1,8 @@
 import { act } from "@testing-library/react";
 
+import { DEFAULT_CITY_DATA } from "@/app/weather/constants";
+import { createCityData } from "@/testing/mocks/factories/cityData";
+
 import { useSearchStore } from "./useSearchStore";
 
 describe("useSearchStore", () => {
@@ -22,6 +25,29 @@ describe("useSearchStore", () => {
     expect(useSearchStore.getState().currentTab).toBe("favorites");
     act(() => useSearchStore.getState().setCurrentTab("recent"));
     expect(useSearchStore.getState().currentTab).toBe("recent");
+  });
+
+  it("should save last validated city", () => {
+    const { berlinCityData } = createCityData();
+
+    expect(useSearchStore.getState().lastValidatedCity).toEqual(
+      DEFAULT_CITY_DATA,
+    );
+    act(() => useSearchStore.getState().setLastValidatedCity(berlinCityData));
+    expect(useSearchStore.getState().lastValidatedCity).toEqual(berlinCityData);
+
+    const notFoundCityData = {
+      status: "not-found" as const,
+      city: "notfound123",
+    };
+    act(() => useSearchStore.getState().setLastValidatedCity(notFoundCityData));
+    expect(useSearchStore.getState().lastValidatedCity).toEqual(berlinCityData);
+  });
+
+  it("should activate hydration", async () => {
+    expect(useSearchStore.getState()._hasHydrated).toBe(false);
+    await useSearchStore.persist.rehydrate();
+    expect(useSearchStore.getState()._hasHydrated).toBe(true);
   });
 
   it("should reset store", () => {
