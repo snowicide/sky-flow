@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, type Mock } from "vitest";
 
 import { createHistoryCity } from "@/testing/mocks/factories/historyData";
 import type { CityData } from "@/types/location";
@@ -10,7 +10,23 @@ import {
   useSearchHistory,
 } from "./useSearchHistory";
 
-// --- 1. city factories ---
+// --- 1. mocks ---
+const setLastValidatedCity = vi.fn();
+vi.mock("@/stores/useSearchStore", () => ({
+  useSearchStore: Object.assign(
+    (selector: Mock) =>
+      selector({
+        setLastValidatedCity,
+      }),
+    {
+      getState: () => ({
+        setLastValidatedCity,
+      }),
+    },
+  ),
+}));
+
+// --- 2. city factories ---
 const createCity = (city: string, country: string): CityData => ({
   status: "found",
   city,
@@ -32,12 +48,13 @@ const getTestCities = (): CityData[] =>
     { city: "Stockholm", country: "Sweden" },
   ].map(({ city, country }) => createCity(city, country));
 
-// --- 2. tests ---
+// --- 3. tests ---
 describe("useSearchHistory", () => {
   const warsawHistoryData = createHistoryCity().slice(0, 1);
 
   beforeEach(() => {
     window.localStorage.clear();
+    vi.clearAllMocks();
     recentStore.reset();
     favoriteStore.reset();
   });
@@ -90,6 +107,8 @@ describe("useSearchHistory", () => {
     );
     expect(saved).toHaveLength(1);
     expect(saved[0].id).toBe("tokyo-japan");
+    expect(setLastValidatedCity).toHaveBeenCalledTimes(1);
+    expect(setLastValidatedCity).toHaveBeenCalledWith(cities[0]);
   });
 
   it("shouldn't duplicate the same city", () => {

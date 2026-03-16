@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 import { WeatherStore } from "@/components/SearchSection/lib/weather-store";
+import { useSearchStore } from "@/stores/useSearchStore";
 import type { HistoryItem } from "@/types/history";
 import { isFoundCity, type CityData } from "@/types/location";
 
@@ -23,6 +24,8 @@ export function useSearchHistory(): UseSearchHistoryReturn {
 
   const addCity = useCallback((cityData: CityData, favorited?: boolean) => {
     if (!isFoundCity(cityData)) return;
+    useSearchStore.getState().setLastValidatedCity(cityData);
+
     const { city, country, lat, lon } = cityData;
 
     const id = `${city.toLowerCase()}-${country.toLowerCase()}`;
