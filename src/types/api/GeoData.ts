@@ -1,12 +1,19 @@
-export interface GeoData {
-  results: GeoDataItem[];
-}
+import { z } from "zod";
 
-export interface GeoDataItem {
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  name: string;
-  country: string;
-  id: number;
-}
+export const GeoDataItemSchema = z
+  .object({
+    name: z.string(),
+    country: z.string(),
+    latitude: z.number().min(-90).max(90),
+    longitude: z.number().min(-180).max(180),
+    timezone: z.string(),
+    id: z.number().min(0).int(),
+  })
+  .strip();
+
+export const GeoDataSchema = z.object({
+  results: z.array(GeoDataItemSchema).optional().default([]),
+});
+
+export type GeoDataItem = z.infer<typeof GeoDataItemSchema>;
+export type GeoData = z.infer<typeof GeoDataSchema>;
