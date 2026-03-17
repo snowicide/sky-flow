@@ -33,7 +33,6 @@ export const handlers = [
         apparent_temperature: -2,
         city,
         country,
-        interval: 10,
         precipitation: 0,
         relative_humidity_2m: 10,
         temperature_2m: -2,
@@ -61,13 +60,15 @@ export const handlers = [
       current_units: {
         temperature_2m: "°C",
         apparent_temperature: "°C",
+        wind_speed_10m: "km/h",
+        precipitation: "mm",
       },
       elevation: 100 + index,
       generationtime_ms: 0.5,
-      latitude: Number(latitudes[index] || 53.9),
-      longitude: Number(longitudes?.[index] || 27.56667),
+      latitude: Number(latitudes[index] ?? 53.9),
+      longitude: Number(longitudes?.[index] ?? 27.56667),
       timezone:
-        url.searchParams.get("timezone")?.split(",")?.[index] || "Europe/Minsk",
+        url.searchParams.get("timezone")?.split(",")?.[index] ?? "Europe/Minsk",
       timezone_abbreviation: "MSK",
       utc_offset_seconds: 10800,
     }));

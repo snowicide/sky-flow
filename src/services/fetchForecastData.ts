@@ -1,5 +1,7 @@
+import z from "zod";
+
 import { DEFAULT_UNITS } from "@/stores/useSettingsStore";
-import type { WeatherData } from "@/types/api/WeatherData";
+import { WeatherDataSchema, type WeatherData } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
 import { isFoundCity, type CityData } from "@/types/location";
 import type { Units } from "@/types/weather";
@@ -50,24 +52,40 @@ export async function fetchForecastData(
     }
 
     const forecastData = await forecastRes.json();
-
-    return {
+    const rawData = {
       current: {
-        ...forecastData.current,
+        apparent_temperature: forecastData?.current?.apparent_temperature,
+        precipitation: forecastData?.current?.precipitation,
+        relative_humidity_2m: forecastData?.current?.relative_humidity_2m,
+        temperature_2m: forecastData?.current?.temperature_2m,
+        weather_code: forecastData?.current?.weather_code,
+        wind_speed_10m: forecastData?.current?.wind_speed_10m,
+        time: forecastData?.current?.time,
         city,
         country,
         latitude: lat,
         longitude: lon,
       },
-      hourly: forecastData.hourly,
-      daily: forecastData.daily,
+      hourly: forecastData?.hourly,
+      daily: forecastData?.daily,
       forecastUnits: {
-        temperature: forecastData.current_units.apparent_temperature,
-        speed: forecastData.current_units.wind_speed_10m,
-        precipitation: forecastData.current_units.precipitation,
+        temperature: forecastData?.current_units?.temperature_2m,
+        speed: forecastData?.current_units?.wind_speed_10m,
+        precipitation: forecastData?.current_units?.precipitation,
       },
     };
+
+    return WeatherDataSchema.parse(rawData);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      const issue = error.issues[0];
+      const message = `${issue.path.join(".")}: ${issue.message}`.replace(
+        /invalid input: /i,
+        "",
+      );
+      throw new AppError("UNKNOWN_ERROR", `Data validation failed: ${message}`);
+    }
+
     if (error instanceof AppError) throw error;
     const message =
       error instanceof Error ? error.message : "Unexpected error...";

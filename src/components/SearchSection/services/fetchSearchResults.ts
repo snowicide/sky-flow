@@ -60,13 +60,11 @@ export const fetchSearchResults = async (
 
 interface ForecastResponse {
   current: {
-    interval: number;
     temperature_2m: number;
     time: string;
     weather_code: number;
   };
   current_units: {
-    interval: string;
     temperature_2m: string;
     time: string;
   };

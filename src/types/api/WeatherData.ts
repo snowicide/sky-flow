@@ -22,15 +22,14 @@ export const WeatherDataUnitsSchema = z
 export const WeatherDataCurrentSchema = z
   .object({
     apparent_temperature: z.number(),
-    city: z.string(),
-    country: z.string(),
-    interval: z.number().min(0).optional(),
     precipitation: z.number().min(0),
     relative_humidity_2m: z.number().min(0).max(100),
     temperature_2m: z.number(),
     time: z.string(),
     weather_code: z.number().min(0).max(99),
     wind_speed_10m: z.number().min(0),
+    city: z.string(),
+    country: z.string(),
     latitude: z.number().min(-90).max(90),
     longitude: z.number().min(-180).max(180),
   })

@@ -33,11 +33,11 @@ export const CITY_BASE_DATA = {
     last: {
       id: 4915533,
       city: "Warsaw",
-      country: "America/Chicago",
+      country: "United states",
       lat: 40.35921,
       lon: -91.4346,
       temp: -2,
-      timezone: "",
+      timezone: "America/Chicago",
     },
   },
 
