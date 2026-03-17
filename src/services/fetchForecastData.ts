@@ -5,7 +5,7 @@ import { WeatherDataSchema, type WeatherData } from "@/types/api/WeatherData";
 import { AppError } from "@/types/errors";
 import { isFoundCity, type CityData } from "@/types/location";
 import type { Units } from "@/types/weather";
-import { throwResponseErrors } from "@/utils/errors";
+import { throwResponseErrors, throwZodErrors } from "@/utils/errors";
 
 export async function fetchForecastData(
   cityData: CityData,
@@ -77,15 +77,7 @@ export async function fetchForecastData(
 
     return WeatherDataSchema.parse(rawData);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const issue = error.issues[0];
-      const message = `${issue.path.join(".")}: ${issue.message}`.replace(
-        /invalid input: /i,
-        "",
-      );
-      throw new AppError("UNKNOWN_ERROR", `Data validation failed: ${message}`);
-    }
-
+    if (error instanceof z.ZodError) throwZodErrors(error);
     if (error instanceof AppError) throw error;
     const message =
       error instanceof Error ? error.message : "Unexpected error...";

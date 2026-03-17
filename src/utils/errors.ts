@@ -1,3 +1,5 @@
+import type { ZodError } from "zod";
+
 import { AppError } from "@/types/errors";
 
 type ApiType = "geocoding" | "forecast";
@@ -36,4 +38,13 @@ export function throwResponseErrors(status: number, apiType: ApiType): never {
     ERROR_MESSAGES[status] ??
     `Failed to fetch ${dataName} data (status: ${status}). Try again later...`;
   throw new AppError(code, message);
+}
+
+export function throwZodErrors(error: ZodError): never {
+  const issue = error.issues[0];
+  const message = `${issue.path.join(".")}: ${issue.message}`.replace(
+    /invalid input: /i,
+    "",
+  );
+  throw new AppError("UNKNOWN_ERROR", `Data validation failed: ${message}`);
 }

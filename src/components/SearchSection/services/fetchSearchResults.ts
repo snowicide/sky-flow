@@ -7,7 +7,7 @@ import {
 import { DEFAULT_UNITS } from "@/stores/useSettingsStore";
 import { AppError } from "@/types/errors";
 import type { Units } from "@/types/weather";
-import { throwResponseErrors } from "@/utils/errors";
+import { throwResponseErrors, throwZodErrors } from "@/utils/errors";
 
 import { fetchGeoData } from "../../../services/fetchGeoData";
 
@@ -57,15 +57,7 @@ export const fetchSearchResults = async (
 
     return SearchDataSchema.parse(rawData);
   } catch (error) {
-    if (error instanceof ZodError) {
-      const issue = error.issues[0];
-      const message = `${issue.path.join(".")}: ${issue.message}`.replace(
-        /invalid input: /i,
-        "",
-      );
-      throw new AppError("UNKNOWN_ERROR", `Data validation failed: ${message}`);
-    }
-
+    if (error instanceof ZodError) throwZodErrors(error);
     if (error instanceof AppError) throw error;
     const message =
       error instanceof Error ? error.message : "Unexpected error...";
