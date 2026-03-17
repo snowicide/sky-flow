@@ -46,5 +46,5 @@ export function throwZodErrors(error: ZodError): never {
     /invalid input: /i,
     "",
   );
-  throw new AppError("UNKNOWN_ERROR", `Data validation failed: ${message}`);
+  throw new AppError("VALIDATION_ERROR", `Data validation failed: ${message}`);
 }
