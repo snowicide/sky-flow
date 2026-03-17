@@ -18,7 +18,6 @@ export const fetchSearchResults = async (
 
     const onlyLats = results.map((item) => item.latitude).join(",");
     const onlyLons = results.map((item) => item.longitude).join(",");
-    const onlyTimezones = results.map((item) => item.timezone).join(",");
 
     const forecastUrl =
       "https://api.open-meteo.com/v1/forecast?" +
@@ -28,7 +27,7 @@ export const fetchSearchResults = async (
 
         current: "temperature_2m,weather_code",
 
-        timezone: onlyTimezones.toString(),
+        timezone: "auto",
         temperature_unit: units.temperature,
       });
 
