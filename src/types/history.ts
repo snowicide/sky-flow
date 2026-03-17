@@ -1,12 +1,23 @@
-export interface HistoryItem {
-  id: string;
-  city: string;
-  country: string;
-  isFavorite: boolean;
-  timestamp: number;
-  latitude: number;
-  longitude: number;
-}
+import z from "zod";
+
+export const HistoryItemSchema = z.object({
+  id: z
+    .string()
+    .regex(/.{1,}-.{1,}/)
+    .includes("-")
+    .transform((i) => i.toLowerCase()),
+  city: z.string().transform((i) => i.toLowerCase()),
+  country: z.string().transform((i) => i.toLowerCase()),
+  isFavorite: z.boolean(),
+  timestamp: z.number().positive(),
+  latitude: z.number().min(-90).max(90),
+  longitude: z.number().min(-180).max(180),
+});
+
+export const HistoryDataSchema = z.array(HistoryItemSchema);
+
+export type HistoryItem = z.infer<typeof HistoryItemSchema>;
+export type HistoryData = z.infer<typeof HistoryDataSchema>;
 
 export interface SearchTabProps {
   data: HistoryItem;

@@ -2,12 +2,12 @@ import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 import { WeatherStore } from "@/components/SearchSection/lib/weather-store";
 import { useSearchStore } from "@/stores/useSearchStore";
-import type { HistoryItem } from "@/types/history";
+import type { HistoryData, HistoryItem } from "@/types/history";
 import { isFoundCity, type CityData } from "@/types/location";
 
 export const recentStore = new WeatherStore("weather-recent");
 export const favoriteStore = new WeatherStore("weather-favorite");
-const EMPTY_ARRAY: [] = [];
+const EMPTY_ARRAY: HistoryData = [];
 
 export function useSearchHistory(): UseSearchHistoryReturn {
   const recent = useSyncExternalStore(
@@ -97,8 +97,8 @@ export function useSearchHistory(): UseSearchHistoryReturn {
 }
 
 interface UseSearchHistoryReturn {
-  recent: HistoryItem[];
-  favorites: HistoryItem[];
+  recent: HistoryData;
+  favorites: HistoryData;
   addCity: (cityData: CityData, favorited?: boolean) => void;
   toggleFavorite: (id: string) => void;
   removeCity: (id: string) => void;

@@ -21,8 +21,8 @@ export const createHistoryCity = (
 
 const getWarsawHistory = (): HistoryItem => ({
   id: "warsaw-poland",
-  city: "Warsaw",
-  country: "Poland",
+  city: "warsaw",
+  country: "poland",
   isFavorite: false,
   timestamp: 1,
   latitude: 52.22977,
@@ -31,8 +31,8 @@ const getWarsawHistory = (): HistoryItem => ({
 
 const getBerlinHistory = (): HistoryItem => ({
   id: "berlin-germany",
-  city: "Berlin",
-  country: "Germany",
+  city: "berlin",
+  country: "germany",
   isFavorite: false,
   timestamp: 2,
   latitude: 52.52437,
@@ -41,8 +41,8 @@ const getBerlinHistory = (): HistoryItem => ({
 
 const getMinskHistory = (): HistoryItem => ({
   id: "minsk-belarus",
-  city: "Minsk",
-  country: "Belarus",
+  city: "minsk",
+  country: "belarus",
   isFavorite: false,
   timestamp: 3,
   latitude: 53.9,

@@ -69,7 +69,7 @@ describe("useSearchHistory", () => {
     const { result } = renderHook(() => useSearchHistory());
 
     expect(result.current.recent).toHaveLength(1);
-    expect(result.current.recent[0].city).toBe("Warsaw");
+    expect(result.current.recent[0].city).toBe("warsaw");
     expect(result.current.recent[0].id).toBe("warsaw-poland");
   });
 
@@ -83,7 +83,7 @@ describe("useSearchHistory", () => {
     const { result } = renderHook(() => useSearchHistory());
 
     expect(result.current.favorites).toHaveLength(1);
-    expect(result.current.favorites[0].city).toBe("Warsaw");
+    expect(result.current.favorites[0].city).toBe("warsaw");
     expect(result.current.favorites[0].id).toBe("warsaw-poland");
     expect(result.current.favorites[0].isFavorite).toBe(true);
   });

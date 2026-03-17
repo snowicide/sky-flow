@@ -1,7 +1,7 @@
 import type { Mock } from "vitest";
 
 import { createHistoryCity } from "@/testing/mocks/factories/historyData";
-import { HistoryItem } from "@/types/history";
+import type { HistoryData, HistoryItem } from "@/types/history";
 
 import { WeatherStore } from "./weather-store";
 
@@ -17,7 +17,10 @@ const setup = (): SetupReturn => {
     store,
     listener,
     subscribe: () => store.subscribe(listener),
-    update: (data: HistoryItem[] = historyData) => store.update(data),
+    update: (
+      data: HistoryData = historyData,
+      overrides: Partial<HistoryItem> = {},
+    ) => store.update([{ ...data[0], ...overrides }]),
   };
 };
 
@@ -37,21 +40,34 @@ describe("WeatherStore", () => {
       setup();
 
     subscribe(listener);
-    update();
 
-    expect(store.getSnapshot()).toEqual(historyData);
-    expect(localStorage.getItem(storageKey)).toContain("Warsaw");
+    update(historyData, { city: "WARSAW" });
+
+    const snapshot = store.getSnapshot();
+    expect(snapshot).toEqual(historyData);
+    expect(snapshot[0].city).toBe("warsaw");
+    expect(localStorage.getItem(storageKey)).toContain("warsaw-poland");
     expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it("should handle wrong JSON data", () => {
-    const { store, listener, subscribe, update, historyData } = setup();
+    const { store, listener, subscribe, update } = setup();
 
     subscribe(listener);
-    update([...historyData, { city: "invalid data" } as HistoryItem]);
+    update([
+      {
+        id: 1,
+        city: ["invalid data"],
+        country: NaN,
+        isFavorite: { wrong: "data" },
+        latitude: "1",
+        longitude: "2",
+        timestamp: "3",
+      } as unknown as HistoryItem,
+    ]);
 
-    expect(store.getSnapshot().length).toBe(1);
-    expect(store.getSnapshot()).toEqual(historyData);
+    expect(store.getSnapshot().length).toBe(0);
+    expect(store.getSnapshot()).toEqual([]);
   });
 });
 
@@ -60,6 +76,6 @@ interface SetupReturn {
   historyData: HistoryItem[];
   store: WeatherStore;
   listener: Mock;
-  subscribe: (listener: Mock) => () => boolean;
-  update: (historyData?: HistoryItem[]) => void;
+  subscribe: (listener: Mock) => () => void;
+  update: (historyData?: HistoryData, overrides?: Partial<HistoryItem>) => void;
 }
