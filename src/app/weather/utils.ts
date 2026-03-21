@@ -37,15 +37,17 @@ export async function verifyAndGetCityData(
 
   if (!success) return { status: "not-found", city };
 
-  const hasRegion = data?.region;
-  const hasCountry = data?.country;
-  const hasCode = data?.code;
+  const dataRegion = data?.region;
+  const dataCountry = data?.country;
+  const dataCode = data?.code;
+  const dataLat = data?.lat;
+  const dataLon = data?.lon;
   const needsRedirect =
-    !lat ||
-    !lon ||
-    region !== hasRegion ||
-    country !== hasCountry ||
-    code !== hasCode;
+    Number(lat) !== dataLat ||
+    Number(lon) !== dataLon ||
+    region !== dataRegion ||
+    country !== dataCountry ||
+    code !== dataCode;
 
   if (needsRedirect) {
     const params = createSearchParams(data);
