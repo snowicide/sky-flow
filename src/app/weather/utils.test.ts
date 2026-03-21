@@ -1,4 +1,4 @@
-import { verifyAndGetCityData } from "./utils";
+import { verifyAndGetCityData, type WeatherParams } from "./utils";
 
 // --- 1. mocks ---
 const mockRedirect = vi.hoisted(() => vi.fn());
@@ -6,6 +6,15 @@ vi.mock("next/navigation", () => ({ redirect: mockRedirect }));
 
 // --- 2. tests ---
 describe("WeatherPage utils", () => {
+  const params = {
+    city: "London",
+    region: "England",
+    code: "PPLC",
+    country: "United Kingdom",
+    lat: "51.50853",
+    lon: "-0.12574",
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -105,22 +114,11 @@ describe("WeatherPage utils", () => {
   });
 
   it("should return city data when params valid", async () => {
-    const params = {
-      city: "London",
-      region: "England",
-      code: "PPLC",
-      country: "United Kingdom",
-      lat: "51.50853",
-      lon: "-0.12574",
-    };
     const result = await verifyAndGetCityData(params);
 
     expect(result).toEqual({
+      ...params,
       status: "found",
-      city: "London",
-      region: "England",
-      code: "PPLC",
-      country: "United Kingdom",
       lat: 51.50853,
       lon: -0.12574,
     });
@@ -132,5 +130,44 @@ describe("WeatherPage utils", () => {
     const result = await verifyAndGetCityData(params);
 
     expect(result).toEqual({ status: "not-found", city: "nonExist12313" });
+    expect(mockRedirect).not.toHaveBeenCalled();
+  });
+
+  it("should redirect when extra params", async () => {
+    await verifyAndGetCityData({
+      ...params,
+      extra: "123",
+    } as WeatherParams);
+
+    expect(mockRedirect).toHaveBeenCalledTimes(1);
+    expect(mockRedirect).toHaveBeenCalledWith(
+      expect.stringContaining("/weather/?city=London"),
+    );
+    expect(mockRedirect).toHaveBeenCalledWith(
+      expect.not.stringContaining("extra"),
+    );
+  });
+
+  it("should redirect when params incorrect", async () => {
+    await verifyAndGetCityData({
+      ...params,
+      region: "123",
+      lat: "0",
+      lon: "0",
+    });
+
+    expect(mockRedirect).toHaveBeenCalledTimes(1);
+    expect(mockRedirect).toHaveBeenCalledWith(
+      expect.stringContaining("/weather/?city=London"),
+    );
+    expect(mockRedirect).toHaveBeenCalledWith(
+      expect.stringContaining("region=England"),
+    );
+    expect(mockRedirect).toHaveBeenCalledWith(
+      expect.stringContaining("lat=51.50853"),
+    );
+    expect(mockRedirect).toHaveBeenCalledWith(
+      expect.stringContaining("lon=-0.12574"),
+    );
   });
 });

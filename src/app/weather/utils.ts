@@ -2,11 +2,15 @@ import { redirect } from "next/navigation";
 
 import { fetchGeoData } from "@/services/fetchGeoData";
 import type { GeoDataItem } from "@/types/api/GeoData";
-import { FoundCity, FoundCitySchema, type CityData } from "@/types/location";
+import {
+  type FoundCity,
+  FoundCitySchema,
+  type CityData,
+} from "@/types/location";
 
 import { DEFAULT_CITY_DATA } from "./constants";
 
-interface WeatherParams {
+export interface WeatherParams {
   city?: string;
   region?: string;
   country?: string;
@@ -23,7 +27,7 @@ export async function verifyAndGetCityData(
     redirect(`/weather/?${defaultParams.toString()}`);
   }
 
-  const { city, lat, lon, region, code, country } = params;
+  const { city, lat, lon, region, country } = params;
   const geoData = await fetchGeoData(city);
 
   if (!geoData?.results?.length)
@@ -37,18 +41,7 @@ export async function verifyAndGetCityData(
 
   if (!success) return { status: "not-found", city };
 
-  const dataRegion = data?.region;
-  const dataCountry = data?.country;
-  const dataCode = data?.code;
-  const dataLat = data?.lat;
-  const dataLon = data?.lon;
-  const needsRedirect =
-    Number(lat) !== dataLat ||
-    Number(lon) !== dataLon ||
-    region !== dataRegion ||
-    country !== dataCountry ||
-    code !== dataCode;
-
+  const needsRedirect = needsRedirectCheck(params, data);
   if (needsRedirect) {
     const params = createSearchParams(data);
     redirect(`/weather/?${params.toString()}`);
@@ -108,6 +101,25 @@ const findMatch = (
   }
 
   return createCityData(results[0]);
+};
+
+const needsRedirectCheck = (
+  params: WeatherParams,
+  data: FoundCity,
+): boolean => {
+  const hasExtraParams = Object.keys(params).some(
+    (key) => !["city", "region", "country", "code", "lat", "lon"].includes(key),
+  );
+
+  if (hasExtraParams) return true;
+
+  return (
+    Number(params.lat) !== data?.lat ||
+    Number(params.lon) !== data?.lon ||
+    params.region !== data?.region ||
+    params.country !== data?.country ||
+    params.code !== data?.code
+  );
 };
 
 const createCityData = (data: GeoDataItem): CityData => ({
