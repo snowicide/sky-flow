@@ -14,11 +14,17 @@ export const SearchResultCity = React.memo(function SearchResultCity({
   return (
     <li
       onClick={handleClick}
-      className="flex justify-between font-medium mx-1 sm:mx-2 px-2 sm:px-3 py-2 my-2 xl:mx-2 xl:px-3 xl:py-3 xl:my-3 text-white hover:bg-[hsl(243,23%,30%)] active:opacity-75 rounded-xl cursor-pointer"
+      className="h-(--item-height) flex justify-between font-medium mx-1 px-2 sm:mx-2 sm:px-3 text-white hover:bg-[hsl(243,23%,30%)] active:opacity-75 rounded-xl cursor-pointer"
     >
       <div className="flex items-center gap-2">
-        <Image src={icon} className="w-8 h-8 lg:w-10 lg:h-10" alt="" />
-        <span className="text-sm sm:text-base">{displayName}</span>
+        <Image
+          src={icon}
+          className="w-8 h-8 lg:w-10 lg:h-10"
+          alt="Weather Icon"
+        />
+        <span className="text-sm sm:text-base" title={displayName}>
+          {displayName}
+        </span>
       </div>
 
       <div className="flex items-center gap-1 font-bold">
