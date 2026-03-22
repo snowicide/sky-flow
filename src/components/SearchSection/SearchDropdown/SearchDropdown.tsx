@@ -39,7 +39,7 @@ export function SearchDropdown({
       >
         <ul className="overflow-y-auto max-h-[calc(var(--item-height)*5)] xl:max-h-full my-2 custom-scrollbar">
           {resultData.map((data) => (
-            <SearchResultCity key={data.id} data={data} />
+            <SearchResultCity key={data.id} data={data} inputRef={inputRef} />
           ))}
         </ul>
       </div>

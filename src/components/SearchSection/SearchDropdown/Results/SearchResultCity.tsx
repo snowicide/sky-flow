@@ -7,9 +7,10 @@ import { useSearchResultCity } from "./useSearchResultCity";
 
 export const SearchResultCity = React.memo(function SearchResultCity({
   data,
+  inputRef,
 }: SearchResultCityProps) {
   const { handleClick, icon, displayName, temperature, temperatureUnit } =
-    useSearchResultCity(data);
+    useSearchResultCity(data, inputRef);
 
   return (
     <li
@@ -39,4 +40,5 @@ export const SearchResultCity = React.memo(function SearchResultCity({
 
 interface SearchResultCityProps {
   data: SearchDataItem;
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }
