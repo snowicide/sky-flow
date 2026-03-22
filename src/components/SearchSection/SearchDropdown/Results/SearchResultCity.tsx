@@ -14,7 +14,7 @@ export const SearchResultCity = React.memo(function SearchResultCity({
   return (
     <li
       onClick={handleClick}
-      className="h-(--item-height) flex justify-between font-medium mx-1 px-2 sm:mx-2 sm:px-3 text-white hover:bg-[hsl(243,23%,30%)] active:opacity-75 rounded-xl cursor-pointer"
+      className="h-(--item-height) flex justify-between font-medium gap-4 sm:gap-8 mx-1 px-2 sm:mx-2 sm:px-3 text-white hover:bg-[hsl(243,23%,30%)] active:opacity-75 rounded-xl cursor-pointer"
     >
       <div className="flex items-center gap-2">
         <Image
