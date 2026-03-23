@@ -47,6 +47,7 @@ export const RecentSearch = React.memo(function RecentSearch({
     >
       <button
         role="button"
+        type="button"
         aria-label={`Select ${displayName}`}
         onClick={handleClick}
         className="font-light leading-4 lg:leading-5 py-2 text-xs sm:text-sm xl:text-base flex flex-1 text-start items-center gap-1 sm:gap-2 cursor-pointer"
@@ -57,6 +58,7 @@ export const RecentSearch = React.memo(function RecentSearch({
       <div className="flex items-center gap-1 sm:gap-2 opacity-70">
         <button
           role="button"
+          type="button"
           aria-label="Toggle favorite"
           onClick={handleFavoriteIcon}
         >
@@ -67,6 +69,7 @@ export const RecentSearch = React.memo(function RecentSearch({
         </button>
         <button
           role="button"
+          type="button"
           aria-label="Remove from history"
           onClick={() => removeCity(data.id)}
         >

@@ -41,6 +41,7 @@ export const FavoritesSearch = React.memo(function FavoritesSearch({
     >
       <button
         role="button"
+        type="button"
         aria-label={`Select ${displayName}`}
         onClick={handleClick}
         className="font-light leading-4 lg:leading-5 py-2 text-xs sm:text-sm xl:text-base flex flex-1 text-start items-center gap-1 sm:gap-2 cursor-pointer"
@@ -50,6 +51,7 @@ export const FavoritesSearch = React.memo(function FavoritesSearch({
 
       <button
         role="button"
+        type="button"
         aria-label="Remove from favorites"
         onClick={() => removeFavorite(data.id)}
         className="flex items-center opacity-70"
