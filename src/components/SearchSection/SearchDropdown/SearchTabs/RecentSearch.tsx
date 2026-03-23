@@ -43,13 +43,13 @@ export const RecentSearch = React.memo(function RecentSearch({
       role="option"
       aria-selected="false"
       aria-label={displayName}
-      className="flex justify-between font-medium gap-4 mx-2 px-5 my-2 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl"
+      className="flex justify-between h-9.5 sm:h-8.5 xl:h-10 gap-4 mx-2 px-5 my-2 text-white hover:bg-[hsl(243,23%,30%)] rounded-xl"
     >
       <button
         role="button"
         aria-label={`Select ${displayName}`}
         onClick={handleClick}
-        className="font-normal py-2 text-sm md:text-base flex flex-1 text-start items-center gap-1 sm:gap-2 cursor-pointer"
+        className="font-light leading-4 lg:leading-5 py-2 text-xs sm:text-sm xl:text-base flex flex-1 text-start items-center gap-1 sm:gap-2 cursor-pointer"
       >
         {displayName}
       </button>
