@@ -38,13 +38,7 @@ export function useSearchHistory(): UseSearchHistoryReturn {
     );
 
     const displayName = formatCityDisplay(cityData);
-    const baseId = city.toLowerCase();
-    const regionId = region
-      ? `${baseId}-${region.toLowerCase().replace(/\s+/g, "-")}`
-      : baseId;
-    const id = country
-      ? `${regionId}-${country.toLowerCase().replace(/\s+/g, "-")}`
-      : regionId;
+    const id = generateCityId(city, region, country);
 
     recentStore.update((prev) => {
       const newitem: HistoryItem = {
@@ -110,6 +104,22 @@ export function useSearchHistory(): UseSearchHistoryReturn {
     [recent, favorites, addCity, toggleFavorite, removeCity, removeFavorite],
   );
 }
+
+const generateCityId = (
+  city: string,
+  region?: string,
+  country?: string,
+): string => {
+  const baseId = city.toLowerCase();
+  const regionId = region
+    ? `${baseId}-${region.toLowerCase().replace(/\s+/g, "-")}`
+    : baseId;
+  const id = country
+    ? `${regionId}-${country.toLowerCase().replace(/\s+/g, "-")}`
+    : regionId;
+
+  return id;
+};
 
 interface UseSearchHistoryReturn {
   recent: HistoryData;
