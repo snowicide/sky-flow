@@ -9,8 +9,8 @@ import { useSearchStore } from "@/stores/useSearchStore";
 import { isFoundCity, isNotFoundCity, type CityData } from "@/types/location";
 import { formatCityDisplay } from "@/utils/formatters";
 
-export const recentStore = new WeatherStore("weather-recent");
-export const favoriteStore = new WeatherStore("weather-favorite");
+export const recentStore = new WeatherStore("weather-recent", 8);
+export const favoriteStore = new WeatherStore("weather-favorite", 100);
 const EMPTY_ARRAY: HistoryData = [];
 
 export function useSearchHistory(): UseSearchHistoryReturn {
@@ -60,10 +60,7 @@ export function useSearchHistory(): UseSearchHistoryReturn {
         longitude: lon,
       };
 
-      return [newitem, ...prev.filter((item) => item.id !== newitem.id)].slice(
-        0,
-        8,
-      );
+      return [newitem, ...prev.filter((item) => item.id !== newitem.id)];
     });
   }, []);
 
