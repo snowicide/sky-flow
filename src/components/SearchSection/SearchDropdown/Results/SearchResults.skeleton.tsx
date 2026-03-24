@@ -10,7 +10,7 @@ export function SearchResultsSkeleton() {
     <div
       role="listbox"
       onMouseDown={(e) => e.preventDefault()}
-      className="absolute -left-5 top-5 sm:top-6 right-0 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-100 mt-1"
+      className="absolute -left-5 top-5 sm:top-6 right-0 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-10 mt-1"
     >
       <ul className="space-y-3 mt-4 mb-3 flex flex-col justify-center">
         {skeletonResults.map((index) => (
