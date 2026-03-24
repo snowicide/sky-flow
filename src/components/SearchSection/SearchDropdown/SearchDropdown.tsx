@@ -55,15 +55,13 @@ export function SearchDropdown({
   };
 
   return (
-    <div>
-      <div
-        className="fixed inset-0 z-9 bg-transparent"
-        onMouseDown={() => {
-          setIsOpen(false);
-          inputRef?.current?.blur();
-        }}
-      />
-      <div>{renderContent()}</div>
+    <div
+      onBlur={(e) => {
+        if (e.relatedTarget?.closest('[role="listbox"]')) return;
+        setIsOpen(false);
+      }}
+    >
+      {renderContent()}
     </div>
   );
 }
