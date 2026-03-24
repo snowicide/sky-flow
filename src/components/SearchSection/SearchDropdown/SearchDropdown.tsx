@@ -1,3 +1,5 @@
+import { useShallow } from "zustand/shallow";
+
 import { useSearchActions } from "@/components/SearchSection/hooks/useSearchActions";
 import { useSearchStore } from "@/stores/useSearchStore";
 
@@ -11,38 +13,57 @@ export function SearchDropdown({
 }: {
   inputRef: React.RefObject<HTMLInputElement | null>;
 }) {
-  const isOpen = useSearchStore((state) => state.isOpen);
-  const inputValue = useSearchStore((state) => state.inputValue);
+  const { isOpen, inputValue, setIsOpen } = useSearchStore(
+    useShallow((s) => ({
+      isOpen: s.isOpen,
+      inputValue: s.inputValue,
+      setIsOpen: s.setIsOpen,
+    })),
+  );
 
   const { resultData, shouldSearchSkeleton, handleChangeTab } =
     useSearchActions();
 
-  if (inputValue.trim().length === 0) {
-    return <SearchTabs handleChangeTab={handleChangeTab} inputRef={inputRef} />;
-  }
+  if (!isOpen) return null;
 
-  if (shouldSearchSkeleton) {
-    return <SearchResultsSkeleton />;
-  }
+  const renderContent = () => {
+    if (inputValue.trim().length === 0)
+      return (
+        <SearchTabs handleChangeTab={handleChangeTab} inputRef={inputRef} />
+      );
 
-  if (!resultData) {
-    return <SearchPlaceholder inputValue={inputValue} />;
-  }
+    if (shouldSearchSkeleton) return <SearchResultsSkeleton />;
+
+    if (!resultData || resultData.length === 0) {
+      return <SearchPlaceholder inputValue={inputValue} />;
+    } else {
+      return (
+        <div
+          role="listbox"
+          tabIndex={-1}
+          style={{ "--item-height": "60px" } as React.CSSProperties}
+          className={`overflow-hidden absolute -left-5 top-5 sm:top-6 right-0 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-10 mt-1 ${isOpen ? "visible" : "invisible"}`}
+        >
+          <ul className="overflow-y-auto max-h-[calc(var(--item-height)*5)] xl:max-h-full my-2 custom-scrollbar">
+            {resultData.map((data) => (
+              <SearchResultCity key={data.id} data={data} inputRef={inputRef} />
+            ))}
+          </ul>
+        </div>
+      );
+    }
+  };
 
   return (
-    <>
+    <div>
       <div
-        role="listbox"
-        onMouseDown={(e) => e.preventDefault()}
-        style={{ "--item-height": "60px" } as React.CSSProperties}
-        className={`overflow-hidden absolute -left-5 top-5 sm:top-6 right-0 col-start-1 row-start-2 bg-[hsl(243,27%,20%)] border border-white/10 rounded-xl shadow-[0_10px_12px_black]/25 z-100 mt-1 ${isOpen ? "visible" : "invisible"}`}
-      >
-        <ul className="overflow-y-auto max-h-[calc(var(--item-height)*5)] xl:max-h-full my-2 custom-scrollbar">
-          {resultData.map((data) => (
-            <SearchResultCity key={data.id} data={data} inputRef={inputRef} />
-          ))}
-        </ul>
-      </div>
-    </>
+        className="fixed inset-0 z-9 bg-transparent"
+        onMouseDown={() => {
+          setIsOpen(false);
+          inputRef?.current?.blur();
+        }}
+      />
+      <div>{renderContent()}</div>
+    </div>
   );
 }

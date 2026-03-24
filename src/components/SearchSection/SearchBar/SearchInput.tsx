@@ -22,7 +22,10 @@ export const SearchInput = forwardRef<
       }
       onChange={(e) => handleChangeInput(e)}
       onFocus={() => setIsOpen(true)}
-      onBlur={() => setTimeout(() => setIsOpen(false), 1)}
+      onBlur={(e) => {
+        if (e.relatedTarget?.closest('[role="listbox"]')) return;
+        setIsOpen(false);
+      }}
       className="flex-1 w-full min-w-0 bg-transparent placeholder-white/70 text-base sm:text-lg outline-none"
     />
   );

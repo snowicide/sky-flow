@@ -13,7 +13,7 @@ export function SearchBar({ inputRef, isError }: SearchBarProps) {
   const setInputValue = useSearchStore((state) => state.setInputValue);
 
   return (
-    <div className="relative col-start-1 row-start-1 flex items-center w-full group">
+    <div className="relative z-10 col-start-1 row-start-1 flex items-center w-full group">
       <Image
         src={searchIcon}
         className="w-5 h-5 mr-3 cursor-pointer shrink-0"
