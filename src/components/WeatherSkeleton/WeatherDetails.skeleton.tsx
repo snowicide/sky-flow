@@ -1,11 +1,11 @@
 export default function WeatherDetailsSkeleton() {
   return (
-    <div className="mb-10 grid grid-cols-2 sm:flex gap-3 xl:gap-4">
+    <div className="mb-10 grid grid-cols-2 sm:flex gap-3 xl:gap-4 animate-pulse">
       {["Feels Like", "Humidity", "Wind", "Precipitation" as const].map(
         (value, index) => (
           <div
             key={index}
-            className="bg-[hsl(243,27%,20%)] max-w-full rounded-xl border border-white/10 animate-pulse flex-1
+            className="bg-[hsl(243,27%,20%)] max-w-full rounded-xl border border-white/10 flex-1
             pt-4 pl-4 h-23.5
             sm:pt-4 sm:pl-4 sm:h-25.5
             lg:pt-5 lg:pl-3.5 lg:h-28.5
