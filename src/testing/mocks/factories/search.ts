@@ -1,4 +1,4 @@
-import type { SearchDataItem } from "@/components/Search/types/SearchData";
+import type { SearchDataItem } from "@/components/Weather/Search/types/SearchData";
 
 import { CITY_BASE_DATA } from "../data/cities";
 

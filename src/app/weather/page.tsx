@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 
-import { Header } from "@/components/Header";
-import { Search } from "@/components/Search";
-import { Weather } from "@/components/Weather";
+import { Weather, Header, Search } from "@/components/Weather";
 
 import { verifyAndGetCityData } from "./utils";
 
