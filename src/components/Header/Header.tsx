@@ -2,7 +2,7 @@ import { CloudMoonIcon } from "../icons/CloudMoonIcon";
 
 import UnitsSettings from "./UnitsSettings";
 
-export default function HeaderSection() {
+export default function Header() {
   return (
     <header
       className="flex justify-between items-center 
