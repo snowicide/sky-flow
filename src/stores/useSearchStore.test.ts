@@ -6,6 +6,8 @@ import { createCityData } from "@/testing/mocks/factories/cityData";
 import { useSearchStore } from "./useSearchStore";
 
 describe("useSearchStore", () => {
+  const { berlinCityData } = createCityData();
+
   beforeEach(() => {
     useSearchStore.getState().reset();
   });
@@ -28,8 +30,6 @@ describe("useSearchStore", () => {
   });
 
   it("should save last validated city", () => {
-    const { berlinCityData } = createCityData();
-
     expect(useSearchStore.getState().lastValidatedCity).toEqual(
       DEFAULT_CITY_DATA,
     );
@@ -59,5 +59,24 @@ describe("useSearchStore", () => {
 
     expect(useSearchStore.getState().inputValue).toBe("");
     expect(useSearchStore.getState().isOpen).toBe(false);
+  });
+
+  it("should partialize save units to localStorage", () => {
+    window.localStorage.clear();
+
+    useSearchStore.setState({
+      lastValidatedCity: berlinCityData,
+      isOpen: true,
+    });
+
+    const storage = JSON.parse(
+      window.localStorage.getItem("weather-search") as string,
+    );
+
+    expect(storage).toEqual({
+      state: { lastValidatedCity: berlinCityData },
+      version: 1,
+    });
+    expect(storage).not.toHaveProperty("isOpen");
   });
 });
