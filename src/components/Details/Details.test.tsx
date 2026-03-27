@@ -5,12 +5,12 @@ import {
   createForecastUnits,
 } from "@/testing/mocks/factories/weather";
 
-import WeatherDetails from "./WeatherDetails";
+import Details from "./Details";
 
 // --- 1. setup ---
 const setup = (units = createForecastUnits()) => {
   const currentWeather = createCurrentWeather();
-  render(<WeatherDetails currentData={currentWeather} forecastUnits={units} />);
+  render(<Details currentData={currentWeather} forecastUnits={units} />);
 
   return {
     list: screen.getByRole("list"),
@@ -20,7 +20,7 @@ const setup = (units = createForecastUnits()) => {
 };
 
 // --- 2. tests ---
-describe("WeatherDetails", () => {
+describe("Details", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

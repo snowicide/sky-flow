@@ -1,4 +1,4 @@
-export default function WeatherDetailsSkeleton() {
+export default function DetailsSkeleton() {
   return (
     <div className="mb-10 grid grid-cols-2 sm:flex gap-3 xl:gap-4 animate-pulse">
       {["Feels Like", "Humidity", "Wind", "Precipitation" as const].map(

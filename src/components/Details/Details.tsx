@@ -6,23 +6,20 @@ import type {
   WeatherDataUnits,
 } from "@/types/api/WeatherData";
 
-export default function WeatherDetails({
-  currentData,
-  forecastUnits,
-}: WeatherDetailsProps) {
-  const weatherDetails = useMemo(
-    () => formatWeatherDetails(currentData, forecastUnits),
+export default function Details({ currentData, forecastUnits }: DetailsProps) {
+  const details = useMemo(
+    () => formatDetails(currentData, forecastUnits),
     [currentData, forecastUnits],
   );
 
   return (
-    <section aria-label="Weather Details" className="mb-10">
+    <section aria-label="Details" className="mb-10">
       <h2 className="sr-only">Weather Details</h2>
       <ul
         role="list"
         className="grid grid-cols-2 sm:grid-cols-4 gap-3 xl:gap-4"
       >
-        {weatherDetails.map(({ title, value, unit }) => (
+        {details.map(({ title, value, unit }) => (
           <li
             key={title}
             role="listitem"
@@ -44,10 +41,7 @@ export default function WeatherDetails({
   );
 }
 
-const formatWeatherDetails = (
-  data: WeatherDataCurrent,
-  units: WeatherDataUnits,
-) => {
+const formatDetails = (data: WeatherDataCurrent, units: WeatherDataUnits) => {
   const {
     apparent_temperature: apparentTemp,
     relative_humidity_2m: humidity,
@@ -84,7 +78,7 @@ const formatWeatherDetails = (
   ];
 };
 
-interface WeatherDetailsProps {
+interface DetailsProps {
   currentData: WeatherDataCurrent;
   forecastUnits: WeatherDataUnits;
 }

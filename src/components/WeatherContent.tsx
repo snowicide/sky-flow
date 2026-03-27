@@ -7,11 +7,11 @@ import { isNotFoundCity, type CityData } from "@/types/location";
 
 import { ChartSection } from "./ChartSection";
 import { DailyForecast } from "./DailyForecast";
+import { Details } from "./Details";
 import { HourlyForecast } from "./HourlyForecast";
 import { Today } from "./Today";
 import { NetworkError } from "./ui/NetworkError";
 import WeatherContentSkeleton from "./WeatherContentSkeleton";
-import { WeatherDetails } from "./WeatherDetails";
 
 export function WeatherContent({ cityData }: { cityData: CityData }) {
   const { data, isPending, isError, error, refetch } =
@@ -35,7 +35,7 @@ export function WeatherContent({ cityData }: { cityData: CityData }) {
       <div className="flex flex-col w-full xl:w-auto max-w-99 sm:max-w-full lg:gap-4 xl:gap-8 mb-8 lg:mb-0 items-center lg:items-start lg:flex-row">
         <div className="w-full lg:min-w-150 xl:max-w-200 mb-8">
           <Today currentData={current} forecastUnits={forecastUnits} />
-          <WeatherDetails currentData={current} forecastUnits={forecastUnits} />
+          <Details currentData={current} forecastUnits={forecastUnits} />
           <DailyForecast dailyData={daily} />
         </div>
         <HourlyForecast hourlyData={hourly} forecastUnits={forecastUnits} />
