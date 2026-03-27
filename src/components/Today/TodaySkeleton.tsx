@@ -1,4 +1,4 @@
-export default function TodayWeatherSkeleton() {
+export default function TodaySkeleton() {
   return (
     <div
       className="flex flex-col items-center justify-center sm:p-8 md:p-10 rounded-2xl h-70 overflow-hidden

@@ -12,10 +12,7 @@ import type {
 import { formatCityDisplay } from "@/utils/formatters";
 import { getWeatherIcon } from "@/utils/weather";
 
-export default function TodayWeather({
-  currentData,
-  forecastUnits,
-}: TodayWeatherProps) {
+export default function Today({ currentData, forecastUnits }: TodayProps) {
   const { isMobile } = useDeviceType();
   const currentSrc = isMobile ? bgTodayMobile : bgTodayDesktop;
   const icon = getWeatherIcon(currentData.weather_code);
@@ -78,7 +75,7 @@ export default function TodayWeather({
   );
 }
 
-interface TodayWeatherProps {
+interface TodayProps {
   currentData: WeatherDataCurrent;
   forecastUnits: WeatherDataUnits;
 }
