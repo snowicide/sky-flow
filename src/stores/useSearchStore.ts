@@ -47,14 +47,14 @@ export const useSearchStore = create<SearchStore>()(
       reset: () => set(initialState),
     }),
     {
-      name: "search-hydration",
+      name: "weather-search",
       partialize: (s) => ({
         lastValidatedCity: s.lastValidatedCity,
-        currentTab: s.currentTab,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
+      version: 1,
     },
   ),
 );
