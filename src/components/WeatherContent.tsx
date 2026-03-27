@@ -10,8 +10,8 @@ import { DailyForecast } from "./DailyForecast";
 import { HourlyForecast } from "./HourlyForecast";
 import { TodayWeather } from "./TodayWeather";
 import { NetworkError } from "./ui/NetworkError";
+import WeatherContentSkeleton from "./WeatherContentSkeleton";
 import { WeatherDetails } from "./WeatherDetails";
-import { WeatherContentSkeleton } from "./WeatherSkeleton";
 
 export function WeatherContent({ cityData }: { cityData: CityData }) {
   const { data, isPending, isError, error, refetch } =
