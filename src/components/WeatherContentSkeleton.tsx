@@ -1,4 +1,4 @@
-import { ChartSectionSkeleton } from "./ChartSection/ChartSectionSkeleton";
+import { ChartSkeleton } from "./Chart/ChartSkeleton";
 import DailyForecastSkeleton from "./DailyForecast/DailyForecastSkeleton";
 import DetailsSkeleton from "./Details/DetailsSkeleton";
 import HourlyForecastSkeleton from "./HourlyForecast/HourlyForecastSkeleton";
@@ -18,7 +18,7 @@ export default function WeatherContentSkeleton() {
           <HourlyForecastSkeleton />
         </div>
 
-        <ChartSectionSkeleton />
+        <ChartSkeleton />
       </div>
     </>
   );

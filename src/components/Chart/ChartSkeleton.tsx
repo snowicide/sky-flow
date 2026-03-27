@@ -1,4 +1,4 @@
-export function ChartSectionSkeleton() {
+export function ChartSkeleton() {
   return (
     <div
       className="bg-[hsl(243,27%,20%)] animate-pulse border border-white/10 rounded-xl

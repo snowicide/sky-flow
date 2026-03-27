@@ -3,9 +3,9 @@ import { act, renderHook } from "@testing-library/react";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import { createForecastData } from "@/testing/mocks/factories/weather";
 
-import { useWeatherChart } from "./useWeatherChart";
+import { useChartView } from "./useChartView";
 
-describe("useWeatherChart", () => {
+describe("useChartView", () => {
   const { dailyData, hourlyData } = createForecastData();
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe("useWeatherChart", () => {
   });
 
   it("should return formatted chartData", () => {
-    const { result } = renderHook(() => useWeatherChart(dailyData, hourlyData));
+    const { result } = renderHook(() => useChartView(dailyData, hourlyData));
 
     expect(result.current.chartDailyData).toHaveLength(7);
     expect(result.current.chartDailyData[0]).toEqual({
@@ -38,7 +38,7 @@ describe("useWeatherChart", () => {
   });
 
   it("should show correct units", () => {
-    const { result } = renderHook(() => useWeatherChart(dailyData, hourlyData));
+    const { result } = renderHook(() => useChartView(dailyData, hourlyData));
 
     act(() =>
       useSettingsStore.setState({
@@ -53,7 +53,7 @@ describe("useWeatherChart", () => {
   });
 
   it("should get ticks", () => {
-    const { result } = renderHook(() => useWeatherChart(dailyData, hourlyData));
+    const { result } = renderHook(() => useChartView(dailyData, hourlyData));
 
     expect(result.current.dailyTicks).toEqual([-2, +0, 2, 4, 6, 8, 10]);
   });

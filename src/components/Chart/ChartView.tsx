@@ -12,13 +12,13 @@ import { useDeviceType } from "@/hooks/useDeviceType";
 import { WeatherDataDaily, WeatherDataHourly } from "@/types/api/WeatherData";
 
 import { getAspect, getXTickFormatter } from "./chart-utils";
-import { useWeatherChart } from "./hooks";
+import { useChartView } from "./hooks";
 
-export function WeatherChart({
+export function ChartView({
   dailyData,
   hourlyData,
   currentChartTab,
-}: WeatherChartProps) {
+}: ChartViewProps) {
   const { isMobile, isTablet, isDesk, isSmallDesk } = useDeviceType();
   const {
     hourUnit,
@@ -27,7 +27,7 @@ export function WeatherChart({
     chartHourlyData,
     dailyTicks,
     hourlyTicks,
-  } = useWeatherChart(dailyData, hourlyData);
+  } = useChartView(dailyData, hourlyData);
 
   const isDailyTab = currentChartTab === "daily";
 
@@ -145,7 +145,7 @@ export function WeatherChart({
   );
 }
 
-interface WeatherChartProps {
+interface ChartViewProps {
   dailyData: WeatherDataDaily;
   hourlyData: WeatherDataHourly;
   currentChartTab: string;

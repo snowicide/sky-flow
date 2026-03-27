@@ -5,7 +5,7 @@ import { useWeatherQuery } from "@/hooks/useWeatherQuery";
 import { AppError } from "@/types/errors";
 import { isNotFoundCity, type CityData } from "@/types/location";
 
-import { ChartSection } from "./ChartSection";
+import { Chart } from "./Chart";
 import { DailyForecast } from "./DailyForecast";
 import { Details } from "./Details";
 import { HourlyForecast } from "./HourlyForecast";
@@ -41,7 +41,7 @@ export function WeatherContent({ cityData }: { cityData: CityData }) {
         <HourlyForecast hourlyData={hourly} forecastUnits={forecastUnits} />
       </div>
 
-      <ChartSection dailyData={daily} hourlyData={hourly} />
+      <Chart dailyData={daily} hourlyData={hourly} />
     </div>
   );
 }

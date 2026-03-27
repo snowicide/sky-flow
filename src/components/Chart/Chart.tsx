@@ -5,14 +5,14 @@ import type {
   WeatherDataHourly,
 } from "@/types/api/WeatherData";
 
-import { WeatherChart } from "./WeatherChart";
+import { ChartView } from "./ChartView";
 
-export interface ChartSectionProps {
+export interface ChartProps {
   dailyData: WeatherDataDaily;
   hourlyData: WeatherDataHourly;
 }
 
-export function ChartSection({ dailyData, hourlyData }: ChartSectionProps) {
+export function Chart({ dailyData, hourlyData }: ChartProps) {
   const [currentChartTab, setCurrentChartTab] = useState("daily");
   const tabData = ["Daily", "Hourly"];
 
@@ -50,7 +50,7 @@ export function ChartSection({ dailyData, hourlyData }: ChartSectionProps) {
 
       {/* chart */}
       <div className="relative w-full min-h-50 chart-no-focus">
-        <WeatherChart
+        <ChartView
           currentChartTab={currentChartTab}
           dailyData={dailyData}
           hourlyData={hourlyData}
