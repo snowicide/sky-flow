@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 
+import { useSearchActions } from "@/components/Weather/Search/hooks/useSearchActions";
 import { retryIcon } from "@/shared";
 import { useSearchStore } from "@/stores/useSearchStore";
 
-import { useSearchActions } from "../Weather/Search/hooks/useSearchActions";
 
 export function SearchError({ message }: { message: string }) {
   const lastValidatedCity = useSearchStore((s) => s.lastValidatedCity);
