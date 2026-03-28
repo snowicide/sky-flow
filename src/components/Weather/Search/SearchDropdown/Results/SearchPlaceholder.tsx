@@ -1,5 +1,4 @@
-import { FailedSearchIcon } from "@/components/ui/icons";
-import { SearchIcon } from "@/components/ui/icons/SearchIcon";
+import { SearchIcon, FailedSearchIcon } from "@shared/ui";
 
 export function SearchPlaceholder({ inputValue }: { inputValue: string }) {
   const isNotEnoughChars = inputValue.length > 0 && inputValue.length < 2;

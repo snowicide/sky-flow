@@ -1,4 +1,4 @@
-import { CloudMoonIcon } from "../../ui/icons/CloudMoonIcon";
+import { CloudMoonIcon } from "@shared/ui";
 
 import UnitsSettings from "./UnitsSettings";
 

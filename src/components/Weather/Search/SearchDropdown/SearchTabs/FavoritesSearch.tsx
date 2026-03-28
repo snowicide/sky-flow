@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from "react";
 
-import { FavoriteIcon } from "@/components/ui/icons";
 import { useSearchActions } from "@/components/Weather/Search/hooks/useSearchActions";
 import { useSearchHistory } from "@/components/Weather/Search/hooks/useSearchHistory";
 import type { SearchTabProps } from "@/components/Weather/Search/types/history";
 import { isFoundCity } from "@/types/location";
+import { FavoriteIcon } from "@shared/ui";
 
 export const FavoritesSearch = React.memo(function FavoritesSearch({
   data,
