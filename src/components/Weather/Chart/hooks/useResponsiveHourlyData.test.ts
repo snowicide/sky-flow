@@ -1,10 +1,10 @@
 import { renderHook } from "@testing-library/react";
 
-import { useDeviceType } from "@/hooks/useDeviceType";
+import { useDeviceType } from "@shared/lib/hooks/useDeviceType";
 
 import { useResponsiveHourlyData } from "./useResponsiveHourlyData";
 
-vi.mock("@/hooks/useDeviceType", () => ({
+vi.mock("@shared/lib/hooks/useDeviceType", () => ({
   useDeviceType: vi.fn(),
 }));
 
