@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import { retryIcon } from "@/shared";
+import retryIcon from "../assets/icons/icon-retry.svg";
 
 export function NetworkError({ message, refetch }: NetworkErrorProps) {
   return (
