@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import type { WeatherDataDaily } from "@/types/api/WeatherData";
+import type { WeatherDaily } from "@/entities/weather";
 
 import { useDailyForecast } from "./useDailyForecast";
 
@@ -47,5 +47,5 @@ export default function DailyForecast({ dailyData }: DailyForecastProps) {
 }
 
 export interface DailyForecastProps {
-  dailyData: WeatherDataDaily;
+  dailyData: WeatherDaily;
 }

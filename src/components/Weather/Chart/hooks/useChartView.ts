@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
-import type {
-  WeatherDataDaily,
-  WeatherDataHourly,
-} from "@/types/api/WeatherData";
+import { useSettingsStore } from "@/entities/settings";
+import { type WeatherDaily, type WeatherHourly } from "@/entities/weather";
 
 import { getTicks } from "../chart-utils";
 
@@ -12,15 +9,15 @@ import { useChartData } from "./useChartData";
 import { useResponsiveHourlyData } from "./useResponsiveHourlyData";
 
 export function useChartView(
-  dailyData: WeatherDataDaily,
-  hourlyData: WeatherDataHourly,
+  dailyData: WeatherDaily,
+  hourlyData: WeatherHourly,
 ): UseChartViewReturn {
   const { chartDailyData, chartHourlyData: fullHourlyData } = useChartData(
     dailyData,
     hourlyData,
   );
-  const tempUnit = useSettingsStore((state) => state.units.temperature);
-  const hourUnit = useSettingsStore((state) => state.units.time);
+  const tempUnit = useSettingsStore((state) => state.units.temperatureUnit);
+  const hourUnit = useSettingsStore((state) => state.units.timeUnit);
   const currentUnit = tempUnit === "celsius" ? "°C" : "°F";
   const chartHourlyData = useResponsiveHourlyData(fullHourlyData);
 

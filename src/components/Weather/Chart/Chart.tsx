@@ -1,15 +1,12 @@
 import { useState } from "react";
 
-import type {
-  WeatherDataDaily,
-  WeatherDataHourly,
-} from "@/types/api/WeatherData";
+import type { WeatherDaily, WeatherHourly } from "@/entities/weather";
 
 import { ChartView } from "./ChartView";
 
 export interface ChartProps {
-  dailyData: WeatherDataDaily;
-  hourlyData: WeatherDataHourly;
+  dailyData: WeatherDaily;
+  hourlyData: WeatherHourly;
 }
 
 export function Chart({ dailyData, hourlyData }: ChartProps) {

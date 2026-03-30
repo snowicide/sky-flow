@@ -1,14 +1,12 @@
 import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
 
-import { useSearchActions } from "@/components/Weather/Search/hooks/useSearchActions";
-import type { SearchDataItem } from "@/components/Weather/Search/types/SearchData";
-import { isFoundCity } from "@/types/location";
-import { formatCityDisplay } from "@/utils/formatters";
-import { getWeatherIcon } from "@/utils/weather";
+import { isFoundCity, formatCityDisplay } from "@/entities/location";
+import { getWeatherIcon, SearchResult } from "@/entities/weather";
+import { useSearchActions } from "@/features/search-city";
 
 export function useSearchResultCity(
-  data: SearchDataItem,
+  data: SearchResult,
   inputRef: React.RefObject<HTMLInputElement | null>,
 ): UseSearchResultCityReturn {
   const {
@@ -17,8 +15,8 @@ export function useSearchResultCity(
     country,
     temperature,
     temperatureUnit,
-    latitude: lat,
-    longitude: lon,
+    lat,
+    lon,
     code,
     region,
   } = data;

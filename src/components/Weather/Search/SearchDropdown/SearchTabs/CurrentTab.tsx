@@ -1,5 +1,4 @@
-import { useSearchHistory } from "@/components/Weather/Search/hooks/useSearchHistory";
-import { useSearchStore } from "@/stores/useSearchStore";
+import { useSearchHistory, useSearchStore } from "@/entities/location";
 import { RecentAlertIcon, UnfavoriteIcon } from "@shared/ui";
 
 import { FavoritesSearch } from "./FavoritesSearch";

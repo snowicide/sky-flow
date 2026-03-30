@@ -1,25 +1,27 @@
 import { useMemo } from "react";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
-import type {
-  WeatherDataDaily,
-  WeatherDataHourly,
-} from "@/types/api/WeatherData";
-import { formatDayOfWeek } from "@/utils/formatters";
-import { calculateAverageTemps, groupByDay } from "@/utils/weather";
+import { useSettingsStore } from "@/entities/settings";
+import {
+  type HourlyItem,
+  type WeatherDaily,
+  type WeatherHourly,
+  calculateAverageTemps,
+  groupByDay,
+} from "@/entities/weather";
+import { formatDayOfWeek } from "@/shared";
 
 export function useChartData(
-  dailyData: WeatherDataDaily,
-  hourlyData: WeatherDataHourly,
+  dailyData: WeatherDaily,
+  hourlyData: WeatherHourly,
 ): UseChartDataReturn {
   const selectedDayIndex = useSettingsStore((state) => state.selectedDayIndex);
-  const hourFormat = useSettingsStore((state) => state.units.time);
+  const hourFormat = useSettingsStore((state) => state.units.timeUnit);
 
   const chartDailyData = useMemo(
     () =>
       dailyData.time.slice(0, 7).map((time, index) => {
-        const min = dailyData.temperature_2m_min[index];
-        const max = dailyData.temperature_2m_max[index];
+        const min = dailyData.temperatureMin[index];
+        const max = dailyData.temperatureMax[index];
         const date = new Date(time);
 
         return {
@@ -36,7 +38,7 @@ export function useChartData(
       dayFormat: "dddd",
     }).filter((day) => day.hours.length === 24);
 
-    return filteredDays[selectedDayIndex]?.hours.map((item) => ({
+    return filteredDays[selectedDayIndex]?.hours.map((item: HourlyItem) => ({
       hour: item.hour,
       temp: item.temp,
     }));

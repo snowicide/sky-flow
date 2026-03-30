@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
+import { useSettingsStore } from "@/entities/settings";
 import { createForecastData } from "@/testing/mocks/factories/weather";
 
 import { useChartData } from "./useChartData";
@@ -56,7 +56,7 @@ describe("useChartData", () => {
   it("should return correct hour format", () => {
     act(() =>
       useSettingsStore.setState({
-        units: { ...useSettingsStore.getState().units, time: "24" },
+        units: { ...useSettingsStore.getState().units, timeUnit: "24" },
         selectedDayIndex: 0,
       }),
     );

@@ -2,20 +2,18 @@
 import dayjs from "dayjs";
 import Image from "next/image";
 
-import { bgTodayLarge, bgTodaySmall } from "@/shared";
-import { useDeviceType } from "@/shared/lib/useDeviceType";
-import type {
-  WeatherDataCurrent,
-  WeatherDataUnits,
-} from "@/types/api/WeatherData";
-import { formatCityDisplay } from "@/utils/formatters";
-import { getWeatherIcon } from "@/utils/weather";
-
+import { formatCityDisplay } from "@/entities/location";
+import {
+  getWeatherIcon,
+  type WeatherCurrent,
+  type WeatherUnits,
+} from "@/entities/weather";
+import { bgTodayLarge, bgTodaySmall, useDeviceType } from "@/shared";
 
 export default function Today({ currentData, forecastUnits }: TodayProps) {
   const { isMobile } = useDeviceType();
   const currentSrc = isMobile ? bgTodaySmall : bgTodayLarge;
-  const icon = getWeatherIcon(currentData.weather_code);
+  const icon = getWeatherIcon(currentData.weatherCode);
 
   const displayName = formatCityDisplay({
     status: "found",
@@ -23,8 +21,8 @@ export default function Today({ currentData, forecastUnits }: TodayProps) {
     country: currentData.country,
     region: currentData.region,
     code: currentData.code,
-    lat: currentData.latitude,
-    lon: currentData.longitude,
+    lat: currentData.lat,
+    lon: currentData.lon,
   });
 
   return (
@@ -63,10 +61,10 @@ export default function Today({ currentData, forecastUnits }: TodayProps) {
 
           <div className="font-bold flex items-center gap-1">
             <span className="text-7xl md:text-8xl">
-              {Math.round(currentData.temperature_2m)}
+              {Math.round(currentData.temperature)}
             </span>
             <span className="text-3xl self-start sm:text-4xl text-white/70">
-              {forecastUnits.temperature}
+              {forecastUnits.temperatureUnit}
             </span>
           </div>
         </div>
@@ -76,6 +74,6 @@ export default function Today({ currentData, forecastUnits }: TodayProps) {
 }
 
 interface TodayProps {
-  currentData: WeatherDataCurrent;
-  forecastUnits: WeatherDataUnits;
+  currentData: WeatherCurrent;
+  forecastUnits: WeatherUnits;
 }

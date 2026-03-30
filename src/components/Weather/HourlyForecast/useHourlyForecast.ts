@@ -8,21 +8,24 @@ import {
 } from "react";
 import { useShallow } from "zustand/shallow";
 
-import { useDeviceType } from "@/shared/lib/useDeviceType";
-import { useSettingsStore } from "@/stores/useSettingsStore";
-import type { WeatherDataHourly } from "@/types/api/WeatherData";
-import type { DailyForecast, HourlyItem } from "@/types/weather";
-import { groupByDay } from "@/utils/weather";
+import { useSettingsStore } from "@/entities/settings";
+import {
+  type DailyForecast,
+  type WeatherHourly,
+  groupByDay,
+  type HourlyItem,
+} from "@/entities/weather";
+import { useDeviceType } from "@/shared";
 
 export function useHourlyForecast(
-  hourlyData: WeatherDataHourly,
+  hourlyData: WeatherHourly,
 ): UseHourlyForecastReturn {
   const { selectedDayIndex, setSelectedDayIndex, hourFormat } =
     useSettingsStore(
       useShallow((state) => ({
         selectedDayIndex: state.selectedDayIndex,
         setSelectedDayIndex: state.setSelectedDayIndex,
-        hourFormat: state.units.time,
+        hourFormat: state.units.timeUnit,
       })),
     );
 

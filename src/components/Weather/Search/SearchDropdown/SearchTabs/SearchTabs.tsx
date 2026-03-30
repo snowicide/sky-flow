@@ -1,8 +1,10 @@
 import { useShallow } from "zustand/shallow";
 
-import { useSearchHistory } from "@/components/Weather/Search/hooks/useSearchHistory";
-import type { ActiveTab } from "@/components/Weather/Search/types/history";
-import { useSearchStore } from "@/stores/useSearchStore";
+import {
+  useSearchHistory,
+  useSearchStore,
+  type ActiveTab,
+} from "@/entities/location";
 import { FavoriteIcon, HistoryIcon } from "@shared/ui";
 
 import { CurrentTab } from "./CurrentTab";

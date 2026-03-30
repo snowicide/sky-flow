@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 
-import { useSearchActions } from "@/components/Weather/Search/hooks/useSearchActions";
-import { useSearchStore } from "@/stores/useSearchStore";
+import { useSearchStore } from "@/entities/location";
+import { useSearchActions } from "@/features/search-city";
 
 export const SearchInput = forwardRef<
   HTMLInputElement,

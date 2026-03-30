@@ -2,13 +2,13 @@
 
 import { useRef } from "react";
 
-import { useSearchActions } from "@/components/Weather/Search/hooks/useSearchActions";
-import { useWeatherQuery } from "@/hooks/useWeatherQuery";
-import { type CityData } from "@/types/location";
+import { type CityData } from "@/entities/location";
+import { useWeatherQuery } from "@/entities/weather";
+import { useSearchActions } from "@/features/search-city";
 
 import { useSyncSearch } from "./hooks/useSyncSearch";
 import { SearchBar } from "./SearchBar";
-import { SearchDropdown } from "./SearchDropdown";
+import { SearchDropdown } from "./SearchDropdown/SearchDropdown";
 
 export default function Search({ cityData }: { cityData: CityData }) {
   const inputRef = useRef<HTMLInputElement>(null);

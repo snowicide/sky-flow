@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, render, screen, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
+import { useSettingsStore } from "@/entities/settings";
 
 import UnitsSettings from "./UnitsSettings";
 
@@ -46,11 +46,13 @@ describe("UnitsSettings integration", () => {
 
     const optionFah = await getOption(/fahrenheit/i);
     await user.click(optionFah);
-    expect(useSettingsStore.getState().units.temperature).toBe("fahrenheit");
+    expect(useSettingsStore.getState().units.temperatureUnit).toBe(
+      "fahrenheit",
+    );
 
     const optionCel = await getOption(/celsius/i);
     await user.click(optionCel);
-    expect(useSettingsStore.getState().units.temperature).toBe("celsius");
+    expect(useSettingsStore.getState().units.temperatureUnit).toBe("celsius");
 
     const checkedIcon = await getCheckedIcon(optionCel);
     expect(checkedIcon).toBeInTheDocument();
@@ -61,10 +63,10 @@ describe("UnitsSettings integration", () => {
     act(() =>
       useSettingsStore.setState({
         units: {
-          temperature: "fahrenheit",
-          speed: "mph",
-          precipitation: "inch",
-          time: "24",
+          temperatureUnit: "fahrenheit",
+          speedUnit: "mph",
+          precipitationUnit: "inch",
+          timeUnit: "24",
         },
       }),
     );
@@ -74,10 +76,10 @@ describe("UnitsSettings integration", () => {
     const defaultOption = await getOption(/default option/i);
     await user.click(defaultOption);
 
-    expect(useSettingsStore.getState().units.temperature).toBe("celsius");
-    expect(useSettingsStore.getState().units.speed).toBe("kmh");
-    expect(useSettingsStore.getState().units.precipitation).toBe("mm");
-    expect(useSettingsStore.getState().units.time).toBe("12");
+    expect(useSettingsStore.getState().units.temperatureUnit).toBe("celsius");
+    expect(useSettingsStore.getState().units.speedUnit).toBe("kmh");
+    expect(useSettingsStore.getState().units.precipitationUnit).toBe("mm");
+    expect(useSettingsStore.getState().units.timeUnit).toBe("12");
   });
 });
 

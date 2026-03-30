@@ -8,8 +8,8 @@ import {
   YAxis,
 } from "recharts";
 
+import type { WeatherDaily, WeatherHourly } from "@/entities/weather";
 import { useDeviceType } from "@/shared/lib/useDeviceType";
-import { WeatherDataDaily, WeatherDataHourly } from "@/types/api/WeatherData";
 
 import { getAspect, getXTickFormatter } from "./chart-utils";
 import { useChartView } from "./hooks";
@@ -146,7 +146,7 @@ export function ChartView({
 }
 
 interface ChartViewProps {
-  dailyData: WeatherDataDaily;
-  hourlyData: WeatherDataHourly;
+  dailyData: WeatherDaily;
+  hourlyData: WeatherHourly;
   currentChartTab: string;
 }

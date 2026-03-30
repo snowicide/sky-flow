@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
+import { useSettingsStore } from "@/entities/settings";
 import { createForecastData } from "@/testing/mocks/factories/weather";
 
 import { useChartView } from "./useChartView";
@@ -44,7 +44,7 @@ describe("useChartView", () => {
       useSettingsStore.setState({
         units: {
           ...useSettingsStore.getState().units,
-          temperature: "fahrenheit",
+          temperatureUnit: "fahrenheit",
         },
       }),
     );

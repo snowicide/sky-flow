@@ -1,13 +1,13 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { useSearchStore } from "@/stores/useSearchStore";
+import { useSearchStore } from "@/entities/location";
 import { createCityData } from "@/testing/mocks/factories/cityData";
 
 import { useSyncSearch } from "./useSyncSearch";
 
 // --- 1. mocks ---
 const mockAddCity = vi.fn();
-vi.mock("@/components/Weather/Search/hooks/useSearchHistory", () => ({
+vi.mock("@/entities/location/model/useSearchHistory", () => ({
   useSearchHistory: vi.fn(() => ({
     addCity: mockAddCity,
   })),

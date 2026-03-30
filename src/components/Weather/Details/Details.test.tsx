@@ -36,9 +36,9 @@ describe("Details", () => {
 
   it("should format changed details", () => {
     const { getItem } = setup({
-      precipitation: "inch",
-      speed: "mp/h",
-      temperature: "°F",
+      precipitationUnit: "inch",
+      speedUnit: "mp/h",
+      temperatureUnit: "°F",
     });
 
     expect(getItem(/feels like/i)).toHaveTextContent("°");

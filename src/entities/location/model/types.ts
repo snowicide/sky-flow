@@ -33,7 +33,7 @@ export const isNotFoundCity = (data: CityData): data is NotFoundCity =>
   NotFoundCitySchema.safeParse(data).success;
 
 export type HistoryItem = z.infer<typeof HistoryItemSchema>;
-export type HistoryData = z.infer<typeof HistorySchema>;
+export type History = z.infer<typeof HistorySchema>;
 
 export interface SearchTabProps {
   data: HistoryItem;

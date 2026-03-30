@@ -12,9 +12,9 @@ import userEvent from "@testing-library/user-event";
 import {
   favoriteStore,
   recentStore,
-} from "@/components/Weather/Search/hooks/useSearchHistory";
-import type { HistoryItem } from "@/components/Weather/Search/types/history";
-import { useSearchStore } from "@/stores/useSearchStore";
+  useSearchStore,
+  type HistoryItem,
+} from "@/entities/location";
 import { createCityData } from "@/testing/mocks/factories/cityData";
 import { createHistoryCity } from "@/testing/mocks/factories/historyData";
 
@@ -98,12 +98,6 @@ describe("Search integration", () => {
   it("should navigate from recent list", async () => {
     const { setRecentItem, user, input, findOption, getLink } = setup();
     setRecentItem();
-
-    act(() => {
-      recentStore.reset();
-      useSearchStore.getState().reset();
-    });
-
     await user.click(input);
 
     const cityOption = await findOption("Berlin, Germany");
@@ -123,10 +117,6 @@ describe("Search integration", () => {
   it("should navigate from favorites list", async () => {
     const { setFavoritesItem, findTab, findOption, user, getLink } = setup();
     setFavoritesItem();
-    act(() => {
-      favoriteStore.reset();
-      useSearchStore.getState().reset();
-    });
     await act(async () => await useSearchStore.setState({ isOpen: true }));
 
     const favoritesTab = await findTab(/favorites searches/i);
@@ -149,10 +139,6 @@ describe("Search integration", () => {
   it("should toggle favorites in recent tab", async () => {
     const { setRecentItem, findOption, getIcon, user } = setup();
     setRecentItem();
-    act(() => {
-      recentStore.reset();
-      useSearchStore.getState().reset();
-    });
     await act(async () => await useSearchStore.setState({ isOpen: true }));
 
     const cityOption = await findOption("Berlin, Germany");
@@ -181,10 +167,6 @@ describe("Search integration", () => {
   it("should remove city from recent", async () => {
     const { setRecentItem, findOption, getIcon, user } = setup();
     setRecentItem();
-    act(() => {
-      recentStore.reset();
-      useSearchStore.getState().reset();
-    });
     await act(async () => await useSearchStore.setState({ isOpen: true }));
 
     const cityOption = await findOption("Berlin, Germany");
@@ -204,10 +186,6 @@ describe("Search integration", () => {
 
   it("should remove city from favorites", async () => {
     const { setFavoritesItem, findOption, getIcon, user } = setup();
-    act(() => {
-      favoriteStore.reset();
-      useSearchStore.getState().reset();
-    });
     setFavoritesItem();
     await act(
       async () =>

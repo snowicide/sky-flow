@@ -1,4 +1,4 @@
-import { type CityData } from "@/types/location";
+import type { CityData } from "@/entities/location";
 
 export const createCityData = (
   overrides: CityDataOverrides = {},

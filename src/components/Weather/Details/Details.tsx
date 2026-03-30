@@ -1,10 +1,7 @@
 "use client";
 import { useMemo } from "react";
 
-import type {
-  WeatherDataCurrent,
-  WeatherDataUnits,
-} from "@/types/api/WeatherData";
+import type { WeatherCurrent, WeatherUnits } from "@/entities/weather";
 
 export default function Details({ currentData, forecastUnits }: DetailsProps) {
   const details = useMemo(
@@ -41,21 +38,16 @@ export default function Details({ currentData, forecastUnits }: DetailsProps) {
   );
 }
 
-const formatDetails = (data: WeatherDataCurrent, units: WeatherDataUnits) => {
-  const {
-    apparent_temperature: apparentTemp,
-    relative_humidity_2m: humidity,
-    wind_speed_10m: wind,
-    precipitation,
-  } = data;
+const formatDetails = (data: WeatherCurrent, units: WeatherUnits) => {
+  const { feelsLike, humidity, speed, precipitation } = data;
 
-  const currentToFixed = units.precipitation === "mm" ? 1 : 3;
-  const currentPrecipUnit = units.precipitation === "mm" ? "mm" : "in";
+  const currentToFixed = units.precipitationUnit === "mm" ? 1 : 3;
+  const currentPrecipUnit = units.precipitationUnit === "mm" ? "mm" : "in";
 
   return [
     {
       title: "Feels Like",
-      value: Math.round(apparentTemp),
+      value: Math.round(feelsLike),
       unit: "°",
     },
     {
@@ -65,8 +57,8 @@ const formatDetails = (data: WeatherDataCurrent, units: WeatherDataUnits) => {
     },
     {
       title: "Wind",
-      value: Math.round(wind).toString(),
-      unit: units.speed,
+      value: Math.round(speed).toString(),
+      unit: units.speedUnit,
     },
     {
       title: "Precipitation",
@@ -79,6 +71,6 @@ const formatDetails = (data: WeatherDataCurrent, units: WeatherDataUnits) => {
 };
 
 interface DetailsProps {
-  currentData: WeatherDataCurrent;
-  forecastUnits: WeatherDataUnits;
+  currentData: WeatherCurrent;
+  forecastUnits: WeatherUnits;
 }

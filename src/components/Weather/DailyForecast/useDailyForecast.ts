@@ -1,24 +1,27 @@
 import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
 
-import { useSettingsStore } from "@/stores/useSettingsStore";
-import type { WeatherDataDaily } from "@/types/api/WeatherData";
-import { formatDayOfWeek } from "@/utils/formatters";
-import { getWeatherIcon, calculateAverageTemps } from "@/utils/weather";
+import { useSettingsStore } from "@/entities/settings";
+import {
+  calculateAverageTemps,
+  getWeatherIcon,
+  type WeatherDaily,
+} from "@/entities/weather";
+import { formatDayOfWeek } from "@/shared";
 
 export function useDailyForecast(
-  dailyData: WeatherDataDaily,
+  dailyData: WeatherDaily,
 ): UseDailyForecastReturn {
   const setSelectedDayIndex = useSettingsStore((s) => s.setSelectedDayIndex);
 
   const formattedDays = useMemo(() => {
     const {
-      temperature_2m_min: tempMin,
-      temperature_2m_max: tempMax,
+      feelsLikeMax,
+      feelsLikeMin,
+      temperatureMax,
+      temperatureMin,
+      weatherCode,
       time,
-      weather_code: weatherCode,
-      apparent_temperature_min: apparentTempMin,
-      apparent_temperature_max: apparentTempMax,
     } = dailyData;
 
     return time.slice(0, 7).map((dateStr: string, index: number) => {
@@ -28,8 +31,8 @@ export function useDailyForecast(
       return {
         day: formatDayOfWeek(date, "dddd"),
         weatherCode: weatherCode?.[index] || 0,
-        temp: `${calculateAverageTemps(tempMin[index], tempMax[index])}°`,
-        feelsLike: `${calculateAverageTemps(apparentTempMin[index], apparentTempMax[index])}°`,
+        temp: `${calculateAverageTemps(temperatureMin[index], temperatureMax[index])}°`,
+        feelsLike: `${calculateAverageTemps(feelsLikeMin[index], feelsLikeMax[index])}°`,
         date: dateStr,
         image: icon,
       };

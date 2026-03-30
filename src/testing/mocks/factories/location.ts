@@ -1,14 +1,14 @@
-import type { GeoData, GeoDataItem } from "@/types/api/GeoData";
+import type { GeoItemDto, GeoResponseDto } from "@/entities/location";
 
 export const createGeoData = (
-  overrides: Partial<GeoDataItem> = {},
-): GeoData => {
+  overrides: Partial<GeoItemDto> = {},
+): GeoResponseDto => {
   return {
     results: [{ ...getBerlinGeo(), ...overrides }],
   };
 };
 
-const getBerlinGeo = (): GeoDataItem => ({
+const getBerlinGeo = (): GeoItemDto => ({
   latitude: 52.52437,
   longitude: 13.41053,
   timezone: "Europe/Berlin",

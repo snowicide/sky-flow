@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import type { SearchDataItem } from "@/components/Weather/Search/types/SearchData";
+import type { SearchResult } from "@/entities/weather";
 
 import { useSearchResultCity } from "./useSearchResultCity";
 
@@ -47,6 +47,6 @@ export const SearchResultCity = React.memo(function SearchResultCity({
 });
 
 interface SearchResultCityProps {
-  data: SearchDataItem;
+  data: SearchResult;
   inputRef: React.RefObject<HTMLInputElement | null>;
 }

@@ -1,13 +1,12 @@
 "use client";
 import Image from "next/image";
 
+import type { WeatherHourly, WeatherUnits } from "@/entities/weather";
 import { dropdownIcon } from "@/shared";
-import { WeatherDataHourly, WeatherDataUnits } from "@/types/api/WeatherData";
 
 import ChangeSelectedDay from "./ChangeSelectedDay";
 import HourlyItem from "./HourlyItem";
 import { useHourlyForecast } from "./useHourlyForecast";
-
 
 export default function HourlyForecast({
   hourlyData,
@@ -65,7 +64,7 @@ export default function HourlyForecast({
                 key={`${hour.hour}-${index}`}
                 hour={hour}
                 hourFormat={hourFormat}
-                tempUnit={forecastUnits.temperature}
+                tempUnit={forecastUnits.temperatureUnit}
               />
             ))}
           </ul>
@@ -76,6 +75,6 @@ export default function HourlyForecast({
 }
 
 interface HourlyForecastProps {
-  hourlyData: WeatherDataHourly;
-  forecastUnits: WeatherDataUnits;
+  hourlyData: WeatherHourly;
+  forecastUnits: WeatherUnits;
 }

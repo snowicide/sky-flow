@@ -1,15 +1,15 @@
 import type {
-  WeatherData,
-  WeatherDataCurrent,
-  WeatherDataDaily,
-  WeatherDataHourly,
-  WeatherDataUnits,
-} from "@/types/api/WeatherData";
+  Weather,
+  WeatherCurrent,
+  WeatherDaily,
+  WeatherHourly,
+  WeatherUnits,
+} from "@/entities/weather";
 
 // --- 1.1 weather data factories ---
 export const createWeatherData = (
-  overrides: Partial<WeatherData> = {},
-): WeatherData => {
+  overrides: Partial<Weather> = {},
+): Weather => {
   return {
     ...getWeatherData(),
     ...overrides,
@@ -17,7 +17,7 @@ export const createWeatherData = (
 };
 
 // --- 1.2 weather data item ---
-const getWeatherData = (): WeatherData => {
+const getWeatherData = (): Weather => {
   return {
     current: {
       ...getCurrentWeather(),
@@ -42,30 +42,30 @@ export const createForecastData = (
     dailyData: {
       ...getDailyData(),
       ...overrides.daily,
-    } as WeatherDataDaily,
+    } as WeatherDaily,
 
     hourlyData: {
       ...getHourlyData(),
       ...overrides.hourly,
-    } as WeatherDataHourly,
+    } as WeatherHourly,
   };
 };
 
 // --- 2.2 daily/hourly data items ---
-const getDailyData = (): WeatherDataDaily => ({
-  temperature_2m_min: Array.from({ length: 8 }, (_, i) => i),
-  temperature_2m_max: Array.from({ length: 8 }, (_, i) => i + 2),
-  apparent_temperature_min: Array.from({ length: 8 }, (_, i) => i),
-  apparent_temperature_max: Array.from({ length: 8 }, (_, i) => i + 2),
+const getDailyData = (): WeatherDaily => ({
+  temperatureMin: Array.from({ length: 8 }, (_, i) => i),
+  temperatureMax: Array.from({ length: 8 }, (_, i) => i + 2),
+  feelsLikeMin: Array.from({ length: 8 }, (_, i) => i),
+  feelsLikeMax: Array.from({ length: 8 }, (_, i) => i + 2),
   time: Array.from(
     { length: 8 },
     (_, i) => `2026-03-${(i + 1).toString().padStart(2, "0")}`,
   ),
-  weather_code: Array.from({ length: 8 }, (_, i) => i),
+  weatherCode: Array.from({ length: 8 }, (_, i) => i),
 });
 
-const getHourlyData = (): WeatherDataHourly => ({
-  temperature_2m: [
+const getHourlyData = (): WeatherHourly => ({
+  temperature: [
     ...Array.from({ length: 24 }, (_, i) => i),
     ...Array.from({ length: 24 }, (_, i) => i + 1),
   ],
@@ -79,13 +79,13 @@ const getHourlyData = (): WeatherDataHourly => ({
       (_, i) => `2026-03-02T${i.toString().padStart(2, "0")}:00Z`,
     ),
   ],
-  weather_code: [...Array(24).fill(0), ...Array(24).fill(1)],
+  weatherCode: [...Array(24).fill(0), ...Array(24).fill(1)],
 });
 
 // --- 3.1 current weather factory ---
 export const createCurrentWeather = (
-  overrides: Partial<WeatherDataCurrent> = {},
-): WeatherDataCurrent => {
+  overrides: Partial<WeatherCurrent> = {},
+): WeatherCurrent => {
   return {
     ...getCurrentWeather(),
     ...overrides,
@@ -93,26 +93,26 @@ export const createCurrentWeather = (
 };
 
 // --- 3.2 current weather item ---
-const getCurrentWeather = (): WeatherDataCurrent => ({
-  apparent_temperature: -4,
+const getCurrentWeather = (): WeatherCurrent => ({
+  feelsLike: -4,
   city: "Berlin",
   country: "Germany",
   region: "State of Berlin",
   code: "PPLC",
-  latitude: 52.52437,
-  longitude: 13.41053,
+  lat: 52.52437,
+  lon: 13.41053,
   precipitation: 0,
-  relative_humidity_2m: 40,
-  temperature_2m: -2,
+  humidity: 40,
+  temperature: -2,
   time: "2026-03-01T14:00Z",
-  weather_code: 3,
-  wind_speed_10m: 10,
+  weatherCode: 3,
+  speed: 10,
 });
 
 // --- 4.1 forecast units factory
 export const createForecastUnits = (
-  overrides: Partial<WeatherDataUnits> = {},
-): WeatherDataUnits => {
+  overrides: Partial<WeatherUnits> = {},
+): WeatherUnits => {
   return {
     ...getUnits(),
     ...overrides,
@@ -120,18 +120,18 @@ export const createForecastUnits = (
 };
 
 // --- 4.2 forecast units item ---
-const getUnits = (): WeatherDataUnits => ({
-  precipitation: "mm",
-  speed: "km/h",
-  temperature: "°C",
+const getUnits = (): WeatherUnits => ({
+  precipitationUnit: "mm",
+  speedUnit: "km/h",
+  temperatureUnit: "°C",
 });
 
 interface WeatherOverrides {
-  daily?: Partial<WeatherDataDaily>;
-  hourly?: Partial<WeatherDataHourly>;
+  daily?: Partial<WeatherDaily>;
+  hourly?: Partial<WeatherHourly>;
 }
 
 interface WeatherDataMocks {
-  dailyData: WeatherDataDaily;
-  hourlyData: WeatherDataHourly;
+  dailyData: WeatherDaily;
+  hourlyData: WeatherHourly;
 }

@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 
-import { fetchGeoData } from "@/services/fetchGeoData";
-import type { GeoDataItem } from "@/types/api/GeoData";
 import {
-  type FoundCity,
+  GeoItemDto,
+  fetchGeoData,
   FoundCitySchema,
   type CityData,
-} from "@/types/location";
+  type FoundCity,
+} from "@/entities/location";
 
 import { DEFAULT_CITY_DATA } from "./constants";
 
@@ -64,7 +64,7 @@ const createSearchParams = (data: FoundCity): URLSearchParams => {
 };
 
 const findMatch = (
-  results: GeoDataItem[],
+  results: GeoItemDto[],
   query: { lat?: string; lon?: string; region?: string; country?: string },
 ): CityData => {
   if (query.lat && query.lon) {
@@ -122,7 +122,7 @@ const needsRedirectCheck = (
   );
 };
 
-const createCityData = (data: GeoDataItem): CityData => ({
+const createCityData = (data: GeoItemDto): CityData => ({
   status: "found",
   city: data.name,
   region: data.admin1,

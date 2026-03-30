@@ -1,4 +1,4 @@
-import type { FoundCity } from "@/types/location";
+import type { FoundCity } from "@/entities/location";
 
 export const DEFAULT_CITY_DATA: FoundCity = {
   status: "found",

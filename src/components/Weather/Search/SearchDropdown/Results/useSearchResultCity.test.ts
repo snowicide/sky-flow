@@ -6,14 +6,13 @@ import { createResultsMocks } from "@/testing/mocks/factories/search";
 
 import { useSearchResultCity } from "./useSearchResultCity";
 
-
 // --- 1. mocks ---
 const searchSelectedCity = vi.hoisted(() =>
   vi.fn((_, inputRef) => {
     inputRef?.current?.blur();
   }),
 );
-vi.mock("@/components/Weather/Search/hooks/useSearchActions", () => ({
+vi.mock("@features/search-city/model/use-search", () => ({
   useSearchActions: () => ({ searchSelectedCity }),
 }));
 

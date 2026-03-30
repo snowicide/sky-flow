@@ -1,7 +1,7 @@
 import { useShallow } from "zustand/shallow";
 
-import { useSearchActions } from "@/components/Weather/Search/hooks/useSearchActions";
-import { useSearchStore } from "@/stores/useSearchStore";
+import { useSearchStore } from "@/entities/location";
+import { useSearchActions } from "@/features/search-city";
 
 import { SearchPlaceholder } from "./Results/SearchPlaceholder";
 import { SearchResultCity } from "./Results/SearchResultCity";
