@@ -2,7 +2,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { useSettingsStore } from "@/entities/settings";
 import { type SearchResults, fetchSearchResults } from "@/entities/weather";
-import { AppError } from "@/shared";
+import { AppError } from "@/shared/api";
 
 export function useSearchQuery(
   searchResult: string,

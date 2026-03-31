@@ -1,3 +1,4 @@
+"use client";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChangeEvent,
@@ -71,6 +72,7 @@ export function useSearchActions(): UseSearchActionsReturn {
 
       if (isFoundCity(cityData)) {
         const { country, lat, lon, region, code } = cityData;
+
         if (region) params.set("region", region);
         if (country) params.set("country", country);
         if (code) params.set("code", code);

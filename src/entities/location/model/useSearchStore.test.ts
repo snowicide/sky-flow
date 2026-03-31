@@ -1,6 +1,6 @@
 import { act } from "@testing-library/react";
 
-import { DEFAULT_CITY_DATA } from "@/app/weather/constants";
+import { DEFAULT_CITY_DATA } from "@/pages-flat/weather/model/constants";
 import { createCityData } from "@/testing/mocks/factories/cityData";
 
 import { useSearchStore } from "./useSearchStore";

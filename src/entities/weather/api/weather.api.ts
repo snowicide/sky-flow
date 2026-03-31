@@ -1,6 +1,7 @@
 import { fetchGeoData, isFoundCity, type CityData } from "@/entities/location";
 import { DEFAULT_UNITS } from "@/entities/settings";
-import { handleApiError, request, AppError } from "@/shared";
+import { handleApiError, request } from "@/shared/api";
+import { AppError } from "@/shared/api";
 import { API_CONFIG } from "@/shared/config/constants";
 
 import { mapToForecastData, mapToResultsData } from "../model/mapper";

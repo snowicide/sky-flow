@@ -6,7 +6,7 @@ import {
 import { renderHook, waitFor } from "@testing-library/react";
 
 import type { CityData } from "@/entities/location";
-import { AppError } from "@/shared";
+import { AppError } from "@/shared/api";
 import { createCityData } from "@/testing/mocks/factories/cityData";
 import { createWeatherData } from "@/testing/mocks/factories/weather";
 
