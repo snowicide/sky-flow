@@ -10,7 +10,7 @@ import { AppError } from "@/shared/api";
 import { createCityData } from "@/shared/lib/testing";
 import { createWeatherData } from "@/shared/lib/testing";
 
-import { useWeatherQuery } from "./useWeatherQuery";
+import { useWeatherQuery } from "../useWeatherQuery";
 
 // --- 1. mocks ---
 vi.mock("@tanstack/react-query", async () => {

@@ -4,7 +4,7 @@ import { sunnyIcon } from "@/entities/weather/testing";
 import { createCityData } from "@/shared/lib/testing";
 import { createResultsMocks } from "@/shared/lib/testing";
 
-import { useSearchResultCity } from "./useSearchResultCity";
+import { useSearchResultCity } from "../useSearchResultCity";
 
 // --- 1. mocks ---
 const searchSelectedCity = vi.hoisted(() =>

@@ -1,7 +1,7 @@
 import type { Mock } from "vitest";
 import z from "zod";
 
-import { StorageStore } from "./storage-store";
+import { StorageStore } from "../storage-store";
 
 // --- 1. schema ---
 const TestSchema = z.object({

@@ -1,3 +1,3 @@
-export { useSettingsStore } from "./model/settings.store";
+export { useSettingsStore } from "./model/useSettingsStore";
 
-export { DEFAULT_UNITS } from "./model/settings.lib";
+export { DEFAULT_UNITS } from "./model/useSettingsStore.lib";

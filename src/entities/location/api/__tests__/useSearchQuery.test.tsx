@@ -4,7 +4,7 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { AppError } from "@/shared/api";
 import { createResultsMocks } from "@/shared/lib/testing";
 
-import { useSearchQuery } from "./useSearchQuery";
+import { useSearchQuery } from "../useSearchQuery";
 
 // --- 1. mocks ---
 const mockFetchSearchResults = vi.hoisted(() => vi.fn());

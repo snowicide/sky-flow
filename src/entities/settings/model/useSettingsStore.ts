@@ -3,8 +3,8 @@ import { persist } from "zustand/middleware";
 
 import type { Units } from "@/entities/weather";
 
-import { migrateSettings } from "./settings.lib";
-import type { SettingsStore } from "./settings.types";
+import { migrateSettings } from "./useSettingsStore.lib";
+import type { SettingsStore } from "./useSettingsStore.types";
 
 export const useSettingsStore = create<SettingsStore>()(
   persist(

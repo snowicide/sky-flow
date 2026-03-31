@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 import { type CityData, isFoundCity } from "@/entities/location";
-import { useSettingsStore } from "@/entities/settings/model/settings.store";
+import { useSettingsStore } from "@/entities/settings/model/useSettingsStore";
 import { AppError } from "@/shared/api";
 
 import type { Weather } from "../model/weather.types";

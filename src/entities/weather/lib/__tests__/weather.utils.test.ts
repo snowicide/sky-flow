@@ -1,8 +1,8 @@
 import { fogIcon, overcastIcon, sunnyIcon } from "@/entities/weather/testing";
 import { createForecastData } from "@/shared/lib/testing";
 
-import { getWeatherIcon } from "./icons";
-import { groupByDay } from "./weather.utils";
+import { getWeatherIcon } from "../icons";
+import { groupByDay } from "../weather.utils";
 
 describe("weather", () => {
   describe("groupByDay", () => {

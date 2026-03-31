@@ -3,7 +3,7 @@ import { act, renderHook } from "@testing-library/react";
 import { useSettingsStore } from "@/entities/settings";
 import { createForecastData } from "@/shared/lib/testing";
 
-import { useChartData } from "./useChartData";
+import { useChartData } from "../useChartData";
 
 describe("useChartData", () => {
   const { dailyData, hourlyData } = createForecastData();

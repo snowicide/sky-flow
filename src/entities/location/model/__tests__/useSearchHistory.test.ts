@@ -3,12 +3,12 @@ import { beforeEach, describe, expect, it, type Mock } from "vitest";
 
 import { createHistoryCity } from "@/shared/lib/testing";
 
-import type { CityData } from "./types";
+import type { CityData } from "../types";
 import {
   favoriteStore,
   recentStore,
   useSearchHistory,
-} from "./useSearchHistory";
+} from "../useSearchHistory";
 
 // --- 1. mocks ---
 const setLastValidatedCity = vi.fn();

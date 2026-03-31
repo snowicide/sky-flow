@@ -1,6 +1,6 @@
 import type { Units } from "@/entities/weather";
 
-import type { SettingsStore } from "./settings.types";
+import type { SettingsStore } from "./useSettingsStore.types";
 
 export const migrateSettings = (
   persistedState: unknown,

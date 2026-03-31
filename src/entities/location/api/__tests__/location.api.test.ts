@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 
 import { server } from "@/shared/lib/testing";
 
-import { fetchGeoData } from "./location.api";
+import { fetchGeoData } from "../location.api";
 
 describe("fetchGeoData", () => {
   it("should fetch 8 cities with minsk query", async () => {

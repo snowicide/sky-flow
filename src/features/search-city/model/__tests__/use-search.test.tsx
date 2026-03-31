@@ -6,7 +6,7 @@ import { useSearchStore } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
 import { createGeoData } from "@/shared/lib/testing";
 
-import { useSearchActions } from "./use-search";
+import { useSearchActions } from "../use-search";
 
 import "@testing-library/jest-dom";
 

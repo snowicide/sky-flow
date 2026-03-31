@@ -1,5 +1,5 @@
-import { DEFAULT_UNITS } from "./settings.lib";
-import { useSettingsStore } from "./settings.store";
+import { useSettingsStore } from "./useSettingsStore";
+import { DEFAULT_UNITS } from "./useSettingsStore.lib";
 
 describe("useSettingsStore", () => {
   beforeEach(() => {

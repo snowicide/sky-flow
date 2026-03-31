@@ -1,6 +1,6 @@
 import { fogIcon, overcastIcon, sunnyIcon } from "@/entities/weather/testing";
 
-import { getWeatherIcon } from "./icons";
+import { getWeatherIcon } from "../icons";
 
 describe("getIconByWeatherCode", () => {
   test.each([

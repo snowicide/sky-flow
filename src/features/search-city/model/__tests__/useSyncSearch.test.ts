@@ -3,7 +3,7 @@ import { act, renderHook } from "@testing-library/react";
 import { useSearchStore } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
 
-import { useSyncSearch } from "./useSyncSearch";
+import { useSyncSearch } from "../useSyncSearch";
 
 // --- 1. mocks ---
 const mockAddCity = vi.fn();

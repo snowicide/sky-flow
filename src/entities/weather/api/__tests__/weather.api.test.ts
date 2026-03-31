@@ -3,7 +3,7 @@ import { http, HttpResponse } from "msw";
 import { createResultsMocks } from "@/shared/lib/testing";
 import { server } from "@/shared/lib/testing";
 
-import { fetchSearchResults } from "./weather.api";
+import { fetchSearchResults } from "../weather.api";
 
 describe("fetchSearchResults", () => {
   it("should fetch city with search result", async () => {

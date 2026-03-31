@@ -1,6 +1,6 @@
 import { createCityData } from "@/shared/lib/testing";
 
-import { formatCityDisplay } from "./formatCityDisplay";
+import { formatCityDisplay } from "../formatCityDisplay";
 
 describe("formatCityDisplay", () => {
   const { berlinCityData } = createCityData();
