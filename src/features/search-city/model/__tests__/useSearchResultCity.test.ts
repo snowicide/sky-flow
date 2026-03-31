@@ -12,7 +12,7 @@ const searchSelectedCity = vi.hoisted(() =>
     inputRef?.current?.blur();
   }),
 );
-vi.mock("@features/search-city/model/use-search", () => ({
+vi.mock("@features/search-city/model/useSearchActions", () => ({
   useSearchActions: () => ({ searchSelectedCity }),
 }));
 

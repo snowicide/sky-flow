@@ -1,4 +1,4 @@
-export { useSearchActions } from "./model/use-search";
+export { useSearchActions } from "./model/useSearchActions";
 
 export { SearchError } from "./ui/SearchError";
 

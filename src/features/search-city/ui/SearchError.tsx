@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSearchStore } from "@/entities/location";
 import { retryIcon } from "@/shared/assets";
 
-import { useSearchActions } from "../model/use-search";
+import { useSearchActions } from "../model/useSearchActions";
 
 export function SearchError({ message }: { message: string }) {
   const lastValidatedCity = useSearchStore((s) => s.lastValidatedCity);
