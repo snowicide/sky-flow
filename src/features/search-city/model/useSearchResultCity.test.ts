@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { sunnyIcon } from "@/shared";
+import { sunnyIcon } from "@/entities/weather/testing";
 import { createCityData } from "@/shared/lib/testing";
 import { createResultsMocks } from "@/shared/lib/testing";
 

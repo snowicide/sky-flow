@@ -1,15 +1,13 @@
 import { StaticImageData } from "next/image";
 
-import {
-  drizzleIcon,
-  fogIcon,
-  overcastIcon,
-  partlyCloudyIcon,
-  rainIcon,
-  snowIcon,
-  stormIcon,
-  sunnyIcon,
-} from "@/shared";
+import drizzleIcon from "../assets/icon-drizzle.webp";
+import fogIcon from "../assets/icon-fog.webp";
+import overcastIcon from "../assets/icon-overcast.webp";
+import partlyCloudyIcon from "../assets/icon-partly-cloudy.webp";
+import rainIcon from "../assets/icon-rain.webp";
+import snowIcon from "../assets/icon-snow.webp";
+import stormIcon from "../assets/icon-storm.webp";
+import sunnyIcon from "../assets/icon-sunny.webp";
 
 const WEATHER_CODE_TO_ICON: Record<number, string> = {
   0: "sunny",

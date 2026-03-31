@@ -1,4 +1,4 @@
-import { fogIcon, overcastIcon, sunnyIcon } from "@/shared";
+import { fogIcon, overcastIcon, sunnyIcon } from "@/entities/weather/testing";
 import { createForecastData } from "@/shared/lib/testing";
 
 import { getWeatherIcon } from "./icons";
