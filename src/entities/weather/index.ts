@@ -3,8 +3,8 @@ export { useWeatherQuery } from "./api/useWeatherQuery";
 export { fetchSearchResults } from "./api/weather.api";
 
 // --- lib ---
-export { getWeatherIcon } from "./lib/icons";
-export { calculateAverageTemps, groupByDay } from "./lib/weather.utils";
+export { getWeatherIcon } from "./model/icons";
+export { calculateAverageTemps, groupByDay } from "./model/weather.utils";
 
 // --- model ---
 export type { Units, HourlyItem, DailyForecast, format } from "./model/types";
