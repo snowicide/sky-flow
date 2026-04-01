@@ -1,8 +1,7 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { useSearchStore } from "@/entities/location";
+import { type CityData, useSearchStore } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
 import { createGeoData } from "@/shared/lib/testing";
 
@@ -44,11 +43,15 @@ vi.mock("next/navigation", async () => {
     useSearchParams: mocks.navigation.searchParamsModule.useSearchParams,
   };
 });
-vi.mock(
-  "@/entities/location/model/useSearchHistory",
-  () => mocks.hooks.historyModule,
-);
-vi.mock("@/entities/location/api/location.api", () => mocks.services.geoModule);
+vi.mock("@/entities/location", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/entities/location")>();
+  return {
+    ...actual,
+    useSearchHistory: () => ({ addCity: mocks.hooks.addCity }),
+    fetchGeoData: mocks.services.fetchGeoData,
+    useSearchStore: actual.useSearchStore,
+  };
+});
 
 // --- 2. tests ---
 describe("useSearchActions", () => {
@@ -69,104 +72,74 @@ describe("useSearchActions", () => {
     });
   });
 
-  afterAll(() => {
+  afterEach(() => {
     document.body.removeChild(inputElement);
   });
 
-  it("should change active tab", () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
+  describe("searchSelectedCity", () => {
+    it("should change URL, call addCity and blur", async () => {
+      const { result } = renderHook(() => useSearchActions());
+      const { berlinCityData } = createCityData();
 
-    act(() => result.current.handleChangeTab("favorites"));
-    expect(useSearchStore.getState().currentTab).toBe("favorites");
-
-    act(() => result.current.handleChangeTab("recent"));
-    expect(useSearchStore.getState().currentTab).toBe("recent");
-  });
-
-  it("should handling keydown", () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
-    const mockRef = { current: inputElement };
-
-    const enterEvent = {
-      key: "Enter",
-      preventDefault: vi.fn(),
-    } as unknown as React.KeyboardEvent<HTMLInputElement>;
-
-    const escapeEvent = {
-      key: "Escape",
-      preventDefault: vi.fn(),
-    } as unknown as React.KeyboardEvent<HTMLInputElement>;
-    inputElement.focus();
-
-    act(() => useSearchStore.getState().setInputValue("Berlin"));
-    expect(useSearchStore.getState().inputValue).toBe("Berlin");
-
-    act(() => result.current.handleKeydown(escapeEvent, mockRef));
-    expect(useSearchStore.getState().inputValue).toBe("Berlin");
-    expect(document.activeElement).not.toBe(inputElement);
-
-    inputElement.focus();
-
-    act(() => result.current.handleKeydown(enterEvent, mockRef));
-    expect(useSearchStore.getState().inputValue).toBe("");
-    expect(document.activeElement).not.toBe(inputElement);
-  });
-
-  it("should change URL", async () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
-
-    const { minskCityData } = createCityData();
-
-    act(() =>
-      result.current.searchSelectedCity(minskCityData, {
-        current: inputElement,
-      }),
-    );
-
-    await waitFor(() => {
-      expect(mocks.navigation.push).toHaveBeenCalledTimes(1);
-      expect(mocks.navigation.push).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "/?city=Minsk&region=Minsk+City&country=Belarus&code=PPLC&lat=53.9&lon=27.56667",
-        ),
+      act(() =>
+        result.current.searchSelectedCity(berlinCityData, {
+          current: inputElement,
+        }),
       );
-      expect(mocks.navigation.push).toHaveBeenCalledTimes(1);
-      expect(mocks.hooks.addCity).toHaveBeenCalledTimes(1);
-      expect(mocks.hooks.addCity).toHaveBeenCalledWith(minskCityData);
+
+      await waitFor(() => {
+        expect(mocks.navigation.push).toHaveBeenCalledTimes(1);
+        expect(mocks.navigation.push).toHaveBeenCalledWith(
+          expect.stringContaining(
+            "/?city=Berlin&region=State+of+Berlin&country=Germany&code=PPLC&lat=52.52437&lon=13.41053",
+          ),
+        );
+        expect(mocks.navigation.push).toHaveBeenCalledTimes(1);
+        expect(mocks.hooks.addCity).toHaveBeenCalledTimes(1);
+        expect(mocks.hooks.addCity).toHaveBeenCalledWith(berlinCityData);
+      });
+      expect(document.activeElement).not.toBe(inputElement);
+      expect(useSearchStore.getState().inputValue).toBe("");
     });
 
-    expect(useSearchStore.getState().inputValue).toBe("");
+    it("shouldn't call addCity when city not found", async () => {
+      const { result } = renderHook(() => useSearchActions());
+      const city: CityData = { status: "not-found", city: "123" };
+
+      act(() =>
+        result.current.searchSelectedCity(city, { current: inputElement }),
+      );
+      await waitFor(() =>
+        expect(mocks.navigation.push).toHaveBeenCalledTimes(1),
+      );
+      expect(mocks.navigation.push).toHaveBeenCalledWith("/?city=123");
+      expect(mocks.hooks.addCity).not.toHaveBeenCalled();
+    });
   });
 
-  it("should find first city from input", async () => {
-    const geoData = createGeoData();
+  describe("searchCityWithName", () => {
+    it("should find first city from input", async () => {
+      const geoData = createGeoData();
+      mocks.services.fetchGeoData.mockResolvedValue(geoData);
 
-    mocks.services.fetchGeoData.mockResolvedValue(geoData);
-    const { result } = renderHookWithClient(() => useSearchActions());
+      const { result } = renderHook(() => useSearchActions());
 
-    await act(async () => await result.current.searchCityWithName("Berlin"));
-  });
+      await act(async () => await result.current.searchCityWithName("Berlin"));
 
-  it("shouldn't navigate when input is empty", async () => {
-    const { result } = renderHookWithClient(() => useSearchActions());
+      await waitFor(() =>
+        expect(mocks.navigation.push).toHaveBeenCalledTimes(1),
+      );
+    });
 
-    await act(() => result.current.searchCityWithName(""));
-    expect(mocks.navigation.push).not.toHaveBeenCalled();
+    it("shouldn't navigate when input is empty", async () => {
+      const { result } = renderHook(() => useSearchActions());
+
+      const spy = vi.spyOn(result.current, "searchSelectedCity");
+
+      await act(async () => await result.current.searchCityWithName(""));
+
+      expect(spy).not.toHaveBeenCalled();
+      expect(mocks.navigation.push).not.toHaveBeenCalled();
+    });
   });
 });
-
-// --- 3. render with client
-const testQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-    },
-  });
-
-function renderHookWithClient<T>(hook: () => T) {
-  const queryClient = testQueryClient();
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-  return renderHook(hook, { wrapper });
-}

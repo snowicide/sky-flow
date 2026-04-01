@@ -1,7 +1,9 @@
 import { useShallow } from "zustand/shallow";
 
 import { useSearchStore } from "@/entities/location";
-import { useSearchActions } from "@/features/search-city";
+
+import { useSearchCity } from "../../model/useSearchCity";
+import { useSearchHandlers } from "../../model/useSearchHandlers";
 
 import { SearchPlaceholder } from "./search-results/SearchPlaceholder";
 import { SearchResultCity } from "./search-results/SearchResultCity";
@@ -23,8 +25,8 @@ export function SearchDropdown({
     })),
   );
 
-  const { resultData, shouldSearchSkeleton, handleChangeTab } =
-    useSearchActions();
+  const { handleChangeTab } = useSearchHandlers();
+  const { resultData, shouldSearchSkeleton } = useSearchCity();
 
   if (!isOpen) return null;
 

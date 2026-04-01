@@ -4,8 +4,8 @@ import { useRef } from "react";
 
 import { type CityData } from "@/entities/location";
 import { useWeatherQuery } from "@/entities/weather";
-import { useSearchActions } from "@/features/search-city";
 
+import { useSearchHandlers } from "../model/useSearchHandlers";
 import { useSyncSearch } from "../model/useSyncSearch";
 
 import { SearchBar } from "./search-bar/SearchBar";
@@ -14,7 +14,7 @@ import { SearchDropdown } from "./search-dropdown/SearchDropdown";
 export function Search({ cityData }: { cityData: CityData }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { handleSubmit } = useSearchActions();
+  const { handleSubmit } = useSearchHandlers();
   const { isError } = useWeatherQuery(cityData);
 
   useSyncSearch(cityData);
@@ -27,6 +27,7 @@ export function Search({ cityData }: { cityData: CityData }) {
 
       <form
         onSubmit={(e) => handleSubmit(e)}
+        role="form"
         className="flex flex-col sm:flex-row gap-3 max-w-98.25 sm:max-w-150 md:max-w-2xl mx-auto"
       >
         <div

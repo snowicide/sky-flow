@@ -58,3 +58,10 @@ export interface SearchStore {
 
   reset: () => void;
 }
+
+export interface SearchStateReturn {
+  setInputValue: (value: string) => void;
+  setCurrentTab: (tab: ActiveTab) => void;
+  inputValue: string;
+  setIsOpen: (value: boolean) => void;
+}

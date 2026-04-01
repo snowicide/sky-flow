@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useShallow } from "zustand/shallow";
 
 import { DEFAULT_CITY_DATA } from "@/pages-flat/weather/model/constants";
 
 import { FoundCitySchema } from "./types";
-import type { ActiveTab, SearchStore } from "./types";
+import type { ActiveTab, SearchStateReturn, SearchStore } from "./types";
 
 const initialState = {
   inputValue: "",
@@ -43,3 +44,13 @@ export const useSearchStore = create<SearchStore>()(
     },
   ),
 );
+
+export const useSearchState = (): SearchStateReturn =>
+  useSearchStore(
+    useShallow((s) => ({
+      setInputValue: s.setInputValue,
+      setCurrentTab: s.setCurrentTab,
+      inputValue: s.inputValue,
+      setIsOpen: s.setIsOpen,
+    })),
+  );

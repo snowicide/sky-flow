@@ -1,13 +1,14 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 
 import { useSearchStore } from "@/entities/location";
-import { useSearchActions } from "@/features/search-city";
+
+import { useSearchHandlers } from "../../model/useSearchHandlers";
 
 export const SearchInput = forwardRef<
   HTMLInputElement,
   ComponentPropsWithoutRef<"input">
 >((props, ref) => {
-  const { handleKeydown, handleChangeInput } = useSearchActions();
+  const { handleKeydown, handleChangeInput } = useSearchHandlers();
   const setIsOpen = useSearchStore((state) => state.setIsOpen);
   const inputValue = useSearchStore((state) => state.inputValue);
 
