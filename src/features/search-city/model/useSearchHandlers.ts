@@ -1,8 +1,6 @@
 import { RefObject, useCallback, useMemo } from "react";
-
 import { type ActiveTab } from "@/entities/location";
-import { useSearchState } from "@/entities/location/model/useSearchStore";
-
+import { useSearchState } from "@/entities/location";
 import { useSearchActions } from "./useSearchActions";
 
 export function useSearchHandlers(): useSearchHandlersReturn {

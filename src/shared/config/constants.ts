@@ -1,3 +1,5 @@
+import type { Units } from "../types/types";
+
 export const API_CONFIG: Record<string, string> = {
   GEO_BASE_URL: "https://geocoding-api.open-meteo.com",
   FORECAST_BASE_URL: "https://api.open-meteo.com",
@@ -9,3 +11,10 @@ export const STORAGE_KEYS = {
   SEARCH: "weather-search",
   SETTINGS: "weather-settings",
 } as const;
+
+export const DEFAULT_UNITS: Units = {
+  temperatureUnit: "celsius",
+  speedUnit: "kmh",
+  precipitationUnit: "mm",
+  timeUnit: "12",
+};

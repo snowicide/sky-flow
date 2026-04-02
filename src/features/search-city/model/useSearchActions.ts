@@ -1,11 +1,9 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import { RefObject, useCallback, useMemo } from "react";
-
-import { CityData, isFoundCity } from "@/entities/location";
 import { fetchGeoData, useSearchHistory } from "@/entities/location";
-import { useSearchState } from "@/entities/location/model/useSearchStore";
-
+import { useSearchState } from "@/entities/location";
+import { type CityData, isFoundCity } from "@/shared/types";
 import { mapCityToUrlParams } from "./mapCityToUrlParams";
 
 export function useSearchActions(): UseSearchActionsReturn {
@@ -45,12 +43,12 @@ export function useSearchActions(): UseSearchActionsReturn {
 
       searchSelectedCity({
         status: "found",
-        city: geoData.results[0].name,
+        city: geoData.results[0].city,
         country: geoData.results?.[0]?.country,
-        region: geoData.results?.[0]?.admin1,
-        code: geoData.results?.[0]?.feature_code,
-        lat: geoData.results[0].latitude,
-        lon: geoData.results[0].longitude,
+        region: geoData.results?.[0]?.region,
+        code: geoData.results?.[0]?.code,
+        lat: geoData.results[0].lat,
+        lon: geoData.results[0].lon,
       });
     },
     [searchSelectedCity, inputValue],

@@ -1,8 +1,6 @@
 import { act } from "@testing-library/react";
-
 import { DEFAULT_CITY_DATA } from "@/pages-flat/weather/model/constants";
 import { createCityData } from "@/shared/lib/testing";
-
 import { useSearchStore } from "../useSearchStore";
 
 describe("useSearchStore", () => {

@@ -1,13 +1,15 @@
+import type { Geo } from "@/shared/types";
 import { handleApiError, request } from "@shared/api";
 import { API_CONFIG } from "@shared/config/constants";
-
+import { mapToGeoData } from "../model/mapper";
 import { type GeoResponseDto, GeoResponseDtoSchema } from "./dto";
 
 export async function fetchGeoData(
-  city: string,
+  city?: string,
   signal?: AbortSignal,
-): Promise<GeoResponseDto> {
+): Promise<Geo> {
   try {
+    if (!city) return { results: [] };
     const geoUrl = `${API_CONFIG.GEO_BASE_URL}/v1/search?name=${encodeURIComponent(city)}&count=8&language=en`;
     const data = await request<GeoResponseDto>(
       geoUrl,
@@ -18,7 +20,8 @@ export async function fetchGeoData(
 
     if (!data || !data.results) return { results: [] };
 
-    return GeoResponseDtoSchema.parse(data);
+    const result = GeoResponseDtoSchema.parse(data);
+    return mapToGeoData(result);
   } catch (error) {
     handleApiError(error);
   }

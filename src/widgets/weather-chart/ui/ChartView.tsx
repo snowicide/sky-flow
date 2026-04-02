@@ -7,10 +7,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
 import type { WeatherDaily, WeatherHourly } from "@/entities/weather";
 import { useDeviceType } from "@/shared/lib/useDeviceType";
-
 import { getAspect, getXTickFormatter } from "../model/chart.utils";
 import { useChartView } from "../model/useChartView";
 

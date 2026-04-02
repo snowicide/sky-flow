@@ -1,6 +1,6 @@
 // --- api/ ---
-export { useSearchQuery } from "./api/useSearchQuery";
 export { fetchGeoData } from "./api/location.api";
+export { useGeoQuery } from "./api/useGeoQuery";
 export type { GeoItemDto, GeoResponseDto } from "./api/dto";
 
 // --- model/ ---
@@ -8,14 +8,6 @@ export { formatCityDisplay } from "./model/formatCityDisplay";
 export { HistorySchema, HistoryItemSchema } from "./model/schema";
 
 export {
-  FoundCitySchema,
-  NotFoundCitySchema,
-  CityDataSchema,
-  type CityData,
-  type FoundCity,
-  type NotFoundCity,
-  isFoundCity,
-  isNotFoundCity,
   type HistoryItem,
   type History,
   type SearchTabProps,
@@ -28,4 +20,4 @@ export {
   favoriteStore,
   recentStore,
 } from "./model/useSearchHistory";
-export { useSearchStore } from "./model/useSearchStore";
+export { useSearchStore, useSearchState } from "./model/useSearchStore";

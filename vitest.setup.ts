@@ -1,5 +1,4 @@
 import { mockAnimationsApi } from "jsdom-testing-mocks";
-
 import "@testing-library/jest-dom/vitest";
 import { server } from "@/shared/lib/testing";
 

@@ -2,7 +2,6 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Image from "next/image";
-
 import { useSettingsStore } from "@/entities/settings";
 import type { WeatherUnits } from "@/entities/weather";
 import { checkmarkIcon, dropdownIcon, unitsIcon } from "@/shared/assets";

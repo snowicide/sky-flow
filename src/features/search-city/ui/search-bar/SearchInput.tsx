@@ -1,7 +1,5 @@
 import { ComponentPropsWithoutRef, forwardRef } from "react";
-
 import { useSearchStore } from "@/entities/location";
-
 import { useSearchHandlers } from "../../model/useSearchHandlers";
 
 export const SearchInput = forwardRef<

@@ -1,17 +1,10 @@
 "use client";
 import { useCallback, useMemo, useSyncExternalStore } from "react";
-
-import { StorageStore } from "@/shared/lib/storage-store";
-
+import { StorageStore } from "@/shared/lib";
+import { type CityData, isFoundCity, isNotFoundCity } from "@/shared/types";
 import { formatCityDisplay } from "./formatCityDisplay";
 import { HistorySchema } from "./schema";
-import {
-  History,
-  HistoryItem,
-  isFoundCity,
-  isNotFoundCity,
-  type CityData,
-} from "./types";
+import { History, HistoryItem } from "./types";
 import { useSearchStore } from "./useSearchStore";
 
 export const recentStore = new StorageStore(

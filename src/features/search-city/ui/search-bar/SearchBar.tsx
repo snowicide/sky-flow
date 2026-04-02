@@ -1,10 +1,8 @@
 import Image from "next/image";
-
 import { useSearchStore } from "@/entities/location";
-import { useSearchActions } from "@/features/search-city";
 import { searchIcon } from "@/shared/assets";
 import { XIcon } from "@/shared/ui";
-
+import { useSearchActions } from "../../model/useSearchActions";
 import { SearchInput } from "./SearchInput";
 
 export function SearchBar({ inputRef, isError }: SearchBarProps) {

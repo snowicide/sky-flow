@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-
 import { useSettingsStore } from "@/entities/settings";
 import { type WeatherDaily, type WeatherHourly } from "@/entities/weather";
-
 import { getTicks } from "./chart.utils";
 import { useChartData } from "./useChartData";
 import { useResponsiveHourlyData } from "./useResponsiveHourlyData";

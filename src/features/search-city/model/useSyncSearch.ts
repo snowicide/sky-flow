@@ -1,12 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/shallow";
-
-import {
-  isNotFoundCity,
-  type CityData,
-  useSearchHistory,
-  useSearchStore,
-} from "@/entities/location";
+import { useSearchHistory, useSearchStore } from "@/entities/location";
+import { type CityData, isNotFoundCity } from "@/shared/types";
 
 export function useSyncSearch(cityData: CityData): void {
   const { _hasHydrated, setIsOpen } = useSearchStore(

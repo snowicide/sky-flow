@@ -1,17 +1,13 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-
-import { type CityData, isFoundCity } from "@/entities/location";
-import { useSettingsStore } from "@/entities/settings/model/useSettingsStore";
 import { AppError } from "@/shared/api";
-
+import { isFoundCity, type Units, type CityData } from "@/shared/types";
 import type { Weather } from "../model/weather.types";
-
 import { fetchForecastData } from "./weather.api";
 
 export function useWeatherQuery(
   cityData: CityData,
+  units: Units,
 ): UseQueryResult<Weather, AppError> {
-  const units = useSettingsStore((state) => state.units);
   const isEnabled = isFoundCity(cityData);
 
   return useQuery<Weather, AppError>({

@@ -1,13 +1,12 @@
 import { redirect } from "next/navigation";
-
+import { fetchGeoData } from "@/entities/location";
 import {
-  GeoItemDto,
-  fetchGeoData,
+  FoundCity,
   FoundCitySchema,
+  type Geo,
+  type GeoItem,
   type CityData,
-  type FoundCity,
-} from "@/entities/location";
-
+} from "@/shared/types";
 import { DEFAULT_CITY_DATA } from "./constants";
 
 export interface WeatherParams {
@@ -36,7 +35,7 @@ export async function verifyAndGetCityData(
       city,
     };
 
-  const match = findMatch(geoData.results, { lat, lon, region, country });
+  const match = findMatch(geoData, { lat, lon, region, country });
   const { success, data } = FoundCitySchema.safeParse(match);
 
   if (!success) return { status: "not-found", city };
@@ -64,9 +63,10 @@ const createSearchParams = (data: FoundCity): URLSearchParams => {
 };
 
 const findMatch = (
-  results: GeoItemDto[],
+  geoData: Geo,
   query: { lat?: string; lon?: string; region?: string; country?: string },
 ): CityData => {
+  const { results } = geoData;
   if (query.lat && query.lon) {
     const latNum = Number(query.lat);
     const lonNum = Number(query.lon);
@@ -80,7 +80,7 @@ const findMatch = (
 
     if (isValid) {
       const match = results.find(
-        (item) => item.latitude === latNum && item.longitude === lonNum,
+        (item: GeoItem) => item.lat === latNum && item.lon === lonNum,
       );
 
       if (match) return createCityData(match);
@@ -88,10 +88,10 @@ const findMatch = (
   }
 
   if (query.region || query.country) {
-    const match = results.find((item) => {
+    const match = results.find((item: GeoItem) => {
       const matchRegion =
         query.region &&
-        item.admin1?.toLowerCase().includes(query.region.toLowerCase());
+        item.region?.toLowerCase().includes(query.region.toLowerCase());
       const matchCountry =
         query.country &&
         item.country?.toLowerCase().includes(query.country.toLowerCase());
@@ -122,12 +122,12 @@ const needsRedirectCheck = (
   );
 };
 
-const createCityData = (data: GeoItemDto): CityData => ({
+const createCityData = (data: GeoItem): CityData => ({
   status: "found",
-  city: data.name,
-  region: data.admin1,
+  city: data.city,
+  region: data.region,
   country: data.country,
-  code: data.feature_code,
-  lat: data.latitude,
-  lon: data.longitude,
+  code: data.code,
+  lat: data.lat,
+  lon: data.lon,
 });

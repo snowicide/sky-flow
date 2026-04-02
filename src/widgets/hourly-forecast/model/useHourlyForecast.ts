@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import { useShallow } from "zustand/shallow";
-
 import { useSettingsStore } from "@/entities/settings";
 import {
   type DailyForecast,

@@ -1,14 +1,17 @@
-import { fetchGeoData, isFoundCity, type CityData } from "@/entities/location";
-import { DEFAULT_UNITS } from "@/entities/settings";
 import { handleApiError, request } from "@/shared/api";
 import { AppError } from "@/shared/api";
+import { DEFAULT_UNITS } from "@/shared/config/constants";
 import { API_CONFIG } from "@/shared/config/constants";
-
+import {
+  type GeoItem,
+  type Geo,
+  isFoundCity,
+  type CityData,
+} from "@/shared/types";
+import type { Units } from "@/shared/types";
 import { mapToForecastData, mapToResultsData } from "../model/mapper";
 import type { SearchResults } from "../model/search-results.types";
-import type { Units } from "../model/types";
 import type { Weather } from "../model/weather.types";
-
 import { WeatherDtoSchema, type WeatherDto } from "./dto/forecast.dto";
 import { type SearchResultDto, SearchResultsDtoSchema } from "./dto/search.dto";
 
@@ -72,16 +75,13 @@ const createForecastUrl = (lat: number, lon: number, units: Units): string => {
 };
 
 export const fetchSearchResults = async (
-  searchResult: string,
+  geoData: Geo,
   units: Units = DEFAULT_UNITS,
   signal?: AbortSignal,
 ): Promise<SearchResults> => {
   try {
-    const geoData = await fetchGeoData(searchResult, signal);
-    if (!geoData.results || geoData.results.length === 0) return [];
-
-    const onlyLats = geoData.results.map((item) => item.latitude).join(",");
-    const onlyLons = geoData.results.map((item) => item.longitude).join(",");
+    const onlyLats = geoData.results.map((item: GeoItem) => item.lat).join(",");
+    const onlyLons = geoData.results.map((item: GeoItem) => item.lon).join(",");
 
     const url = createSearchUrl(onlyLats, onlyLons, units.temperatureUnit);
     const rawData = await request<SearchResultDto[]>(

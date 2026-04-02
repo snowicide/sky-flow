@@ -1,7 +1,5 @@
 import { renderHook } from "@testing-library/react";
-
 import { useDeviceType } from "@/shared/lib/useDeviceType";
-
 import { useResponsiveHourlyData } from "../useResponsiveHourlyData";
 
 vi.mock("@shared/lib/useDeviceType", () => ({

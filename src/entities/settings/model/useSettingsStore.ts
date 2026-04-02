@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-import type { Units } from "@/entities/weather";
-
+import type { Units } from "@/shared/types";
 import { migrateSettings } from "./useSettingsStore.lib";
 import type { SettingsStore } from "./useSettingsStore.types";
 

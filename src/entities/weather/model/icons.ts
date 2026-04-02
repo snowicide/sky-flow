@@ -1,5 +1,4 @@
 import { StaticImageData } from "next/image";
-
 import drizzleIcon from "../assets/icon-drizzle.webp";
 import fogIcon from "../assets/icon-fog.webp";
 import overcastIcon from "../assets/icon-overcast.webp";

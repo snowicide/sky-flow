@@ -1,8 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
 import type { HourlyItem } from "@/entities/weather";
-
 import { HourDisplay } from "./HourDisplay";
 
 export default React.memo(function HourlyItem({

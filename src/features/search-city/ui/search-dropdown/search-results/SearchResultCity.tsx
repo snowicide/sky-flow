@@ -1,8 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
 import type { SearchResult } from "@/entities/weather";
-
 import { useSearchResultCity } from "../../../model/useSearchResultCity";
 
 export const SearchResultCity = React.memo(function SearchResultCity({

@@ -1,4 +1,4 @@
-import { type CityData, isNotFoundCity } from "./types";
+import { type CityData, isNotFoundCity } from "@shared/types";
 
 export function formatCityDisplay(cityData: CityData): string {
   if (isNotFoundCity(cityData)) return cityData.city;

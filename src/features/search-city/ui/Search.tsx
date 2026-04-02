@@ -1,13 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-
-import { type CityData } from "@/entities/location";
+import { useSettingsStore } from "@/entities/settings";
 import { useWeatherQuery } from "@/entities/weather";
-
+import { type CityData } from "@/shared/types";
 import { useSearchHandlers } from "../model/useSearchHandlers";
 import { useSyncSearch } from "../model/useSyncSearch";
-
 import { SearchBar } from "./search-bar/SearchBar";
 import { SearchDropdown } from "./search-dropdown/SearchDropdown";
 
@@ -15,7 +13,8 @@ export function Search({ cityData }: { cityData: CityData }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { handleSubmit } = useSearchHandlers();
-  const { isError } = useWeatherQuery(cityData);
+  const units = useSettingsStore((s) => s.units);
+  const { isError } = useWeatherQuery(cityData, units);
 
   useSyncSearch(cityData);
 

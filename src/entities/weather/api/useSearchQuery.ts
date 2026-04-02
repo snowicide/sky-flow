@@ -1,19 +1,17 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-
-import { useSettingsStore } from "@/entities/settings";
-import { type SearchResults, fetchSearchResults } from "@/entities/weather";
 import { AppError } from "@/shared/api";
+import type { Geo, Units } from "@/shared/types";
+import type { SearchResults } from "../model/search-results.types";
+import { fetchSearchResults } from "./weather.api";
 
 export function useSearchQuery(
-  searchResult: string,
+  geoData: Geo,
+  units: Units,
 ): UseQueryResult<SearchResults, AppError> {
-  const units = useSettingsStore((state) => state.units);
-  const queryValue = searchResult.trim().toLowerCase();
-
   return useQuery<SearchResults, AppError>({
     queryKey: [
       "search",
-      queryValue,
+      geoData,
       units.temperatureUnit,
       units.speedUnit,
       units.precipitationUnit,
@@ -21,10 +19,10 @@ export function useSearchQuery(
     queryFn: async ({ signal }) => {
       const timeoutSignal = AbortSignal.timeout(5000);
       const combinedSignal = AbortSignal.any([signal, timeoutSignal]);
-      return await fetchSearchResults(queryValue, units, combinedSignal);
+      return await fetchSearchResults(geoData, units, combinedSignal);
     },
 
-    enabled: !!queryValue && queryValue.trim().length >= 2,
+    enabled: !!geoData && !!geoData.results && geoData.results.length > 0,
 
     retry: (failureCount) => failureCount < 2,
 

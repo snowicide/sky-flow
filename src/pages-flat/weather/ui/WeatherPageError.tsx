@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-
 import { retryIcon } from "@/shared/assets";
 
 export function WeatherPageError({ error, reset }: PageErrorProps) {

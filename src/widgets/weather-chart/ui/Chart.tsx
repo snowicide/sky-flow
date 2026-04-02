@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import type { WeatherDaily, WeatherHourly } from "@/entities/weather";
-
 import { ChartTabs } from "./ChartTabs";
 import { ChartView } from "./ChartView";
 

@@ -1,8 +1,6 @@
-import type { GeoResponseDto, FoundCity } from "@/entities/location";
-
+import type { Geo, FoundCity } from "@/shared/types";
 import { type WeatherDto } from "../api/dto/forecast.dto";
 import { SearchResultsDto } from "../api/dto/search.dto";
-
 import { type SearchResults } from "./search-results.types";
 import { type Weather } from "./weather.types";
 
@@ -48,19 +46,19 @@ export const mapToForecastData = (
 
 export const mapToResultsData = (
   searchData: SearchResultsDto,
-  geoData: GeoResponseDto,
+  GeoData: Geo,
 ): SearchResults => {
-  return geoData.results.map((item, index) => {
+  return GeoData.results.map((item, index) => {
     const weather = searchData[index];
 
     return {
-      region: item?.admin1,
-      code: item?.feature_code,
-      city: item.name,
+      region: item?.region,
+      code: item?.code,
+      city: item.city,
       country: item?.country,
       id: item.id,
-      lat: item.latitude,
-      lon: item.longitude,
+      lat: item.lat,
+      lon: item.lon,
       temperature: weather?.current?.temperature_2m,
       temperatureUnit: weather?.current_units?.temperature_2m,
       weatherCode: weather?.current?.weather_code,

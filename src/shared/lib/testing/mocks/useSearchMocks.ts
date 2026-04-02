@@ -4,7 +4,7 @@ import { createMockServices, type ServiceMocks } from "./services";
 
 let mocksInstance: SearchMocks | null = null;
 
-export function createSearcMocks(): SearchMocks {
+export function createSearchMocks(): SearchMocks {
   const hooks = createMockHooks();
   const services = createMockServices();
   const navigation = createMockNavigation();
@@ -18,7 +18,7 @@ export function createSearcMocks(): SearchMocks {
 
 export function getSearchMocks(): SearchMocks {
   if (!mocksInstance) {
-    mocksInstance = createSearcMocks();
+    mocksInstance = createSearchMocks();
   }
   return mocksInstance;
 }

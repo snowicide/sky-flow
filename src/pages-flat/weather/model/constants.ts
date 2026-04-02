@@ -1,4 +1,4 @@
-import type { FoundCity } from "@/entities/location";
+import type { FoundCity } from "@/shared/types";
 
 export const DEFAULT_CITY_DATA: FoundCity = {
   status: "found",

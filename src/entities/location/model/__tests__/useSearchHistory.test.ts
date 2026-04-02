@@ -1,9 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { beforeEach, describe, expect, it, type Mock } from "vitest";
-
 import { createHistoryCity } from "@/shared/lib/testing";
-
-import type { CityData } from "../types";
+import type { CityData } from "@/shared/types";
 import {
   favoriteStore,
   recentStore,

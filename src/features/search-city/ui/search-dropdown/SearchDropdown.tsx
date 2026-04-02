@@ -1,10 +1,7 @@
 import { useShallow } from "zustand/shallow";
-
 import { useSearchStore } from "@/entities/location";
-
 import { useSearchCity } from "../../model/useSearchCity";
 import { useSearchHandlers } from "../../model/useSearchHandlers";
-
 import { SearchPlaceholder } from "./search-results/SearchPlaceholder";
 import { SearchResultCity } from "./search-results/SearchResultCity";
 import { SearchResultsSkeleton } from "./search-results/SearchResultsSkeleton";

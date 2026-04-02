@@ -1,27 +1,35 @@
 "use client";
-import { isNotFoundCity, type CityData } from "@/entities/location";
-import { useWeatherQuery } from "@/entities/weather";
-import { SearchError } from "@/features/search-city";
-import { AppError } from "@/shared/api";
-import { NetworkError } from "@/shared/ui";
 import { DailyForecast } from "@/widgets/daily-forecast";
 import { HourlyForecast } from "@/widgets/hourly-forecast";
 import { Chart } from "@/widgets/weather-chart";
 import { Details } from "@/widgets/weather-details";
 import { Today } from "@/widgets/weather-today";
-
+import { SearchError } from "@/features/search-city";
+import { isNotFoundCity, type CityData } from "@/shared/types";
+import { NetworkError } from "@/shared/ui";
+import { useWeatherPage } from "../model/useWeatherPage";
 import { WeatherPageSkeleton } from "./WeatherPageSkeleton";
 
 export function PageClient({ cityData }: { cityData: CityData }) {
-  const { data, isPending, isError, error, refetch } =
-    useWeatherQuery(cityData);
+  const result = useWeatherPage(cityData);
 
-  if (isNotFoundCity(cityData)) return <SearchError message={cityData.city} />;
+  if (isNotFoundCity(cityData)) {
+    return <SearchError message={cityData.city} />;
+  }
 
-  if (isPending) return <WeatherPageSkeleton />;
+  if (!result) {
+    return <WeatherPageSkeleton />;
+  }
+
+  const { data, isPending, isError, error, refetch } = result;
+
+  if (isPending) {
+    return <WeatherPageSkeleton />;
+  }
   if (isError || !data) {
+    const isAppError = error && typeof error === "object" && "code" in error;
     const message =
-      error instanceof AppError && error.code === "FORECAST_FAILED"
+      isAppError && error.code === "FORECAST_FAILED"
         ? error.message
         : "Check your network connection...";
     return <NetworkError message={message} refetch={refetch} />;

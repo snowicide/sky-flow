@@ -1,11 +1,11 @@
-import tseslint from "typescript-eslint";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
 import nextPlugin from "@next/eslint-plugin-next";
+import importPlugin from "eslint-plugin-import";
 import reactPlugin from "eslint-plugin-react";
 import hooksPlugin from "eslint-plugin-react-hooks";
-import importPlugin from "eslint-plugin-import";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import { FlatCompat } from "@eslint/eslintrc";
+import tseslint from "typescript-eslint";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,6 +29,8 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   ...tseslint.configs.recommended,
 
+  // no any, log, unused vars, null assertion, unused expressions
+  // must function return type, deps
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
@@ -86,6 +88,7 @@ const eslintConfig = [
     },
   },
 
+  // no function return type for tsx
   {
     files: ["**/*.tsx", "**/page.tsx", "**/layout.tsx"],
     rules: {
@@ -93,12 +96,24 @@ const eslintConfig = [
     },
   },
 
+  // no img (testing)
   {
     files: ["**/*.test.tsx"],
     rules: {
       "@next/next/no-img-element": "off",
     },
   },
+
+  // FSD structure
+  ...compat.config({
+    plugins: ["@conarti/feature-sliced"],
+    extends: ["plugin:@conarti/feature-sliced/recommended"],
+    rules: {
+      "@conarti/feature-sliced/layers-slices": "error",
+      "@conarti/feature-sliced/absolute-relative": "error",
+      "@conarti/feature-sliced/public-api": "error",
+    },
+  }),
 ];
 
 export default eslintConfig;

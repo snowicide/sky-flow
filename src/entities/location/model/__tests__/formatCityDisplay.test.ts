@@ -1,5 +1,4 @@
 import { createCityData } from "@/shared/lib/testing";
-
 import { formatCityDisplay } from "../formatCityDisplay";
 
 describe("formatCityDisplay", () => {

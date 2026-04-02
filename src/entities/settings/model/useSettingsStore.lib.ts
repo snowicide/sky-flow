@@ -1,5 +1,4 @@
-import type { Units } from "@/entities/weather";
-
+import { DEFAULT_UNITS } from "@/shared/config/constants";
 import type { SettingsStore } from "./useSettingsStore.types";
 
 export const migrateSettings = (
@@ -33,13 +32,6 @@ export const migrateSettings = (
     return state as unknown as SettingsStore;
   }
   return persistedState as SettingsStore;
-};
-
-export const DEFAULT_UNITS: Units = {
-  temperatureUnit: "celsius",
-  speedUnit: "kmh",
-  precipitationUnit: "mm",
-  timeUnit: "12",
 };
 
 type persistOld = {

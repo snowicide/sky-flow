@@ -1,8 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
-
 import { useSearchStore } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
-
 import { useSyncSearch } from "../useSyncSearch";
 
 // --- 1. mocks ---

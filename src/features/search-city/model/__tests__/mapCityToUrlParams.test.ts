@@ -1,6 +1,5 @@
-import type { CityData } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
-
+import type { CityData } from "@/shared/types";
 import { mapCityToUrlParams } from "../mapCityToUrlParams";
 
 describe("mapCityToUrlParams", () => {

@@ -1,6 +1,5 @@
 import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
-
 import { useSettingsStore } from "@/entities/settings";
 import {
   calculateAverageTemps,

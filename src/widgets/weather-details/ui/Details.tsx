@@ -1,6 +1,5 @@
 "use client";
 import { useMemo } from "react";
-
 import type { WeatherCurrent, WeatherUnits } from "@/entities/weather";
 
 export function Details({ currentData, forecastUnits }: DetailsProps) {

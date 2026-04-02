@@ -8,7 +8,6 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
 import {
   favoriteStore,
   recentStore,
@@ -17,7 +16,6 @@ import {
 } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
 import { createHistoryCity } from "@/shared/lib/testing";
-
 import { Search } from "./Search";
 
 // --- 1. mocks ---

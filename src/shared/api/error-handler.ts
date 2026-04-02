@@ -1,5 +1,4 @@
 import { ZodError } from "zod";
-
 import { AppError } from "./app-error";
 
 export function handleApiError(error: unknown): never {

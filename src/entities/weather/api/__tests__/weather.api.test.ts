@@ -1,22 +1,23 @@
 import { http, HttpResponse } from "msw";
-
-import { createResultsMocks } from "@/shared/lib/testing";
+import { DEFAULT_UNITS } from "@/shared/config/constants";
+import { createGeoData, createResultsMocks } from "@/shared/lib/testing";
 import { server } from "@/shared/lib/testing";
-
 import { fetchSearchResults } from "../weather.api";
 
 describe("fetchSearchResults", () => {
+  const geoData = createGeoData();
+  const [searchData] = createResultsMocks();
+
   it("should fetch city with search result", async () => {
-    const [searchResults] = createResultsMocks();
-    const result = await fetchSearchResults("Berlin");
+    const result = await fetchSearchResults(geoData, DEFAULT_UNITS);
 
-    expect(result[0]).toEqual(searchResults[0]);
+    expect(result[0]).toEqual(searchData[0]);
 
-    expect(result.at(-1)).toEqual(searchResults.at(-1));
+    expect(result.at(-1)).toEqual(searchData.at(-1));
   });
 
   it("should return empty array if no results", async () => {
-    const results = await fetchSearchResults("notFound123");
+    const results = await fetchSearchResults({ results: [] }, DEFAULT_UNITS);
 
     expect(results).toEqual([]);
   });
@@ -34,7 +35,7 @@ describe("fetchSearchResults", () => {
       ),
     );
 
-    const result = fetchSearchResults("Berlin");
+    const result = fetchSearchResults(geoData);
 
     await expect(result).rejects.toThrowError("Data validation failed:");
     await expect(result).rejects.toThrowError(

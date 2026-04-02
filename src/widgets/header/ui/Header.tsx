@@ -1,5 +1,4 @@
 import { CloudMoonIcon } from "@shared/ui";
-
 import UnitsSettings from "./UnitsSettings";
 
 export function Header() {

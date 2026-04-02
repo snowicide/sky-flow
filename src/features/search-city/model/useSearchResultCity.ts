@@ -1,9 +1,9 @@
 import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
-
-import { isFoundCity, formatCityDisplay } from "@/entities/location";
+import { formatCityDisplay } from "@/entities/location";
 import { getWeatherIcon, SearchResult } from "@/entities/weather";
-import { useSearchActions } from "@/features/search-city";
+import { isFoundCity } from "@/shared/types";
+import { useSearchActions } from "../model/useSearchActions";
 
 export function useSearchResultCity(
   data: SearchResult,

@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-
 import { useSettingsStore } from "@/entities/settings";
 import {
   type HourlyItem,

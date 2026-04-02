@@ -1,12 +1,8 @@
 import React, { useCallback, useMemo } from "react";
-
-import {
-  useSearchHistory,
-  type SearchTabProps,
-  isFoundCity,
-} from "@/entities/location";
-import { useSearchActions } from "@/features/search-city";
+import { useSearchHistory, type SearchTabProps } from "@/entities/location";
+import { isFoundCity } from "@/shared/types";
 import { FavoriteIcon, XIcon } from "@shared/ui";
+import { useSearchActions } from "../../../model/useSearchActions";
 
 export const RecentSearch = React.memo(function RecentSearch({
   data,

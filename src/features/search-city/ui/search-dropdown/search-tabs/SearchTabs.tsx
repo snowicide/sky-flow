@@ -1,12 +1,10 @@
 import { useShallow } from "zustand/shallow";
-
 import {
   useSearchHistory,
   useSearchStore,
   type ActiveTab,
 } from "@/entities/location";
 import { FavoriteIcon, HistoryIcon } from "@shared/ui";
-
 import { CurrentTab } from "./CurrentTab";
 
 export function SearchTabs({

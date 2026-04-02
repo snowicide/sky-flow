@@ -1,8 +1,6 @@
 "use client";
 import Image from "next/image";
-
 import type { WeatherDaily } from "@/entities/weather";
-
 import { useDailyForecast } from "../model/useDailyForecast";
 
 export function DailyForecast({ dailyData }: DailyForecastProps) {

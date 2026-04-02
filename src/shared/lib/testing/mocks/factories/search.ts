@@ -1,5 +1,4 @@
 import type { SearchResults, SearchResult } from "@/entities/weather";
-
 import { CITY_BASE_DATA } from "../data/cities";
 
 export const createResultsMocks = (

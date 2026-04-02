@@ -1,5 +1,4 @@
 import { http, HttpResponse } from "msw";
-
 import { CITY_BASE_DATA } from "../mocks/data/cities";
 
 export const handlers = [

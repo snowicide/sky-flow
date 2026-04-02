@@ -1,10 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useShallow } from "zustand/shallow";
-
 import { DEFAULT_CITY_DATA } from "@/pages-flat/weather/model/constants";
-
-import { FoundCitySchema } from "./types";
+import { FoundCitySchema } from "@/shared/types";
 import type { ActiveTab, SearchStateReturn, SearchStore } from "./types";
 
 const initialState = {

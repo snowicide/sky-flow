@@ -4,12 +4,11 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
-
-import type { CityData } from "@/entities/location";
 import { AppError } from "@/shared/api";
+import { DEFAULT_UNITS } from "@/shared/config/constants";
 import { createCityData } from "@/shared/lib/testing";
 import { createWeatherData } from "@/shared/lib/testing";
-
+import type { CityData } from "@/shared/types";
 import { useWeatherQuery } from "../useWeatherQuery";
 
 // --- 1. mocks ---
@@ -48,7 +47,7 @@ describe("useWeatherQuery", () => {
   it("should fetch data", async () => {
     mockFetchForecastData.mockResolvedValue(weatherData);
     const { result } = renderHookWithClient(() =>
-      useWeatherQuery(minskCityData),
+      useWeatherQuery(minskCityData, DEFAULT_UNITS),
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -63,7 +62,7 @@ describe("useWeatherQuery", () => {
     mockFetchForecastData.mockRejectedValue(error);
 
     const { result } = renderHookWithClient(() =>
-      useWeatherQuery(minskCityData),
+      useWeatherQuery(minskCityData, DEFAULT_UNITS),
     );
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -80,7 +79,7 @@ describe("useWeatherQuery", () => {
     mockFetchForecastData.mockRejectedValue(error);
 
     const { result } = renderHookWithClient(() =>
-      useWeatherQuery(minskCityData),
+      useWeatherQuery(minskCityData, DEFAULT_UNITS),
     );
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -94,7 +93,7 @@ describe("useWeatherQuery", () => {
       city: "nonExist123",
     };
     const { result } = renderHookWithClient(() =>
-      useWeatherQuery(notFoundCityData),
+      useWeatherQuery(notFoundCityData, DEFAULT_UNITS),
     );
 
     expect(mockFetchForecastData).not.toHaveBeenCalled();
@@ -109,7 +108,7 @@ describe("useWeatherQuery", () => {
     mockFetchForecastData.mockRejectedValue(abortError);
 
     const { result } = renderHookWithClient(() =>
-      useWeatherQuery(minskCityData),
+      useWeatherQuery(minskCityData, DEFAULT_UNITS),
     );
 
     await waitFor(() => expect(result.current.isError).toBe(true));

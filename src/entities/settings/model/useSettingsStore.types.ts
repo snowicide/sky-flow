@@ -1,4 +1,4 @@
-import type { Units } from "@/entities/weather";
+import type { Units } from "@/shared/types";
 
 export interface SettingsStore {
   units: Units;

@@ -1,6 +1,7 @@
-import { fogIcon, overcastIcon, sunnyIcon } from "@/entities/weather/testing";
 import { createForecastData } from "@/shared/lib/testing";
-
+import fogIcon from "../../assets/icon-fog.webp";
+import overcastIcon from "../../assets/icon-overcast.webp";
+import sunnyIcon from "../../assets/icon-sunny.webp";
 import { getWeatherIcon } from "../icons";
 import { groupByDay } from "../weather.utils";
 

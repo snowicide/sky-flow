@@ -3,7 +3,6 @@ import {
   formatHourOfDay,
   getHourNumber,
 } from "@shared/lib/formatters";
-
 import { getWeatherIcon } from "./icons";
 import type { DailyForecast, format, HourlyItem } from "./types";
 import type { WeatherHourly } from "./weather.types";

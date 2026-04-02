@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-
 import { useDeviceType } from "@/shared/lib/useDeviceType";
 
 export function useResponsiveHourlyData<

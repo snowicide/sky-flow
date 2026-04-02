@@ -1,7 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-
 import { createForecastData } from "@/shared/lib/testing";
-
 import { useHourlyForecast } from "./useHourlyForecast";
 
 const mockUseDeviceType = vi.fn();

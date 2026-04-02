@@ -1,7 +1,6 @@
 "use client";
 import dayjs from "dayjs";
 import Image from "next/image";
-
 import { formatCityDisplay } from "@/entities/location";
 import {
   getWeatherIcon,

@@ -1,13 +1,10 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { type CityData, useSearchStore } from "@/entities/location";
+import { useSearchStore } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
 import { createGeoData } from "@/shared/lib/testing";
-
+import type { CityData } from "@/shared/types";
 import { useSearchActions } from "../useSearchActions";
-
-import "@testing-library/jest-dom";
 
 // --- 1. mocks ---
 const { mocks } = vi.hoisted(() => {

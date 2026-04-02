@@ -1,4 +1,4 @@
-import { isFoundCity, type CityData } from "@/entities/location";
+import { isFoundCity, type CityData } from "@/shared/types";
 
 export const mapCityToUrlParams = (cityData: CityData): URLSearchParams => {
   const params = new URLSearchParams();

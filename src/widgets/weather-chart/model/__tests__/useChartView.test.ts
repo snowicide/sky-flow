@@ -1,8 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
-
 import { useSettingsStore } from "@/entities/settings";
 import { createForecastData } from "@/shared/lib/testing";
-
 import { useChartView } from "../useChartView";
 
 describe("useChartView", () => {

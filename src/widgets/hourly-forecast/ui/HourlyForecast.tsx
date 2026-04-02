@@ -1,11 +1,8 @@
 "use client";
 import Image from "next/image";
-
 import type { WeatherHourly, WeatherUnits } from "@/entities/weather";
 import { dropdownIcon } from "@/shared/assets";
-
 import { useHourlyForecast } from "../model/useHourlyForecast";
-
 import { DaySelector } from "./DaySelector";
 import HourlyItem from "./HourlyItem";
 

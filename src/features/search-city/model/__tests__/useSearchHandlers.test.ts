@@ -1,7 +1,5 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
-
 import { useSearchStore } from "@/entities/location";
-
 import { useSearchHandlers } from "../useSearchHandlers";
 
 const push = vi.hoisted(() => vi.fn());
