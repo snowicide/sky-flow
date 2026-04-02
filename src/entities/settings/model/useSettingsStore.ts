@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Units } from "@/shared/types";
-import { migrateSettings } from "./useSettingsStore.lib";
+import { migrateSettings } from "./migrateSettings";
 import type { SettingsStore } from "./useSettingsStore.types";
 
 export const useSettingsStore = create<SettingsStore>()(
