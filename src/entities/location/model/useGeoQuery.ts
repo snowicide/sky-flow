@@ -7,9 +7,7 @@ import { AppError } from "@/shared/api";
 import type { Geo } from "@/shared/types";
 import { fetchGeoData } from "../api/location.api";
 
-export function useGeoQuery(
-  query: string | null | undefined,
-): UseQueryResult<Geo, AppError> {
+export function useGeoQuery(query: string): UseQueryResult<Geo, AppError> {
   const validatedQuery = query?.trim().toLowerCase();
 
   return useQuery<Geo, AppError>({

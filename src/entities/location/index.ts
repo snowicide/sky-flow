@@ -3,7 +3,7 @@ export { fetchGeoData } from "./api/location.api";
 export { useGeoQuery } from "./model/useGeoQuery";
 
 // --- model/ ---
-export { formatCityDisplay } from "./model/formatCityDisplay";
+export { formatCityDisplay } from "./lib/formatCityDisplay";
 export { HistorySchema, HistoryItemSchema } from "./model/schema";
 
 export {

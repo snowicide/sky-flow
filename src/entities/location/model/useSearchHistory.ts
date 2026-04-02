@@ -2,7 +2,7 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { StorageStore } from "@/shared/lib";
 import { type CityData, isFoundCity, isNotFoundCity } from "@/shared/types";
-import { formatCityDisplay } from "./formatCityDisplay";
+import { formatCityDisplay } from "../lib/formatCityDisplay";
 import { HistorySchema } from "./schema";
 import { History, HistoryItem } from "./types";
 import { useSearchStore } from "./useSearchStore";

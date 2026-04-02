@@ -19,7 +19,7 @@ export function useWeatherPage(cityData: CityData): WeatherPageReturn {
     data: geoData,
     isFetching: isGeoFetching,
     isFetched: isGeoFetched,
-  } = useGeoQuery(hasCoords ? null : cityData.city);
+  } = useGeoQuery(cityData.city);
 
   const finalCoords = useMemo(() => {
     if (hasCoords) return { lat: cityData.lat, lon: cityData.lon };
