@@ -10,8 +10,8 @@ import {
 } from "@/shared/types";
 import type { Units } from "@/shared/types";
 import { mapToForecastData, mapToResultsData } from "../model/mapper";
-import type { SearchResults } from "../model/search-results.types";
-import type { Weather } from "../model/weather.types";
+import type { SearchResults } from "../model/types/search-results.types";
+import type { Weather } from "../model/types/weather.types";
 import { WeatherDtoSchema, type WeatherDto } from "./dto/forecast.dto";
 import { type SearchResultDto, SearchResultsDtoSchema } from "./dto/search.dto";
 

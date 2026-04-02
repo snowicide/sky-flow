@@ -1,8 +1,8 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { AppError } from "@/shared/api";
 import { isFoundCity, type Units, type CityData } from "@/shared/types";
-import { fetchForecastData } from "../api/weather.api";
-import type { Weather } from "./weather.types";
+import { fetchForecastData } from "../../api/weather.api";
+import type { Weather } from "../types/weather.types";
 
 export function useWeatherQuery(
   cityData: CityData,

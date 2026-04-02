@@ -3,9 +3,9 @@ import {
   formatHourOfDay,
   getHourNumber,
 } from "@shared/lib/formatters";
+import type { DailyForecast, format, HourlyItem } from "../model/types/types";
+import type { WeatherHourly } from "../model/types/weather.types";
 import { getWeatherIcon } from "./icons";
-import type { DailyForecast, format, HourlyItem } from "./types";
-import type { WeatherHourly } from "./weather.types";
 
 export function calculateAverageTemps(min: number, max: number): number {
   return Math.round((min + max) / 2);

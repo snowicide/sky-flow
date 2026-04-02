@@ -1,8 +1,8 @@
 import type { Geo, FoundCity } from "@/shared/types";
 import { type WeatherDto } from "../api/dto/forecast.dto";
 import { SearchResultsDto } from "../api/dto/search.dto";
-import { type SearchResults } from "./search-results.types";
-import { type Weather } from "./weather.types";
+import { type SearchResults } from "./types/search-results.types";
+import { type Weather } from "./types/weather.types";
 
 export const mapToForecastData = (
   data: WeatherDto,
