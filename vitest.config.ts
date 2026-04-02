@@ -1,6 +1,5 @@
 import path from "path";
 import { fileURLToPath } from "url";
-
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
@@ -14,6 +13,10 @@ export default defineConfig({
     setupFiles: [path.resolve(__dirname, "./vitest.setup.ts")],
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@shared": path.resolve(__dirname, "./src/shared"),
+      "@entities": path.resolve(__dirname, "./src/entities"),
+      "@features": path.resolve(__dirname, "./src/features"),
+      "@widgets": path.resolve(__dirname, "./src/widgets"),
     },
     coverage: {
       provider: "v8",
