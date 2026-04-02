@@ -1,8 +1,6 @@
 "use client";
-
-import Image from "next/image";
 import { useSearchStore } from "@/entities/location";
-import { retryIcon } from "@/shared/assets";
+import { CommonIcon } from "@/shared/ui/CommonIcon";
 import { useSearchActions } from "../model/useSearchActions";
 
 export function SearchError({ message }: { message: string }) {
@@ -16,7 +14,7 @@ export function SearchError({ message }: { message: string }) {
         onClick={() => searchSelectedCity(lastValidatedCity)}
         className="flex items-center gap-2 px-4 py-3 bg-[hsl(243,27%,20%)] hover:bg-[hsl(243,23%,24%)] transition rounded-lg"
       >
-        <Image src={retryIcon} alt="Retry" />
+        <CommonIcon icon="retry" alt="Retry" />
         <span>Go back</span>
       </button>
     </div>

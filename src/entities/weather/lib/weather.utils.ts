@@ -5,7 +5,6 @@ import {
 } from "@shared/lib/formatters";
 import type { DailyForecast, format, HourlyItem } from "../model/types/types";
 import type { WeatherHourly } from "../model/types/weather.types";
-import { getWeatherIcon } from "./icons";
 
 export function calculateAverageTemps(min: number, max: number): number {
   return Math.round((min + max) / 2);
@@ -37,13 +36,10 @@ export function groupByDay(
       });
     }
 
-    const icon = getWeatherIcon(data.weatherCode[index]);
-
     const hourItem: HourlyItem = {
       hour: formatHourOfDay(date, hourFormat),
       temp: data.temperature[index],
       weatherCode: data.weatherCode[index],
-      image: icon,
     };
 
     days[currentDayIndex].hours.push(hourItem);

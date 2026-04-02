@@ -1,6 +1,5 @@
-import Image from "next/image";
 import React from "react";
-import type { HourlyItem } from "@/entities/weather";
+import { WeatherIcon, type HourlyItem } from "@/entities/weather";
 import { HourDisplay } from "./HourDisplay";
 
 export default React.memo(function HourlyItem({
@@ -8,14 +7,13 @@ export default React.memo(function HourlyItem({
   hourFormat,
   tempUnit,
 }: HourlyItemProps) {
-  const { hour: hourItem, image, temp } = hour;
+  const { hour: hourItem, temp, weatherCode } = hour;
 
   return (
     <li className="flex items-center justify-between bg-[hsl(243,23%,24%)] hover:opacity-75 px-3 py-2 lg:py-2.25 rounded-lg border border-white/10">
       <div className="flex items-center gap-1.5 sm:gap-3">
-        <Image
-          src={image}
-          alt={`${hourItem} weather`}
+        <WeatherIcon
+          code={weatherCode}
           className="object-contain relative w-10 h-10"
         />
         <HourDisplay hourItem={hourItem} hourFormat={hourFormat} />

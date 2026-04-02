@@ -1,7 +1,6 @@
-import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
 import { formatCityDisplay } from "@/entities/location";
-import { getWeatherIcon, SearchResult } from "@/entities/weather";
+import { SearchResult } from "@/entities/weather";
 import { isFoundCity } from "@/shared/types";
 import { useSearchActions } from "../model/useSearchActions";
 
@@ -10,7 +9,6 @@ export function useSearchResultCity(
   inputRef: React.RefObject<HTMLInputElement | null>,
 ): UseSearchResultCityReturn {
   const {
-    weatherCode,
     city,
     country,
     temperature,
@@ -18,11 +16,11 @@ export function useSearchResultCity(
     lat,
     lon,
     code,
+    weatherCode,
     region,
   } = data;
   const { searchSelectedCity } = useSearchActions();
 
-  const icon = useMemo(() => getWeatherIcon(weatherCode), [weatherCode]);
   const cityData = useMemo(
     () => ({
       status: "found" as const,
@@ -45,7 +43,7 @@ export function useSearchResultCity(
   return useMemo(
     () => ({
       handleClick,
-      icon,
+      weatherCode,
       city,
       country,
       temperature,
@@ -54,22 +52,22 @@ export function useSearchResultCity(
     }),
     [
       handleClick,
-      icon,
       city,
       country,
       temperature,
       temperatureUnit,
       displayName,
+      weatherCode,
     ],
   );
 }
 
 interface UseSearchResultCityReturn {
   handleClick: () => void;
-  icon: StaticImageData;
   city: string;
   country?: string;
   temperature: number;
   temperatureUnit: string;
   displayName: string;
+  weatherCode: number;
 }

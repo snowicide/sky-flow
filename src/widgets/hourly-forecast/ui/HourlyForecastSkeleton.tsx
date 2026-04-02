@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { dropdownIcon } from "@/shared/assets";
+import { CommonIcon } from "@/shared/ui/CommonIcon";
 
 export function HourlyForecastSkeleton() {
   return (
@@ -16,9 +15,8 @@ export function HourlyForecastSkeleton() {
         </h3>
         <button className="flex items-center justify-center gap-1 sm:gap-2 focus:outline-none bg-[hsl(243,23%,30%)] border border-white/10 hover:opacity-80 px-3 sm:px-5 py-2 rounded-lg transition-opacity">
           <span className="text-xs sm:text-base text-white/70">-</span>
-          <Image
-            src={dropdownIcon}
-            alt="Dropdown"
+          <CommonIcon
+            icon="dropdown"
             className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 mt-0.5 opacity-70"
           />
         </button>

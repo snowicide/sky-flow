@@ -1,11 +1,6 @@
-import type { StaticImageData } from "next/image";
 import { useCallback, useMemo } from "react";
 import { useSettingsStore } from "@/entities/settings";
-import {
-  calculateAverageTemps,
-  getWeatherIcon,
-  type WeatherDaily,
-} from "@/entities/weather";
+import { calculateAverageTemps, type WeatherDaily } from "@/entities/weather";
 import { formatDayOfWeek } from "@/shared/lib";
 
 export function useDailyForecast(
@@ -25,7 +20,6 @@ export function useDailyForecast(
 
     return time.slice(0, 7).map((dateStr: string, index: number) => {
       const date = new Date(dateStr);
-      const icon = getWeatherIcon(weatherCode[index]);
 
       return {
         day: formatDayOfWeek(date, "dddd"),
@@ -33,7 +27,6 @@ export function useDailyForecast(
         temp: `${calculateAverageTemps(temperatureMin[index], temperatureMax[index])}°`,
         feelsLike: `${calculateAverageTemps(feelsLikeMin[index], feelsLikeMax[index])}°`,
         date: dateStr,
-        image: icon,
       };
     });
   }, [dailyData]);
@@ -55,7 +48,6 @@ interface UseDailyForecastReturn {
     temp: string;
     feelsLike: string;
     date: string;
-    image: StaticImageData;
   }[];
   handleClick: (index: number) => void;
 }

@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { useSearchStore } from "@/entities/location";
-import { searchIcon } from "@/shared/assets";
 import { XIcon } from "@/shared/ui";
+import { CommonIcon } from "@/shared/ui/CommonIcon";
 import { useSearchActions } from "../../model/useSearchActions";
 import { SearchInput } from "./SearchInput";
 
@@ -12,8 +11,8 @@ export function SearchBar({ inputRef, isError }: SearchBarProps) {
 
   return (
     <div className="relative z-10 col-start-1 row-start-1 flex items-center w-full group">
-      <Image
-        src={searchIcon}
+      <CommonIcon
+        icon="search"
         className="w-5 h-5 mr-3 cursor-pointer shrink-0"
         alt="Search"
         onClick={() => searchCityWithName(inputValue)}

@@ -1,5 +1,4 @@
 import { act, renderHook } from "@testing-library/react";
-import { sunnyIcon } from "@/entities/weather/testing";
 import { createCityData } from "@/shared/lib/testing";
 import { createResultsMocks } from "@/shared/lib/testing";
 import { useSearchResultCity } from "../useSearchResultCity";
@@ -42,13 +41,6 @@ describe("useSearchResultCity", () => {
 
     expect(searchSelectedCity).toHaveBeenCalledTimes(1);
     expect(searchSelectedCity).toHaveBeenCalledWith(berlinCityData, inputRef);
-  });
-
-  it("should get correct icon", () => {
-    const { result } = renderHook(() =>
-      useSearchResultCity(searchResult, inputRef),
-    );
-    expect(result.current.icon).toBe(sunnyIcon);
   });
 
   it("should blur the input when handleClick is triggered", () => {
