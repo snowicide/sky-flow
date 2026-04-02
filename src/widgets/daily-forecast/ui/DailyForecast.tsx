@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import type { WeatherDaily } from "@/entities/weather";
+import { WeatherIcon, type WeatherDaily } from "@/entities/weather";
 import { useDailyForecast } from "../model/useDailyForecast";
 
 export function DailyForecast({ dailyData }: DailyForecastProps) {
@@ -11,7 +10,7 @@ export function DailyForecast({ dailyData }: DailyForecastProps) {
       <h3 className="text-xl font-medium tracking-wide mb-5">Daily forecast</h3>
 
       <ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2.25 xl:gap-3">
-        {formattedDays.map(({ day, image, temp, feelsLike }, index) => (
+        {formattedDays.map(({ day, temp, feelsLike, weatherCode }, index) => (
           <li
             key={`${day}-${index}`}
             onClick={() => handleClick(index)}
@@ -20,11 +19,10 @@ export function DailyForecast({ dailyData }: DailyForecastProps) {
             <p className="font-medium text-sm sm:text-base md:text-sm lg:text-xs xl:text-sm">
               {day}
             </p>
-            <div className="relative w-12 h-12">
-              <Image
-                src={image}
-                alt={`${day} weather`}
-                className="object-contain"
+            <div className="relative">
+              <WeatherIcon
+                code={weatherCode}
+                className="object-contain w-12 h-12"
               />
             </div>
             <div

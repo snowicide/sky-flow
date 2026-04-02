@@ -1,19 +1,14 @@
 "use client";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { formatCityDisplay } from "@/entities/location";
-import {
-  getWeatherIcon,
-  type WeatherCurrent,
-  type WeatherUnits,
-} from "@/entities/weather";
-import { bgTodayLarge, bgTodaySmall } from "@/shared/assets";
+import { type WeatherCurrent, type WeatherUnits } from "@/entities/weather";
+import { WeatherIcon } from "@/entities/weather";
 import { useDeviceType } from "@/shared/lib";
+import { CommonImage } from "@/shared/ui/CommonImage";
 
 export function Today({ currentData, forecastUnits }: TodayProps) {
   const { isMobile } = useDeviceType();
-  const currentSrc = isMobile ? bgTodaySmall : bgTodayLarge;
-  const icon = getWeatherIcon(currentData.weatherCode);
+  const currentSrc = isMobile ? "bgTodaySmall" : "bgTodayLarge";
 
   const displayName = formatCityDisplay({
     status: "found",
@@ -31,8 +26,8 @@ export function Today({ currentData, forecastUnits }: TodayProps) {
       className="relative rounded-2xl overflow-hidden h-70 pt-8 mb-8"
     >
       <div className="absolute inset-0 -z-10 w-full h-full">
-        <Image
-          src={currentSrc}
+        <CommonImage
+          image={currentSrc}
           alt="Today background"
           fill
           priority
@@ -55,8 +50,11 @@ export function Today({ currentData, forecastUnits }: TodayProps) {
 
         {/* icon and temp */}
         <div className="flex flex-1 gap-2 justify-between sm:justify-end items-center max-w-65 sm:max-w-full">
-          <div className="relative w-25 md:w-35">
-            <Image src={icon} alt="Weather icon" className="object-contain" />
+          <div className="relative">
+            <WeatherIcon
+              code={currentData.weatherCode}
+              className="object-contain w-25 md:w-35"
+            />
           </div>
 
           <div className="font-bold flex items-center gap-1">

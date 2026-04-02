@@ -1,14 +1,18 @@
-import Image from "next/image";
 import React from "react";
-import type { SearchResult } from "@/entities/weather";
+import { WeatherIcon, type SearchResult } from "@/entities/weather";
 import { useSearchResultCity } from "../../../model/useSearchResultCity";
 
 export const SearchResultCity = React.memo(function SearchResultCity({
   data,
   inputRef,
 }: SearchResultCityProps) {
-  const { handleClick, icon, displayName, temperature, temperatureUnit } =
-    useSearchResultCity(data, inputRef);
+  const {
+    handleClick,
+    displayName,
+    temperature,
+    temperatureUnit,
+    weatherCode,
+  } = useSearchResultCity(data, inputRef);
 
   return (
     <li className="flex items-center">
@@ -18,11 +22,7 @@ export const SearchResultCity = React.memo(function SearchResultCity({
         type="button"
       >
         <div className="flex items-center gap-2">
-          <Image
-            src={icon}
-            className="w-8 h-8 lg:w-10 lg:h-10"
-            alt="Weather Icon"
-          />
+          <WeatherIcon code={weatherCode} className="w-8 h-8 lg:w-10 lg:h-10" />
           <span
             className="text-start font-light text-sm sm:text-base"
             title={displayName}

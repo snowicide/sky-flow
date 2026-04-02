@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import { retryIcon } from "@/shared/assets";
+import { CommonIcon } from "@/shared/ui/CommonIcon";
 
 export function WeatherPageError({ error, reset }: PageErrorProps) {
   return (
@@ -13,7 +12,7 @@ export function WeatherPageError({ error, reset }: PageErrorProps) {
           onClick={reset}
           className="flex items-center gap-2 px-4 py-3 bg-[hsl(243,27%,20%)] hover:bg-[hsl(243,23%,24%)] transition rounded-lg"
         >
-          <Image src={retryIcon} alt="Retry" />
+          <CommonIcon icon="retry" alt="Retry" />
           <span>Try again</span>
         </button>
       </div>

@@ -1,6 +1,5 @@
 "use client";
-import Image from "next/image";
-import { retryIcon } from "../assets";
+import { CommonIcon } from "./CommonIcon";
 
 export function NetworkError({ message, refetch }: NetworkErrorProps) {
   return (
@@ -10,7 +9,7 @@ export function NetworkError({ message, refetch }: NetworkErrorProps) {
         onClick={refetch}
         className="flex items-center gap-2 px-4 py-3 bg-[hsl(243,27%,20%)] hover:bg-[hsl(243,23%,24%)] transition rounded-lg"
       >
-        <Image src={retryIcon} alt="Retry" />
+        <CommonIcon icon="retry" alt="Retry" />
         <span>Retry</span>
       </button>
     </div>

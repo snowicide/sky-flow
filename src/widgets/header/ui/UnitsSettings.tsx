@@ -1,10 +1,9 @@
 "use client";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import Image from "next/image";
 import { useSettingsStore } from "@/entities/settings";
 import type { WeatherUnits } from "@/entities/weather";
-import { checkmarkIcon, dropdownIcon, unitsIcon } from "@/shared/assets";
+import { CommonIcon } from "@/shared/ui/CommonIcon";
 
 export default function UnitsSettings() {
   const units = useSettingsStore((state) => state.units);
@@ -21,16 +20,14 @@ export default function UnitsSettings() {
           id="units-menu-nutton"
           className="group flex items-center justify-center gap-2 px-2.5 py-2 sm:px-3 border focus:outline-none border-white/10 hover:opacity-80 bg-[hsl(243,23%,24%)] rounded-lg transition-opacity"
         >
-          <Image
-            src={unitsIcon}
+          <CommonIcon
+            icon="units"
             className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-data-open:rotate-180 transition-transform duration-200"
-            alt="Units Icon"
           />
           <span className="text-xs sm:text-sm">Units</span>
-          <Image
-            src={dropdownIcon}
+          <CommonIcon
+            icon="dropdown"
             className="w-2.5 h-2.5 mt-px group-data-open:rotate-180 transition-transform duration-200"
-            alt="Dropdown Icon"
           />
         </MenuButton>
       </div>
@@ -79,7 +76,11 @@ export default function UnitsSettings() {
                 >
                   <span className="text-sm sm:text-base">{option.label}</span>
                   {units[group.unit] === option.value && (
-                    <Image src={checkmarkIcon} alt="Checked" />
+                    <CommonIcon
+                      icon="checkmark"
+                      className="w-3 sm:w-3.5"
+                      alt="Checked"
+                    />
                   )}
                 </div>
               </MenuItem>

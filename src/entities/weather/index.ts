@@ -3,7 +3,6 @@ export { useWeatherQuery } from "./model/queries/useWeatherQuery";
 export { useSearchQuery } from "./model/queries/useSearchQuery";
 
 // --- lib ---
-export { getWeatherIcon } from "./lib/icons";
 export { calculateAverageTemps, groupByDay } from "./lib/weather.utils";
 
 // --- model ---
@@ -19,3 +18,6 @@ export type {
   Weather,
   WeatherUnits,
 } from "./model/types/weather.types";
+
+// --- ui ---
+export { WeatherIcon } from "./ui/WeatherIcon";
