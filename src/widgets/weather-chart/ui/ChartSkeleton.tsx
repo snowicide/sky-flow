@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import { useDeviceType } from "@/shared/lib";
 import { getAspect } from "../model/chart.utils";
 
-export function ChartSkeleton() {
-  const { isMobile, isTablet } = useDeviceType();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const aspect = isClient ? getAspect(isMobile, isTablet) : 2.33;
+export function ChartSkeleton({
+  isMobile,
+  isTablet,
+}: {
+  isMobile?: boolean;
+  isTablet?: boolean;
+}) {
+  const aspect = getAspect(isMobile, isTablet) ?? 21 / 16;
 
   return (
     <div className="relative flex flex-col gap-5 w-full max-w-100 sm:max-w-184 md:max-w-full xl:max-w-304 mx-auto bg-[hsl(243,27%,20%)] px-4 pb-4 pt-2 rounded-xl border border-white/10 items-center animate-pulse">

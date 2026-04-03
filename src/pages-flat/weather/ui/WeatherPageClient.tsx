@@ -10,7 +10,8 @@ import { NetworkError } from "@/shared/ui";
 import { useWeatherPage } from "../model/useWeatherPage";
 
 export function PageClient({ cityData }: { cityData: CityData }) {
-  const { data, isPending, isError, error, refetch } = useWeatherPage(cityData);
+  const { data, isPending, isError, error, refetch, devices } =
+    useWeatherPage(cityData);
 
   if (isNotFoundCity(cityData)) {
     return <SearchError message={cityData.city} />;
@@ -54,7 +55,12 @@ export function PageClient({ cityData }: { cityData: CityData }) {
           />
         </div>
 
-        <Chart dailyData={daily} hourlyData={hourly} isPending={isPending} />
+        <Chart
+          dailyData={daily}
+          hourlyData={hourly}
+          isPending={isPending}
+          devices={devices}
+        />
       </div>
     </>
   );

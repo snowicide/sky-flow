@@ -11,48 +11,48 @@ describe("useChart", () => {
     useSettingsStore.getState().reset();
   });
 
-  it("should return formatted chartData", () => {
-    const { result } = renderHook(() => useChart(dailyData, hourlyData));
+  describe("activeData", () => {
+    it("should switch data and keys when tab changes", () => {
+      const { result } = renderHook(() => useChart(dailyData, hourlyData));
 
-    expect(result.current.chartDailyData).toHaveLength(7);
-    expect(result.current.chartDailyData[0]).toEqual({
-      day: "Sunday",
-      temp: 1,
-    });
-    expect(result.current.chartDailyData[6]).toEqual({
-      day: "Saturday",
-      temp: 7,
-    });
+      expect(result.current.isDailyTab).toBe(true);
+      expect(result.current.formatters.dataKey).toBe("day");
+      expect(result.current.activeData.length).toBe(7);
 
-    expect(result.current.chartHourlyData).toHaveLength(24);
-    expect(result.current.chartHourlyData[0]).toEqual({
-      hour: "12 AM",
-      temp: 0,
-    });
-    expect(result.current.chartHourlyData[23]).toEqual({
-      hour: "11 PM",
-      temp: 23,
+      act(() => result.current.setCurrentChartTab("hourly"));
+
+      expect(result.current.isDailyTab).toBe(false);
+      expect(result.current.formatters.dataKey).toBe("hour");
+      expect(result.current.activeData.length).toBe(24);
     });
   });
 
-  it("should show correct units", () => {
-    const { result } = renderHook(() => useChart(dailyData, hourlyData));
+  describe("units", () => {
+    it("shoud update currentUnit when settings change", () => {
+      const { result } = renderHook(() => useChart(dailyData, hourlyData));
 
-    act(() =>
-      useSettingsStore.setState({
-        units: {
-          ...useSettingsStore.getState().units,
-          temperatureUnit: "fahrenheit",
-        },
-      }),
-    );
+      expect(result.current.formatters.currentUnit).toBe("°C");
 
-    expect(result.current.currentUnit).toBe("°F");
+      act(() =>
+        useSettingsStore.setState({
+          units: {
+            ...useSettingsStore.getState().units,
+            temperatureUnit: "fahrenheit",
+          },
+        }),
+      );
+
+      expect(result.current.formatters.currentUnit).toBe("°F");
+    });
   });
 
-  it("should get ticks", () => {
-    const { result } = renderHook(() => useChart(dailyData, hourlyData));
+  describe("isResizing", () => {
+    it("should reflect resizing state", () => {
+      const { result } = renderHook(() => useChart(dailyData, hourlyData));
 
-    expect(result.current.dailyTicks).toEqual([-2, +0, 2, 4, 6, 8, 10]);
+      expect(result.current.isResizing).toBe(false);
+      act(() => window.dispatchEvent(new Event("resize")));
+      expect(result.current.isResizing).toBe(true);
+    });
   });
 });

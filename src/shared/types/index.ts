@@ -12,4 +12,10 @@ export {
   CityDataSchema,
 } from "./city-data.schema";
 
-export type { Geo, GeoItem, Units } from "./types";
+export type {
+  Geo,
+  GeoItem,
+  Units,
+  DailyChartData,
+  HourlyChartData,
+} from "./types";

@@ -1,84 +1,98 @@
-import { useEffect, useMemo, useState } from "react";
-import { useSettingsStore } from "@/entities/settings";
+import { useMemo, useState } from "react";
 import { type WeatherDaily, type WeatherHourly } from "@/entities/weather";
-import { getTicks } from "./chart.utils";
+import { useDeviceType } from "@/shared/lib";
 import { useChartData } from "./useChartData";
+import { useChartFormat } from "./useChartFormat";
+import { useChartResize } from "./useChartResize";
 import { useResponsiveHourlyData } from "./useResponsiveHourlyData";
 
 export function useChart(
   dailyData: WeatherDaily | undefined,
   hourlyData: WeatherHourly | undefined,
-): UseChartViewReturn {
-  // Chart.tsx
+): ChartReturn {
+  const { isMobile, isTablet, isDesk, isSmallDesk } = useDeviceType();
   const [currentChartTab, setCurrentChartTab] = useState("daily");
-  const [isResizing, setIsResizing] = useState(false);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    const handleResize = (): void => {
-      setIsResizing(true);
-      clearTimeout(timeout);
-      timeout = setTimeout(() => setIsResizing(false), 100);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // ChartView.tsx
   const { chartDailyData, chartHourlyData: fullHourlyData } = useChartData(
     dailyData,
     hourlyData,
   );
-  const tempUnit = useSettingsStore((state) => state.units.temperatureUnit);
-  const hourUnit = useSettingsStore((state) => state.units.timeUnit);
-  const currentUnit = tempUnit === "celsius" ? "°C" : "°F";
-
   const chartHourlyData = useResponsiveHourlyData(fullHourlyData);
+  const isResizing = useChartResize();
+  const isDailyTab = currentChartTab === "daily";
 
-  const dailyTicks = useMemo(() => getTicks(chartDailyData), [chartDailyData]);
-  const hourlyTicks = useMemo(() => getTicks(fullHourlyData), [fullHourlyData]);
+  const activeData = useMemo(
+    () => (isDailyTab ? chartDailyData : chartHourlyData),
+    [isDailyTab, chartDailyData, chartHourlyData],
+  );
+
+  const formatters = useChartFormat(
+    isDailyTab ? chartDailyData : fullHourlyData,
+    isDailyTab,
+    currentChartTab,
+    {
+      isMobile,
+      isTablet,
+      isDesk,
+      isSmallDesk,
+    },
+  );
 
   return useMemo(
     () => ({
       currentChartTab,
-      setCurrentChartTab,
+      activeData,
+      isDailyTab,
       isResizing,
-      hourUnit,
-      currentUnit,
-      chartDailyData,
-      chartHourlyData,
-      dailyTicks,
-      hourlyTicks,
+      setCurrentChartTab,
+      formatters,
+      currentDevice: {
+        isMobile,
+        isTablet,
+        isDesk,
+        isSmallDesk,
+      },
     }),
     [
       currentChartTab,
-      setCurrentChartTab,
+      activeData,
+      isDailyTab,
       isResizing,
-      hourUnit,
-      currentUnit,
-      chartDailyData,
-      chartHourlyData,
-      dailyTicks,
-      hourlyTicks,
+      setCurrentChartTab,
+      formatters,
+      isMobile,
+      isTablet,
+      isDesk,
+      isSmallDesk,
     ],
   );
 }
 
-interface UseChartViewReturn {
-  hourUnit: "12" | "24";
-  currentUnit: "°C" | "°F";
-  chartDailyData: {
-    day: string;
-    temp: number;
-  }[];
-  chartHourlyData: {
-    hour: string;
-    temp: number;
-  }[];
-  dailyTicks: number[];
-  hourlyTicks: number[];
+interface ChartReturn {
   currentChartTab: string;
-  setCurrentChartTab: React.Dispatch<React.SetStateAction<string>>;
+  activeData:
+    | {
+        hour: string;
+        temp: number;
+      }[]
+    | {
+        day: string;
+        temp: number;
+      }[];
+  isDailyTab: boolean;
   isResizing: boolean;
+  setCurrentChartTab: React.Dispatch<React.SetStateAction<string>>;
+  formatters: {
+    handleXAxisTickFormat: (value: string) => string;
+    yTicks: number[];
+    yDomain: number[];
+    currentUnit: string;
+    dataKey: string;
+    aspect: number;
+  };
+  currentDevice: {
+    isMobile: boolean;
+    isTablet: boolean;
+    isDesk: boolean;
+    isSmallDesk: boolean;
+  };
 }
