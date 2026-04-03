@@ -8,25 +8,15 @@ import { SearchError } from "@/features/search-city";
 import { isNotFoundCity, type CityData } from "@/shared/types";
 import { NetworkError } from "@/shared/ui";
 import { useWeatherPage } from "../model/useWeatherPage";
-import { WeatherPageSkeleton } from "./WeatherPageSkeleton";
 
 export function PageClient({ cityData }: { cityData: CityData }) {
-  const result = useWeatherPage(cityData);
+  const { data, isPending, isError, error, refetch } = useWeatherPage(cityData);
 
   if (isNotFoundCity(cityData)) {
     return <SearchError message={cityData.city} />;
   }
 
-  if (!result) {
-    return <WeatherPageSkeleton />;
-  }
-
-  const { data, isPending, isError, error, refetch } = result;
-
-  if (isPending) {
-    return <WeatherPageSkeleton />;
-  }
-  if (isError || !data) {
+  if (isError) {
     const isAppError = error && typeof error === "object" && "code" in error;
     const message =
       isAppError && error.code === "FORECAST_FAILED"
@@ -35,21 +25,36 @@ export function PageClient({ cityData }: { cityData: CityData }) {
     return <NetworkError message={message} refetch={refetch} />;
   }
 
-  const { current, daily, hourly, forecastUnits } = data;
+  const current = data?.current;
+  const daily = data?.daily;
+  const hourly = data?.hourly;
+  const forecastUnits = data?.forecastUnits;
 
   return (
     <>
       <div className="flex flex-col w-full justify-center items-center">
         <div className="flex flex-col w-full xl:w-auto max-w-99 sm:max-w-full lg:gap-4 xl:gap-8 mb-8 lg:mb-0 items-center lg:items-start lg:flex-row">
           <div className="w-full lg:min-w-150 xl:max-w-200 mb-8">
-            <Today currentData={current} forecastUnits={forecastUnits} />
-            <Details currentData={current} forecastUnits={forecastUnits} />
-            <DailyForecast dailyData={daily} />
+            <Today
+              currentData={current}
+              forecastUnits={forecastUnits}
+              isPending={isPending}
+            />
+            <Details
+              currentData={current}
+              forecastUnits={forecastUnits}
+              isPending={isPending}
+            />
+            <DailyForecast dailyData={daily} isPending={isPending} />
           </div>
-          <HourlyForecast hourlyData={hourly} forecastUnits={forecastUnits} />
+          <HourlyForecast
+            hourlyData={hourly}
+            forecastUnits={forecastUnits}
+            isPending={isPending}
+          />
         </div>
 
-        <Chart dailyData={daily} hourlyData={hourly} />
+        <Chart dailyData={daily} hourlyData={hourly} isPending={isPending} />
       </div>
     </>
   );

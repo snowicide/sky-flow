@@ -3,11 +3,12 @@ import { CommonIcon } from "@/shared/ui/CommonIcon";
 export function HourlyForecastSkeleton() {
   return (
     <div
-      className="lg:max-h-166 rounded-2xl border bg-[hsl(243,27%,20%)] border-white/10 sticky animate-pulse
+      className=" rounded-2xl border bg-[hsl(243,27%,20%)] border-white/10 sticky animate-pulse
       w-full h-full p-5
       sm:px-6 sm:py-7
       md:max-w-full
-      lg:w-96"
+      lg:w-full lg:max-w-82 lg:max-h-166
+      xl:max-w-100"
     >
       <div className="mt-px lg:mt-0 mb-6.5 sm:mb-6.25 lg:mb-6 pr-px flex mx-1.5 gap-4 lg:gap-3 xl:gap-4 sm:flex-row justify-between items-center lg:h-10.5">
         <h3 className="text-[0.95rem] sm:text-lg md:text-xl lg:text-lg xl:text-xl font-bold tracking-wider lg:tracking-wide whitespace-nowrap text-white/50">

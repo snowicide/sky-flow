@@ -9,7 +9,7 @@ export function DailyForecastSkeleton() {
           <div
             key={index}
             className="bg-[hsl(243,27%,20%)] animate-pulse border border-white/10 hover:opacity-75 transition duration-75 rounded-xl
-            h-37.5 w-full flex-1
+            h-37.5 w-full xl:w-26
             sm:h-39.5
             md:h-37.5"
           />

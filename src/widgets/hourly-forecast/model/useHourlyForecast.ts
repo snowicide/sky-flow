@@ -17,7 +17,7 @@ import {
 import { useDeviceType } from "@/shared/lib";
 
 export function useHourlyForecast(
-  hourlyData: WeatherHourly,
+  hourlyData: WeatherHourly | undefined,
 ): UseHourlyForecastReturn {
   const { selectedDayIndex, setSelectedDayIndex, hourFormat } =
     useSettingsStore(

@@ -4,11 +4,12 @@ import { calculateAverageTemps, type WeatherDaily } from "@/entities/weather";
 import { formatDayOfWeek } from "@/shared/lib";
 
 export function useDailyForecast(
-  dailyData: WeatherDaily,
+  dailyData: WeatherDaily | undefined,
 ): UseDailyForecastReturn {
   const setSelectedDayIndex = useSettingsStore((s) => s.setSelectedDayIndex);
 
   const formattedDays = useMemo(() => {
+    if (!dailyData) return [];
     const {
       feelsLikeMax,
       feelsLikeMin,

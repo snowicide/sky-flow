@@ -1,15 +1,21 @@
 export function TodaySkeleton() {
   return (
-    <div
-      className="flex flex-col items-center justify-center sm:p-8 md:p-10 rounded-2xl h-70 overflow-hidden
-      mb-8 bg-[hsl(243,27%,20%)]/70 border border-white/10 animate-pulse"
-    >
-      <div className="flex h-5 justify-center items-end mb-3 gap-3 w-3/5 sm:w-1/2">
-        <div className="bg-white animate-pulse rounded-full h-3 w-3"></div>
-        <div className="bg-white animate-pulse [animation-delay:0.3s] rounded-full h-3 w-3 mb-2"></div>
-        <div className="bg-white animate-pulse [animation-delay:0.6s] rounded-full h-3 w-3"></div>
+    <div className="relative flex flex-col sm:flex-row justify-between items-center gap-2 px-6 py-2 md:px-8 h-55 animate-pulse">
+      {/* name and date */}
+      <div className="flex flex-1 flex-col items-center sm:items-start text-center sm:text-left gap-3">
+        <div className="h-7 w-48 sm:h-8 sm:w-60 bg-white/20 rounded-lg" />
+        <div className="h-5 w-32 sm:h-6 sm:w-40 bg-white/10 rounded-lg" />
       </div>
-      <div className="text-lg animate-pulse text-white/80">Loading...</div>
+
+      {/* icon and temperature */}
+      <div className="flex flex-1 items-center justify-center sm:justify-end gap-12 w-full sm:w-auto">
+        <div className="w-14 h-14 sm:w-18 sm:h-18 bg-white/15 rounded-full" />
+
+        <div className="flex items-center gap-1 sm:gap-3">
+          <div className="h-10 w-16 sm:h-18 sm:w-20 bg-white/20 rounded-lg" />
+          <div className="h-6 w-6 mb-7 sm:h-8 sm:w-8 bg-white/10 rounded-lg" />
+        </div>
+      </div>
     </div>
   );
 }
