@@ -6,7 +6,7 @@ export const WEATHER_ASSETS = {
     partlyCloudy: "/icons/weather/icon-partly-cloudy.webp",
     rain: "/icons/weather/icon-rain.webp",
     snow: "/icons/weather/icon-snow.webp",
-    storm: "/icons/weather/icon-strom.webp",
+    storm: "/icons/weather/icon-storm.webp",
     sunny: "/icons/weather/icon-sunny.webp",
   },
 } as const;
