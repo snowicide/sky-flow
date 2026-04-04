@@ -1,3 +1,4 @@
+import { memo, useCallback, useMemo } from "react";
 import {
   Area,
   AreaChart,
@@ -7,113 +8,83 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { WeatherDaily, WeatherHourly } from "@/entities/weather";
-import { useDeviceType } from "@/shared/lib/useDeviceType";
-import { getAspect, getXTickFormatter } from "../model/chart.utils";
-import { useChartView } from "../model/useChartView";
+import {
+  AREA_DOT,
+  ARIA_ACTIVE_DOT,
+  TOOLTIP_CONTENT_STYLE,
+  TOOLTIP_CURSOR,
+  X_AXIS_TICK,
+} from "../model/constants";
 
-export function ChartView({
-  dailyData,
-  hourlyData,
-  currentChartTab,
+export const ChartView = memo(function ChartView({
+  activeData,
+  formatters,
+  isMobile,
 }: ChartViewProps) {
-  const { isMobile, isTablet, isDesk, isSmallDesk } = useDeviceType();
-  const {
-    hourUnit,
-    currentUnit,
-    chartDailyData,
-    chartHourlyData,
-    dailyTicks,
-    hourlyTicks,
-  } = useChartView(dailyData, hourlyData);
+  const chartMargin = useMemo(
+    () => ({
+      top: 10,
+      right: isMobile ? 10 : 30,
+      left: isMobile ? -25 : 0,
+      bottom: 0,
+    }),
+    [isMobile],
+  );
 
-  const isDailyTab = currentChartTab === "daily";
+  const tooltipFormatter = useCallback(
+    (value: number | undefined) => [
+      `${value}${formatters.currentUnit}`,
+      "Temperature",
+    ],
+    [formatters.currentUnit],
+  );
 
   return (
     <ResponsiveContainer
       width="100%"
       minHeight={200}
-      aspect={getAspect(isMobile, isTablet)}
+      aspect={formatters.aspect}
       initialDimension={{ width: 1, height: 1 }}
     >
-      <AreaChart
-        tabIndex={-1}
-        data={isDailyTab ? chartDailyData : chartHourlyData}
-        margin={{
-          top: 10,
-          right: isMobile ? 10 : 30,
-          left: isMobile ? -25 : 0,
-          bottom: 0,
-        }}
-      >
+      <AreaChart data={activeData} margin={chartMargin}>
         <CartesianGrid
-          tabIndex={-1}
           strokeDasharray={"7 7"}
           vertical={false}
           stroke="#ffffff30"
         />
 
         <XAxis
-          tabIndex={-1}
-          dataKey={isDailyTab ? "day" : "hour"}
+          dataKey={formatters.dataKey}
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tick={{ fill: "#94a3b8" }}
+          tick={X_AXIS_TICK}
           interval={0}
           dy={10}
           dx={-5}
-          tickFormatter={(value) => {
-            if (isDailyTab) {
-              if (isMobile) return value.slice(0, 2);
-              if (isTablet) return value.slice(0, 3);
-              return value;
-            }
-            return getXTickFormatter(value, {
-              currentChartTab,
-              isDesk,
-              isSmallDesk,
-              hourUnit,
-            });
-          }}
+          tickFormatter={formatters.handleXAxisTickFormat}
         />
         <YAxis
-          tabIndex={-1}
           dataKey="temp"
-          unit={currentUnit}
+          unit={formatters.currentUnit}
           fontSize={12}
-          ticks={isDailyTab ? dailyTicks : hourlyTicks}
+          ticks={formatters.yTicks}
           interval={0}
           tickLine={false}
           axisLine={false}
-          domain={
-            isDailyTab
-              ? [dailyTicks[0], dailyTicks[dailyTicks.length - 1]]
-              : [hourlyTicks[0], hourlyTicks[hourlyTicks.length - 1]]
-          }
+          domain={formatters.yDomain}
         />
 
         <Tooltip
-          contentStyle={{
-            background: "hsl(243,27%,20%)",
-            borderRadius: "8px",
-            border: "1px solid #ffffff20",
-            boxShadow: "0 4px 4px 1px rgb(0,0,0,0.3)",
-            color: "#fff",
-          }}
+          contentStyle={TOOLTIP_CONTENT_STYLE}
           itemStyle={{ color: "hsl(233,100%,70%)" }}
           labelStyle={{ marginBottom: "4px", fontWeight: "bold" }}
           isAnimationActive={false}
-          cursor={{
-            stroke: "#ffffff20",
-            strokeWidth: 2,
-            strokeDasharray: "10 10",
-          }}
-          formatter={(value) => [`${value}${currentUnit}`, "Temperature"]}
+          cursor={TOOLTIP_CURSOR}
+          formatter={tooltipFormatter}
         />
 
         <Area
-          tabIndex={-1}
           type="monotone"
           name="Temperature"
           dataKey="temp"
@@ -122,29 +93,45 @@ export function ChartView({
           fillOpacity={1}
           fill="url(#colorTemp)"
           baseValue="dataMin"
-          dot={{
-            r: 4,
-            fill: "hsl(233,100%,70%)",
-            strokeWidth: 1,
-            stroke: "#1e293b",
-          }}
-          activeDot={{ r: 6, strokeWidth: 2, stroke: "#1e293b" }}
+          dot={AREA_DOT}
+          activeDot={ARIA_ACTIVE_DOT}
           isAnimationActive={false}
         />
 
-        <defs>
-          <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="65%" stopColor="#3b82f6" stopOpacity={0.2} />
-            <stop offset="98%" stopColor="#3b82f6" stopOpacity={0} />
-          </linearGradient>
-        </defs>
+        <ChartGradient />
       </AreaChart>
     </ResponsiveContainer>
   );
-}
+});
+
+const ChartGradient = memo(function ChartGradient() {
+  return (
+    <defs>
+      <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="65%" stopColor="#3b82f6" stopOpacity={0.2} />
+        <stop offset="98%" stopColor="#3b82f6" stopOpacity={0} />
+      </linearGradient>
+    </defs>
+  );
+});
 
 interface ChartViewProps {
-  dailyData: WeatherDaily;
-  hourlyData: WeatherHourly;
-  currentChartTab: string;
+  activeData:
+    | {
+        day: string;
+        temp: number;
+      }[]
+    | {
+        hour: string;
+        temp: number;
+      }[];
+  formatters: {
+    handleXAxisTickFormat: (value: string) => string;
+    yTicks: number[];
+    yDomain: number[];
+    currentUnit: string;
+    dataKey: string;
+    aspect: number;
+  };
+  isMobile: boolean;
 }

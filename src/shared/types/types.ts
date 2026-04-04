@@ -19,3 +19,13 @@ export interface Units {
   precipitationUnit: "mm" | "inch";
   timeUnit: "12" | "24";
 }
+
+export type DailyChartData = {
+  day: string;
+  temp: number;
+}[];
+
+export type HourlyChartData = {
+  hour: string;
+  temp: number;
+}[];

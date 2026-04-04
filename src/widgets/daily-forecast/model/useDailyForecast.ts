@@ -1,14 +1,15 @@
-import { useCallback, useMemo } from "react";
+import { startTransition, useCallback, useMemo } from "react";
 import { useSettingsStore } from "@/entities/settings";
 import { calculateAverageTemps, type WeatherDaily } from "@/entities/weather";
 import { formatDayOfWeek } from "@/shared/lib";
 
 export function useDailyForecast(
-  dailyData: WeatherDaily,
+  dailyData: WeatherDaily | undefined,
 ): UseDailyForecastReturn {
   const setSelectedDayIndex = useSettingsStore((s) => s.setSelectedDayIndex);
 
   const formattedDays = useMemo(() => {
+    if (!dailyData) return [];
     const {
       feelsLikeMax,
       feelsLikeMin,
@@ -31,14 +32,12 @@ export function useDailyForecast(
     });
   }, [dailyData]);
 
-  const handleClick = useCallback(
-    (index: number): void => {
-      setSelectedDayIndex(index);
-    },
+  const changeDayIndex = useCallback(
+    (index: number): void => startTransition(() => setSelectedDayIndex(index)),
     [setSelectedDayIndex],
   );
 
-  return { formattedDays, handleClick };
+  return { formattedDays, changeDayIndex };
 }
 
 interface UseDailyForecastReturn {
@@ -49,5 +48,5 @@ interface UseDailyForecastReturn {
     feelsLike: string;
     date: string;
   }[];
-  handleClick: (index: number) => void;
+  changeDayIndex: (index: number) => void;
 }

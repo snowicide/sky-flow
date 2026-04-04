@@ -7,9 +7,11 @@ import { useGeoQuery } from "@/entities/location";
 import { useSettingsStore } from "@/entities/settings";
 import { useWeatherQuery, type Weather } from "@/entities/weather";
 import { AppError } from "@/shared/api";
+import { useDeviceType } from "@/shared/lib";
 import { type CityData, isFoundCity, isNotFoundCity } from "@/shared/types";
 
 export function useWeatherPage(cityData: CityData): WeatherPageReturn {
+  const { isDesk, isMobile, isSmallDesk, isTablet } = useDeviceType();
   const hasCoords =
     isFoundCity(cityData) &&
     typeof cityData.lat === "number" &&
@@ -66,6 +68,7 @@ export function useWeatherPage(cityData: CityData): WeatherPageReturn {
     isError,
     error,
     refetch,
+    devices: { isDesk, isMobile, isSmallDesk, isTablet },
   };
 }
 
@@ -77,4 +80,10 @@ type WeatherPageReturn = {
   refetch: (
     options?: RefetchOptions,
   ) => Promise<QueryObserverResult<Weather, AppError>>;
+  devices: {
+    isDesk: boolean;
+    isMobile: boolean;
+    isSmallDesk: boolean;
+    isTablet: boolean;
+  };
 };

@@ -25,7 +25,7 @@ export function getTicks(
   return generateTicks(dataMin - 3, dataMax + 3);
 }
 
-export const getAspect = (isM: boolean, isT: boolean): number => {
+export const getAspect = (isM?: boolean, isT?: boolean): number => {
   if (isM) return 21 / 16;
   if (isT) return 21 / 11;
   return 21 / 9;
