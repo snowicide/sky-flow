@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { HourDisplay } from "./HourDisplay";
+import { HourDisplay } from "../HourDisplay";
 
 describe("hourly-utils", () => {
   beforeEach(() => {

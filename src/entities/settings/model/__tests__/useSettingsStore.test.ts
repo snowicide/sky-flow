@@ -1,5 +1,5 @@
 import { DEFAULT_UNITS } from "@/shared/config/constants";
-import { useSettingsStore } from "./useSettingsStore";
+import { useSettingsStore } from "../useSettingsStore";
 
 describe("useSettingsStore", () => {
   beforeEach(() => {

@@ -16,7 +16,7 @@ import {
 } from "@/entities/location";
 import { createCityData } from "@/shared/lib/testing";
 import { createHistoryCity } from "@/shared/lib/testing";
-import { Search } from "./Search";
+import { Search } from "../Search";
 
 // --- 1. mocks ---
 const mockPush = vi.fn();
