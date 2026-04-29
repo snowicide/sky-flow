@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { formatCityDisplay } from "@/entities/location";
 import { type WeatherCurrent, type WeatherUnits } from "@/entities/weather";
 import { WeatherIcon } from "@/entities/weather";
+import { SparklesIcon } from "@/shared/ui";
 import { TodaySkeleton } from "./TodaySkeleton";
 
 export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
@@ -19,6 +20,8 @@ export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
       lon: currentData.lon,
     });
   }, [currentData]);
+
+  const handleAiTooltip = async () => {};
 
   return (
     <section
@@ -52,13 +55,31 @@ export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
         <>
           <div className="relative flex flex-col sm:flex-row justify-between items-center gap-2 px-6 md:px-8 h-55">
             {/* city and date */}
-            <div className="flex flex-1 flex-col items-center sm:items-start">
-              <h2 className="text-xl sm:text-3xl font-bold mb-1 capitalize">
+            <div className="flex flex-1 flex-col gap-2 items-center sm:items-start">
+              <h2 className="text-xl sm:text-3xl font-bold capitalize">
                 {displayName}
               </h2>
               <p className="text-white/70 text-lg">
                 {dayjs(currentData.time).format("dddd, MMM D, YYYY")}
               </p>
+              <button
+                onClick={handleAiTooltip}
+                className="flex items-center gap-1.5 hover:cursor-pointer group transition-all
+                  bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20 focus:outline-none active:border-white/30 active:bg-white/15
+                  rounded-2xl px-4 py-1.5"
+              >
+                <span className="text-white font-medium group-hover:text-white transition-all duration-200">
+                  More details
+                </span>
+
+                <SparklesIcon
+                  className="transition-transform duration-200
+                    group-hover:[--s1:#818cf8] group-hover:[--s2:#fc28f2] group-hover:scale-105"
+                  size={20}
+                  stop1="#6366f1"
+                  stop2="#ec4899"
+                />
+              </button>
             </div>
 
             {/* icon and temp */}
