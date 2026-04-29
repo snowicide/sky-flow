@@ -1,10 +1,10 @@
 "use client";
 import dayjs from "dayjs";
 import { useMemo } from "react";
+import { AiDescriptionMenu } from "@/features/ai-description";
 import { formatCityDisplay } from "@/entities/location";
 import { type WeatherCurrent, type WeatherUnits } from "@/entities/weather";
 import { WeatherIcon } from "@/entities/weather";
-import { SparklesIcon } from "@/shared/ui";
 import { TodaySkeleton } from "./TodaySkeleton";
 
 export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
@@ -21,15 +21,13 @@ export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
     });
   }, [currentData]);
 
-  const handleAiTooltip = async () => {};
-
   return (
     <section
       aria-label="Current Weather"
-      className="relative rounded-2xl overflow-hidden h-70 mb-8 grid-cols-1 content-center"
+      className="relative h-70 mb-8 grid-cols-1 content-center"
     >
       {/* background */}
-      <div className="absolute inset-0 -z-10 w-full h-full">
+      <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden rounded-2xl">
         <picture>
           <source
             media="(max-width: 639px)"
@@ -62,24 +60,8 @@ export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
               <p className="text-white/70 text-lg">
                 {dayjs(currentData.time).format("dddd, MMM D, YYYY")}
               </p>
-              <button
-                onClick={handleAiTooltip}
-                className="flex items-center gap-1.5 hover:cursor-pointer group transition-all
-                  bg-white/5 backdrop-blur-md border border-white/10 hover:border-white/20 focus:outline-none active:border-white/30 active:bg-white/15
-                  rounded-2xl px-4 py-1.5"
-              >
-                <span className="text-white font-medium group-hover:text-white transition-all duration-200">
-                  More details
-                </span>
-
-                <SparklesIcon
-                  className="transition-transform duration-200
-                    group-hover:[--s1:#818cf8] group-hover:[--s2:#fc28f2] group-hover:scale-105"
-                  size={20}
-                  stop1="#6366f1"
-                  stop2="#ec4899"
-                />
-              </button>
+              {/* AI description */}
+              <AiDescriptionMenu />
             </div>
 
             {/* icon and temp */}
