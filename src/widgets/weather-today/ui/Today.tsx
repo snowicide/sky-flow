@@ -1,25 +1,13 @@
 "use client";
 import dayjs from "dayjs";
-import { useMemo } from "react";
 import { AiDescriptionMenu } from "@/features/ai-description";
-import { formatCityDisplay } from "@/entities/location";
-import { type WeatherCurrent, type WeatherUnits } from "@/entities/weather";
+import type { WeatherCurrent, WeatherUnits } from "@/entities/weather";
 import { WeatherIcon } from "@/entities/weather";
+import { useToday } from "../model/useToday";
 import { TodaySkeleton } from "./TodaySkeleton";
 
 export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
-  const displayName = useMemo(() => {
-    if (!currentData) return "";
-    return formatCityDisplay({
-      status: "found",
-      city: currentData.city,
-      country: currentData.country,
-      region: currentData.region,
-      code: currentData.code,
-      lat: currentData.lat,
-      lon: currentData.lon,
-    });
-  }, [currentData]);
+  const { displayName, aiRequestData } = useToday(currentData);
 
   return (
     <section
@@ -61,7 +49,7 @@ export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
                 {dayjs(currentData.time).format("dddd, MMM D, YYYY")}
               </p>
               {/* AI description */}
-              <AiDescriptionMenu />
+              <AiDescriptionMenu aiRequestData={aiRequestData} />
             </div>
 
             {/* icon and temp */}

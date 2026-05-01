@@ -6,13 +6,23 @@ import {
   Transition,
 } from "@headlessui/react";
 import { ChevronLeft } from "lucide-react";
-import { useState } from "react";
+import type { RequestData } from "../model/types";
+import { useAiDescription } from "../model/useAiDescription";
 import { MoreDetailsAiButton } from "./MoreDetailsAiButton";
 
-export function AiDescriptionMenu() {
-  const [selectedTab, setSelectedTab] = useState<"location" | "weather" | null>(
-    null,
-  );
+export function AiDescriptionMenu({
+  aiRequestData,
+}: {
+  aiRequestData: RequestData | null;
+}) {
+  const {
+    selectedTab,
+    handleTabSelect,
+    setSelectedTab,
+    completion,
+    isLoading,
+    error,
+  } = useAiDescription(aiRequestData);
 
   return (
     <Menu as="div" className="relative flex justify-center">
@@ -32,7 +42,9 @@ export function AiDescriptionMenu() {
           modal={false}
           className={`absolute top-9 sm:left-0 z-50 mt-2 flex items-center gap-4 px-6 py-3
                      bg-[#818cf8]/30 backdrop-blur-md border border-white/10
-                     rounded-2xl shadow-2xl focus:outline-none custom-scrollbar ${selectedTab ? "min-w-80 sm:min-w-100" : ""}`}
+                     rounded-2xl shadow-2xl focus:outline-none custom-scrollbar ${
+                       selectedTab ? "min-w-80 sm:min-w-100" : ""
+                     }`}
         >
           {!selectedTab ? (
             <div className="flex items-center gap-4">
@@ -41,7 +53,7 @@ export function AiDescriptionMenu() {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      setSelectedTab("location");
+                      handleTabSelect("location");
                     }}
                     className="relative text-lg font-semibold transition-all duration-200 outline-none group"
                   >
@@ -60,7 +72,7 @@ export function AiDescriptionMenu() {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      setSelectedTab("weather");
+                      handleTabSelect("weather");
                     }}
                     className="relative text-lg font-semibold transition-all duration-200 outline-none group"
                   >
@@ -86,11 +98,31 @@ export function AiDescriptionMenu() {
                 </span>
               </button>
 
-              <p className="text-sm leading-relaxed text-white/90">
-                {selectedTab === "location"
-                  ? 'Warsaw is often called the "Phoenix on the Vistula" because the city was almost completely rebuilt from ruins after World War II. Its modern skyline, dotted with skyscrapers, makes it one of Europe\'s most dynamic cities.'
-                  : 'Today in Warsaw it\'s rainy and chilly, typical "Kurnawa" weather. We recommend bringing an umbrella and layering up warm—high humidity and gusty winds will make the current 7°C feel noticeably colder.'}
-              </p>
+              {isLoading && !completion && (
+                <div className="flex items-center gap-2 text-white/70">
+                  <div className="flex gap-1">
+                    <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" />
+                  </div>
+                  <span className="text-sm italic">AI is thinking...</span>
+                </div>
+              )}
+
+              {completion && (
+                <p className="text-sm leading-relaxed text-white/90">
+                  {completion}
+                  {isLoading && (
+                    <span className="inline-block w-1.5 h-4 ml-1 bg-[#818cf8] animate-pulse align-middle" />
+                  )}
+                </p>
+              )}
+
+              {error && (
+                <p className="text-sm text-red-400/90 bg-red-400/10 p-2 rounded-lg">
+                  AI service is unavailable.
+                </p>
+              )}
             </div>
           )}
         </MenuItems>

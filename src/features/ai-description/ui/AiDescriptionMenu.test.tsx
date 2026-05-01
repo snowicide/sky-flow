@@ -2,9 +2,28 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AiDescriptionMenu } from "./AiDescriptionMenu";
 
+vi.mock("@ai-sdk/react", () => ({
+  useCompletion: vi.fn(() => ({
+    completion: "Warsaw is a great city",
+    complete: vi.fn(),
+    isLoading: false,
+    error: undefined,
+    stop: vi.fn(),
+  })),
+}));
+
 const setup = () => {
   const user = userEvent.setup();
-  render(<AiDescriptionMenu />);
+  const aiRequestData = {
+    city: "Warsaw",
+    country: "Poland",
+    region: "Masovian",
+    lat: 52,
+    lon: 21,
+    temperature: 10,
+    condition: "sunny",
+  };
+  render(<AiDescriptionMenu aiRequestData={aiRequestData} />);
 
   return {
     user,
