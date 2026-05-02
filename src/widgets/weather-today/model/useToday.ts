@@ -3,7 +3,7 @@ import { formatCityDisplay } from "@/entities/location";
 import { type WeatherCurrent } from "@/entities/weather";
 import { conditionMapper } from "./conditionMapper";
 
-export function useToday(currentData?: WeatherCurrent): TodayReturn {
+export function useToday(currentData?: WeatherCurrent) {
   return useMemo(() => {
     if (!currentData) return { displayName: "", aiRequestData: null };
 
@@ -34,21 +34,3 @@ export function useToday(currentData?: WeatherCurrent): TodayReturn {
     return { displayName, aiRequestData };
   }, [currentData]);
 }
-
-type TodayReturn =
-  | {
-      displayName: string;
-      aiRequestData: null;
-    }
-  | {
-      displayName: string;
-      aiRequestData: {
-        city: string;
-        country: string | undefined;
-        region: string | undefined;
-        lat: number;
-        lon: number;
-        temperature: number;
-        condition: string;
-      };
-    };

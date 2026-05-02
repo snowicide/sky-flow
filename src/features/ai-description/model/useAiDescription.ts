@@ -2,7 +2,7 @@ import { useCompletion } from "@ai-sdk/react";
 import { useCallback, useMemo, useState } from "react";
 import type { RequestData } from "./types";
 
-export function useAiDescription(aiRequestData: RequestData | null): AiReturn {
+export function useAiDescription(aiRequestData: RequestData | null) {
   const [selectedTab, setSelectedTab] = useState<"weather" | "location" | null>(
     null,
   );
@@ -40,15 +40,4 @@ export function useAiDescription(aiRequestData: RequestData | null): AiReturn {
       error,
     ],
   );
-}
-
-interface AiReturn {
-  selectedTab: "weather" | "location" | null;
-  handleTabSelect: (tab: "weather" | "location") => void;
-  setSelectedTab: React.Dispatch<
-    React.SetStateAction<"weather" | "location" | null>
-  >;
-  completion: string;
-  isLoading: boolean;
-  error: Error | undefined;
 }
