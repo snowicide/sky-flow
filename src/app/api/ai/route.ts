@@ -1,7 +1,11 @@
 import { groq } from "@ai-sdk/groq";
 import { streamText } from "ai";
+import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import z from "zod";
+import { getAiConfig } from "@/features/ai-description/server";
+import { createRateLimitResponse } from "@/shared/api/rate-limit";
+import { checkRatelimit } from "@/shared/lib/ratelimit";
 
 const schema = z.object({
   option: z.enum(["location", "weather"]),
@@ -15,49 +19,26 @@ const schema = z.object({
 });
 
 export const maxDuration = 30;
-export async function POST(req: NextRequest): Promise<Response> {
+export async function POST(req: NextRequest) {
+  const ip = (await headers()).get("x-forwarded-for") ?? "127.0.0.1";
+  const limitResult = await checkRatelimit(ip);
+
+  if (!limitResult.success) return createRateLimitResponse(limitResult);
+
   try {
     const body = await req.json();
-    const data = schema.safeParse(body);
+    const result = schema.safeParse(body);
 
-    if (!data.success)
+    if (!result.success)
       return NextResponse.json({ error: "Invalid data" }, { status: 400 });
 
-    const { city, country, region, lat, lon, temperature, condition, option } =
-      data.data;
-
-    const location = `${city}${country ? `, ${country}` : ""}${region ? `, ${region}` : ""}`;
-    const coords = `${lat} latitude and ${lon} longitude`;
-
-    const optionConfig: OptionConfig = {
-      location: {
-        system: "You are a professional and friendly local guide and historian",
-        prompt: `You are an friendly expert local guide and urban historian. 
-                 Tell one surprising, little-known, or unique fact about ${location} (${coords}). 
-                 Focus on quirky history, hidden architecture, or unusual local traditions. 
-                 Keep it to 2-3 engaging sentences in English. 
-                 Use a friendly emoji at the end.`,
-        temperature: 0.9,
-      },
-      weather: {
-        system: "You are a professional and friendly meteorologist",
-        prompt: `You are a friendly meteorologist.
-                 Write a short (1-2 sentences), warm, and lively
-                 description of the weather in ${location} (${coords}) in English.
-                 It's ${temperature}°C now, it's ${condition} outside.
-                 Give some advice on the current weather.
-                 Use friendly emoji at the end`,
-        temperature: 0.7,
-      },
-    };
-
-    const currentConfig = optionConfig[option];
+    const config = getAiConfig(result.data);
 
     const streamResult = streamText({
       model: groq("llama-3.3-70b-versatile"),
-      system: currentConfig.system,
-      prompt: currentConfig.prompt,
-      temperature: currentConfig.temperature,
+      system: config.system,
+      prompt: config.prompt,
+      temperature: config.temperature,
       maxOutputTokens: 150,
     });
 
@@ -71,16 +52,3 @@ export async function POST(req: NextRequest): Promise<Response> {
     );
   }
 }
-
-type OptionConfig = {
-  location: {
-    system: string;
-    prompt: string;
-    temperature: number;
-  };
-  weather: {
-    system: string;
-    prompt: string;
-    temperature: number;
-  };
-};
