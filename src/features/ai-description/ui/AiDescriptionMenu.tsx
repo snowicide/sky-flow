@@ -112,9 +112,6 @@ export function AiDescriptionMenu({
               {completion && (
                 <p className="text-sm leading-relaxed text-white/90">
                   {completion}
-                  {isLoading && (
-                    <span className="inline-block w-1.5 h-4 ml-1 bg-[#818cf8] animate-pulse align-middle" />
-                  )}
                 </p>
               )}
 
