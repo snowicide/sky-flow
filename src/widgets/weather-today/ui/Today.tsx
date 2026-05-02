@@ -49,7 +49,10 @@ export function Today({ currentData, forecastUnits, isPending }: TodayProps) {
                 {dayjs(currentData.time).format("dddd, MMM D, YYYY")}
               </p>
               {/* AI description */}
-              <AiDescriptionMenu aiRequestData={aiRequestData} />
+              <AiDescriptionMenu
+                key={`${currentData.lat}-${currentData.lon}`}
+                aiRequestData={aiRequestData}
+              />
             </div>
 
             {/* icon and temp */}
