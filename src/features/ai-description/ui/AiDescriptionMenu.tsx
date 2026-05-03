@@ -117,7 +117,7 @@ export function AiDescriptionMenu({
 
               {error && (
                 <p className="text-sm text-red-400/90 bg-red-400/10 p-2 rounded-lg">
-                  AI service is unavailable.
+                  {error.message}
                 </p>
               )}
             </div>

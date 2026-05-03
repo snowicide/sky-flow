@@ -1,3 +1,5 @@
+import z from "zod";
+
 export type RequestData = {
   city: string;
   country?: string;
@@ -8,13 +10,20 @@ export type RequestData = {
   condition?: string;
 };
 
-export type ServerRequestData = {
-  option: "location" | "weather";
-  city: string;
-  lat: number;
-  lon: number;
-  country?: string | null | undefined;
-  region?: string | null | undefined;
-  temperature?: number | undefined;
-  condition?: string | undefined;
-};
+export const AiRequestsSchema = z.object({
+  option: z.enum(["location", "weather"]),
+  city: z.string(),
+  country: z.string().optional().nullable(),
+  region: z.string().optional().nullable(),
+  lat: z.number().min(-90).max(90),
+  lon: z.number().min(-180).max(180),
+  temperature: z.number().optional(),
+  condition: z.string().optional(),
+});
+
+export type ServerRequestData = z.infer<typeof AiRequestsSchema>;
+
+export type AiErrorCode =
+  | "RATE_LIMIT_EXCEEDED"
+  | "INVALID_REQUEST_DATA"
+  | "SERVICE_UNAVAILABLE";
