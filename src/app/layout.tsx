@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { QueryProvider } from "./providers/QueryProvider";
@@ -25,6 +26,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <QueryProvider>{children}</QueryProvider>
+        <Analytics />
       </body>
     </html>
   );
